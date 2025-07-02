@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransportAdmin - Analyses & Rapports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2 style="font-weight: 700;">
+                <i class="fas fa-route"></i>
+                TransportAdmin
+            </h2>
+        </div>
+        <div class="sidebar-nav">
+            <a href="../dashboard.html" class="sidebar-nav-item">
+                <i class="fas fa-home sidebar-nav-icon"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="billetterie.html" class="sidebar-nav-item">
+                <i class="fas fa-ticket-alt sidebar-nav-icon"></i>
+                <span>Billetterie</span>
+            </a>
+            <a href="flotte.html" class="sidebar-nav-item">
+                <i class="fas fa-bus sidebar-nav-icon"></i>
+                <span>Gestion de flotte</span>
+            </a>
+            <a href="lignes.html" class="sidebar-nav-item">
+                <i class="fas fa-route sidebar-nav-icon"></i>
+                <span>Lignes & Itinéraires</span>
+            </a>
+            <a href="chauffeurs.html" class="sidebar-nav-item">
+                <i class="fas fa-user-tie sidebar-nav-icon"></i>
+                <span>Chauffeurs</span>
+            </a>
+            <a href="signaletique.html" class="sidebar-nav-item">
+                <i class="fas fa-tv sidebar-nav-icon"></i>
+                <span>Signalétique</span>
+            </a>
+            <a href="analytics.html" class="sidebar-nav-item active">
+                <i class="fas fa-chart-line sidebar-nav-icon"></i>
+                <span>Analyses & Rapports</span>
+            </a>
+            <a href="maintenance.html" class="sidebar-nav-item">
+                <i class="fas fa-tools sidebar-nav-icon"></i>
+                <span>Maintenance</span>
+            </a>
+            <a href="settings.html" class="sidebar-nav-item">
+                <i class="fas fa-cog sidebar-nav-icon"></i>
+                <span>Paramètres</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--primary-black); margin-bottom: 8px;">
+                    Analyses & Rapports
+                </h1>
+                <p style="color: var(--dark-gray);">Vue analytique complète de votre activité transport</p>
+            </div>
+            <div class="flex items-center gap-16px">
+                <select class="form-input" style="width: 150px;">
+                    <option>Cette semaine</option>
+                    <option>Ce mois</option>
+                    <option>3 derniers mois</option>
+                    <option>Cette année</option>
+                </select>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    Exporter PDF
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-chart-bar"></i>
+                    Rapport personnalisé
+                </button>
+            </div>
+        </div>
+
+        <!-- KPIs principaux -->
+        <div class="grid grid-4 mb-4">
+            <div class="stat-card">
+                <div class="stat-value">145 000 FCFA</div>
+                <div class="stat-label">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    Revenus totaux
+                </div>
+                <div style="font-size: 12px; margin-top: 8px; color: rgba(255,255,255,0.8);">
+                    <i class="fas fa-arrow-up"></i> +15.2% vs mois dernier
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                <div class="stat-value">847,250</div>
+                <div class="stat-label">
+                    <i class="fas fa-users"></i>
+                    Passagers transportés
+                </div>
+                <div style="font-size: 12px; margin-top: 8px; color: rgba(255,255,255,0.8);">
+                    <i class="fas fa-arrow-up"></i> +8.7% vs mois dernier
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #17a2b8, #138496);">
+                <div class="stat-value">89.2%</div>
+                <div class="stat-label">
+                    <i class="fas fa-clock"></i>
+                    Ponctualité moyenne
+                </div>
+                <div style="font-size: 12px; margin-top: 8px; color: rgba(255,255,255,0.8);">
+                    <i class="fas fa-arrow-up"></i> +2.1% vs mois dernier
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #6f42c1, #5a6acf);">
+                <div class="stat-value">4.6/5</div>
+                <div class="stat-label">
+                    <i class="fas fa-star"></i>
+                    Satisfaction client
+                </div>
+                <div style="font-size: 12px; margin-top: 8px; color: rgba(255,255,255,0.8);">
+                    <i class="fas fa-arrow-up"></i> +0.3 vs mois dernier
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphiques analytiques -->
+        <div class="grid grid-2 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-chart-line" style="color: var(--primary-orange);"></i>
+                        Évolution des revenus (6 mois)
+                    </h3>
+                    <canvas id="revenueAnalyticsChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-users" style="color: var(--primary-orange);"></i>
+                        Fréquentation par heure
+                    </h3>
+                    <canvas id="frequentationChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance par ligne -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-route" style="color: var(--primary-orange);"></i>
+                    Performance par ligne
+                </h3>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ligne</th>
+                                <th>Revenus/jour</th>
+                                <th>Passagers/jour</th>
+                                <th>Ponctualité</th>
+                                <th>Taux de remplissage</th>
+                                <th>Rentabilité</th>
+                                <th>Tendance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="badge" style="background-color: var(--primary-orange); color: white;">Ligne A</span>
+                                </td>
+                                <td><strong>4 680 FCFA</strong></td>
+                                <td>2 340</td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 92%; height: 100%; background-color: #28a745;"></div>
+                                        </div>
+                                        <span>92%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 78%; height: 100%; background-color: var(--primary-orange);"></div>
+                                        </div>
+                                        <span>78%</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-success">Excellente</span></td>
+                                <td><i class="fas fa-arrow-up" style="color: #28a745;"></i> +12%</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="badge" style="background-color: #1a1a1a; color: white;">Ligne B</span>
+                                </td>
+                                <td><strong>3 780 FCFA</strong></td>
+                                <td>1 890</td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 88%; height: 100%; background-color: #28a745;"></div>
+                                        </div>
+                                        <span>88%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 63%; height: 100%; background-color: var(--primary-orange);"></div>
+                                        </div>
+                                        <span>63%</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-success">Bonne</span></td>
+                                <td><i class="fas fa-arrow-up" style="color: #28a745;"></i> +8%</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="badge" style="background-color: #6c757d; color: white;">Ligne C</span>
+                                </td>
+                                <td><strong>2 140 FCFA</strong></td>
+                                <td>1 070</td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 85%; height: 100%; background-color: #ffc107;"></div>
+                                        </div>
+                                        <span>85%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 45%; height: 100%; background-color: #ffc107;"></div>
+                                        </div>
+                                        <span>45%</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-warning">Moyenne</span></td>
+                                <td><i class="fas fa-arrow-down" style="color: #dc3545;"></i> -3%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommandations IA -->
+        <div class="grid grid-2">
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-brain" style="color: var(--primary-orange);"></i>
+                        Recommandations IA
+                    </h3>
+                    <div class="alert alert-info" style="padding: 16px; background-color: #d1ecf1; border-radius: var(--border-radius); margin-bottom: 12px;">
+                        <h5 style="color: #0c5460; margin-bottom: 8px;">
+                            <i class="fas fa-lightbulb"></i>
+                            Optimisation Ligne A
+                        </h5>
+                        <p style="color: #0c5460; margin: 0; font-size: 14px;">
+                            Augmenter la fréquence de 15% entre 16h-18h pourrait générer +850 FCFA/mois de revenus supplémentaires
+                        </p>
+                    </div>
+                    <div class="alert alert-warning" style="padding: 16px; background-color: #fff3cd; border-radius: var(--border-radius); margin-bottom: 12px;">
+                        <h5 style="color: #856404; margin-bottom: 8px;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Révision Ligne C
+                        </h5>
+                        <p style="color: #856404; margin: 0; font-size: 14px;">
+                            Faible rentabilité détectée. Envisager une modification d'itinéraire ou d'horaires
+                        </p>
+                    </div>
+                    <div class="alert alert-success" style="padding: 16px; background-color: #d4edda; border-radius: var(--border-radius);">
+                        <h5 style="color: #155724; margin-bottom: 8px;">
+                            <i class="fas fa-check-circle"></i>
+                            Pic de demande prévu
+                        </h5>
+                        <p style="color: #155724; margin: 0; font-size: 14px;">
+                            Affluence +25% prévue demain 17h-19h (événement université)
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-target" style="color: var(--primary-orange);"></i>
+                        Objectifs & KPIs
+                    </h3>
+                    <div style="margin-bottom: 16px;">
+                        <div class="flex justify-between items-center mb-2">
+                            <span>Revenus mensuels:</span>
+                            <span><strong>145K FCFA</strong> / 160K FCFA</span>
+                        </div>
+                        <div style="width: 100%; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 91%; height: 100%; background-color: var(--primary-orange);"></div>
+                        </div>
+                        <small style="color: var(--dark-gray);">91% de l'objectif atteint</small>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <div class="flex justify-between items-center mb-2">
+                            <span>Ponctualité:</span>
+                            <span><strong>89.2%</strong> / 90%</span>
+                        </div>
+                        <div style="width: 100%; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 99%; height: 100%; background-color: #ffc107;"></div>
+                        </div>
+                        <small style="color: var(--dark-gray);">99% de l'objectif atteint</small>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span>Satisfaction:</span>
+                            <span><strong>4.6/5</strong> / 4.5/5</span>
+                        </div>
+                        <div style="width: 100%; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 100%; height: 100%; background-color: #28a745;"></div>
+                        </div>
+                        <small style="color: #28a745;">Objectif dépassé ! 🎉</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Graphique des revenus analytiques
+        const ctxRevenue = document.getElementById('revenueAnalyticsChart');
+        if (ctxRevenue) {
+            new Chart(ctxRevenue, {
+                type: 'line',
+                data: {
+                    labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin'],
+                    datasets: [{
+                        label: 'Revenus (FCFA)',
+                        data: [125000, 132000, 128000, 145000, 138000, 145230],
+                        borderColor: '#ff7900',
+                        backgroundColor: 'rgba(255, 121, 0, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: '#e9ecef'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: '#e9ecef'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Graphique de fréquentation par heure
+        const ctxFreq = document.getElementById('frequentationChart');
+        if (ctxFreq) {
+            new Chart(ctxFreq, {
+                type: 'bar',
+                data: {
+                    labels: ['6h', '8h', '10h', '12h', '14h', '16h', '18h', '20h'],
+                    datasets: [{
+                        label: 'Passagers',
+                        data: [120, 380, 280, 320, 290, 450, 520, 180],
+                        backgroundColor: [
+                            '#ff7900',
+                            '#ff7900',
+                            '#1a1a1a',
+                            '#1a1a1a',
+                            '#1a1a1a',
+                            '#ff7900',
+                            '#ff7900',
+                            '#1a1a1a'
+                        ],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e9ecef'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

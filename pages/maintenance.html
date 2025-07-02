@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransportAdmin - Maintenance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2 style=" font-weight: 700;">
+                <i class="fas fa-route"></i>
+                TransportAdmin
+            </h2>
+        </div>
+        <div class="sidebar-nav">
+            <a href="../dashboard.html" class="sidebar-nav-item">
+                <i class="fas fa-home sidebar-nav-icon"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="billetterie.html" class="sidebar-nav-item">
+                <i class="fas fa-ticket-alt sidebar-nav-icon"></i>
+                <span>Billetterie</span>
+            </a>
+            <a href="flotte.html" class="sidebar-nav-item">
+                <i class="fas fa-bus sidebar-nav-icon"></i>
+                <span>Gestion de flotte</span>
+            </a>
+            <a href="lignes.html" class="sidebar-nav-item">
+                <i class="fas fa-route sidebar-nav-icon"></i>
+                <span>Lignes & Itinéraires</span>
+            </a>
+            <a href="chauffeurs.html" class="sidebar-nav-item">
+                <i class="fas fa-user-tie sidebar-nav-icon"></i>
+                <span>Chauffeurs</span>
+            </a>
+            <a href="signaletique.html" class="sidebar-nav-item">
+                <i class="fas fa-tv sidebar-nav-icon"></i>
+                <span>Signalétique</span>
+            </a>
+            <a href="analytics.html" class="sidebar-nav-item">
+                <i class="fas fa-chart-line sidebar-nav-icon"></i>
+                <span>Analyses & Rapports</span>
+            </a>
+            <a href="maintenance.html" class="sidebar-nav-item active">
+                <i class="fas fa-tools sidebar-nav-icon"></i>
+                <span>Maintenance</span>
+            </a>
+            <a href="settings.html" class="sidebar-nav-item">
+                <i class="fas fa-cog sidebar-nav-icon"></i>
+                <span>Paramètres</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--primary-black); margin-bottom: 8px;">
+                    Maintenance Prédictive
+                </h1>
+                <p style="color: var(--dark-gray);">Planification et suivi de la maintenance de votre flotte</p>
+            </div>
+            <div class="flex items-center gap-16px">
+                <button class="btn btn-secondary" onclick="openMaintenancePlanning()">
+                    <i class="fas fa-calendar-alt"></i>
+                    Planning maintenance
+                </button>
+                <button class="btn btn-primary" onclick="openNewInterventionModal()">
+                    <i class="fas fa-plus"></i>
+                    Nouvelle intervention
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistiques maintenance -->
+        <div class="grid grid-4 mb-4">
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Interventions urgentes
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ffc107, #ffab00);">
+                <div class="stat-value">8</div>
+                <div class="stat-label">
+                    <i class="fas fa-clock"></i>
+                    Maintenance programmée
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                <div class="stat-value">8 540 FCFA</div>
+                <div class="stat-label">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    Coûts ce mois
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #17a2b8, #138496);">
+                <div class="stat-value">94%</div>
+                <div class="stat-label">
+                    <i class="fas fa-check-circle"></i>
+                    Disponibilité flotte
+                </div>
+            </div>
+        </div>
+
+        <!-- État de la flotte -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-heartbeat" style="color: var(--primary-orange);"></i>
+                    État de santé de la flotte
+                </h3>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Véhicule</th>
+                                <th>État général</th>
+                                <th>Kilométrage</th>
+                                <th>Prochaine révision</th>
+                                <th>Alertes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>BUS001</strong></td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 80px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 85%; height: 100%; background-color: #28a745;"></div>
+                                        </div>
+                                        <span style="font-size: 14px; font-weight: 600;">Bon</span>
+                                    </div>
+                                </td>
+                                <td>127,543 km</td>
+                                <td>Dans 15 jours</td>
+                                <td><span class="badge badge-success">Aucune</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 8px;" onclick="viewVehicleHealth('BUS001')" title="Voir détails">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>BUS003</strong></td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 80px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 45%; height: 100%; background-color: #dc3545;"></div>
+                                        </div>
+                                        <span style="font-size: 14px; font-weight: 600;">Critique</span>
+                                    </div>
+                                </td>
+                                <td>156,789 km</td>
+                                <td>En cours</td>
+                                <td><span class="badge badge-danger">Moteur</span></td>
+                                <td>
+                                    <button class="btn btn-primary" style="padding: 8px;" onclick="startMaintenance('BUS003')" title="Démarrer maintenance">
+                                        <i class="fas fa-tools"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>BUS005</strong></td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 80px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 65%; height: 100%; background-color: #ffc107;"></div>
+                                        </div>
+                                        <span style="font-size: 14px; font-weight: 600;">Moyen</span>
+                                    </div>
+                                </td>
+                                <td>149,234 km</td>
+                                <td>Dépassée</td>
+                                <td><span class="badge badge-warning">150K km</span></td>
+                                <td>
+                                    <button class="btn btn-warning" style="padding: 8px;" onclick="scheduleMaintenance('BUS005')" title="Programmer maintenance">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interventions et planning -->
+        <div class="grid grid-2">
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-calendar-check" style="color: var(--primary-orange);"></i>
+                        Interventions programmées
+                    </h3>
+                    <div style="margin-bottom: 16px; padding: 16px; border-left: 4px solid var(--primary-orange); background-color: rgba(255, 121, 0, 0.1); border-radius: 4px;">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <strong>BUS003 - Réparation moteur</strong>
+                                <br>
+                                <small style="color: var(--dark-gray);">Atelier Central</small>
+                            </div>
+                            <span class="badge badge-danger">Urgent</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span style="font-size: 14px;">Début: Aujourd'hui 08:00</span>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">
+                                Détails
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px; padding: 16px; border-left: 4px solid #ffc107; background-color: rgba(255, 193, 7, 0.1); border-radius: 4px;">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <strong>BUS005 - Révision 150K km</strong>
+                                <br>
+                                <small style="color: var(--dark-gray);">Garage Municipal</small>
+                            </div>
+                            <span class="badge badge-warning">Planifié</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span style="font-size: 14px;">Début: Demain 14:00</span>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">
+                                Détails
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 16px; border-left: 4px solid #28a745; background-color: rgba(40, 167, 69, 0.1); border-radius: 4px;">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <strong>BUS007 - Contrôle technique</strong>
+                                <br>
+                                <small style="color: var(--dark-gray);">Station agréée</small>
+                            </div>
+                            <span class="badge badge-success">Prévu</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span style="font-size: 14px;">Début: 15 juillet 09:00</span>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">
+                                Détails
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-chart-bar" style="color: var(--primary-orange);"></i>
+                        Analyse prédictive
+                    </h3>
+                    
+                    <div class="alert alert-warning" style="padding: 16px; background-color: #fff3cd; border-radius: var(--border-radius); margin-bottom: 16px;">
+                        <h5 style="color: #856404; margin-bottom: 8px;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Prédiction IA
+                        </h5>
+                        <p style="color: #856404; margin: 0; font-size: 14px;">
+                            BUS004 risque de panne dans 3 semaines (système de freinage)
+                        </p>
+                    </div>
+                    
+                    <div class="alert alert-info" style="padding: 16px; background-color: #d1ecf1; border-radius: var(--border-radius); margin-bottom: 16px;">
+                        <h5 style="color: #0c5460; margin-bottom: 8px;">
+                            <i class="fas fa-info-circle"></i>
+                            Recommandation
+                        </h5>
+                        <p style="color: #0c5460; margin: 0; font-size: 14px;">
+                            Grouper les révisions BUS001 et BUS002 pour optimiser les coûts (-15%)
+                        </p>
+                    </div>
+                    
+                    <h4 style="margin-bottom: 12px;">Coûts de maintenance</h4>
+                    <div class="flex justify-between items-center mb-2">
+                        <span>Ce mois:</span>
+                        <strong style="color: var(--primary-orange);">8 540 FCFA</strong>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span>Moyenne mensuelle:</span>
+                        <strong>7 200 FCFA</strong>
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span>Budget annuel:</span>
+                        <strong>95 000 FCFA</strong>
+                    </div>
+                    
+                    <div style="width: 100%; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
+                        <div style="width: 64%; height: 100%; background-color: var(--primary-orange);"></div>
+                    </div>
+                    <small style="color: var(--dark-gray);">64% du budget annuel utilisé</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historique des interventions -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-history" style="color: var(--primary-orange);"></i>
+                    Historique des interventions récentes
+                </h3>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Véhicule</th>
+                                <th>Type d'intervention</th>
+                                <th>Prestataire</th>
+                                <th>Durée</th>
+                                <th>Coût</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>28/06/2025</td>
+                                <td><strong>BUS002</strong></td>
+                                <td>Révision périodique</td>
+                                <td>Garage Municipal</td>
+                                <td>4h</td>
+                                <td>450 FCFA</td>
+                                <td><span class="badge badge-success">Terminé</span></td>
+                            </tr>
+                            <tr>
+                                <td>25/06/2025</td>
+                                <td><strong>BUS006</strong></td>
+                                <td>Remplacement pneus</td>
+                                <td>Pneumatique Express</td>
+                                <td>2h</td>
+                                <td>680 FCFA</td>
+                                <td><span class="badge badge-success">Terminé</span></td>
+                            </tr>
+                            <tr>
+                                <td>22/06/2025</td>
+                                <td><strong>BUS001</strong></td>
+                                <td>Vidange + filtres</td>
+                                <td>Station Total</td>
+                                <td>1h30</td>
+                                <td>125 FCFA</td>
+                                <td><span class="badge badge-success">Terminé</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modales pour les actions de maintenance -->
+    <!-- Modale Planning Maintenance -->
+    <div id="maintenancePlanningModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-alt"></i> Planning de maintenance</h2>
+                <span class="close" onclick="closeModal('maintenancePlanningModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab-nav">
+                        <button class="tab-btn active" onclick="showTab('planning-month')">Vue mensuelle</button>
+                        <button class="tab-btn" onclick="showTab('planning-week')">Vue hebdomadaire</button>
+                        <button class="tab-btn" onclick="showTab('planning-list')">Liste</button>
+                    </div>
+                    
+                    <div id="planning-month" class="tab-content active">
+                        <div class="calendar-view">
+                            <div class="calendar-header">
+                                <button class="btn btn-secondary">&lt;</button>
+                                <h3>Juillet 2025</h3>
+                                <button class="btn btn-secondary">&gt;</button>
+                            </div>
+                            <div class="calendar-grid">
+                                <div class="calendar-day">
+                                    <div class="day-number">15</div>
+                                    <div class="maintenance-item urgent">BUS003 - Moteur</div>
+                                </div>
+                                <div class="calendar-day">
+                                    <div class="day-number">16</div>
+                                    <div class="maintenance-item planned">BUS005 - Révision</div>
+                                </div>
+                                <div class="calendar-day">
+                                    <div class="day-number">22</div>
+                                    <div class="maintenance-item scheduled">BUS007 - CT</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="planning-week" class="tab-content">
+                        <div class="week-view">
+                            <h4>Semaine du 14 au 20 juillet 2025</h4>
+                            <div class="week-grid">
+                                <div class="day-column">
+                                    <h5>Lundi 14</h5>
+                                    <div class="time-slot">08:00 - BUS003 Diagnostic</div>
+                                </div>
+                                <div class="day-column">
+                                    <h5>Mardi 15</h5>
+                                    <div class="time-slot">14:00 - BUS005 Révision</div>
+                                </div>
+                                <div class="day-column">
+                                    <h5>Mercredi 16</h5>
+                                    <div class="time-slot">Libre</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="planning-list" class="tab-content">
+                        <div class="maintenance-list">
+                            <div class="list-item urgent">
+                                <div class="item-info">
+                                    <strong>BUS003 - Réparation moteur</strong>
+                                    <small>Aujourd'hui 08:00 - Atelier Central</small>
+                                </div>
+                                <span class="badge badge-danger">Urgent</span>
+                            </div>
+                            <div class="list-item planned">
+                                <div class="item-info">
+                                    <strong>BUS005 - Révision 150K km</strong>
+                                    <small>Demain 14:00 - Garage Municipal</small>
+                                </div>
+                                <span class="badge badge-warning">Planifié</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Nouvelle Intervention -->
+    <div id="newInterventionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus"></i> Nouvelle intervention</h2>
+                <span class="close" onclick="closeModal('newInterventionModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="newInterventionForm">
+                    <div class="form-group">
+                        <label for="vehicleSelect">Véhicule :</label>
+                        <select id="vehicleSelect" class="form-control" required>
+                            <option value="">Sélectionner un véhicule</option>
+                            <option value="BUS001">BUS001</option>
+                            <option value="BUS002">BUS002</option>
+                            <option value="BUS003">BUS003</option>
+                            <option value="BUS004">BUS004</option>
+                            <option value="BUS005">BUS005</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interventionType">Type d'intervention :</label>
+                        <select id="interventionType" class="form-control" required>
+                            <option value="">Choisir le type</option>
+                            <option value="revision">Révision périodique</option>
+                            <option value="reparation">Réparation</option>
+                            <option value="controle">Contrôle technique</option>
+                            <option value="vidange">Vidange</option>
+                            <option value="pneus">Changement pneus</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interventionDescription">Description :</label>
+                        <textarea id="interventionDescription" class="form-control" rows="3" placeholder="Détails de l'intervention..."></textarea>
+                    </div>
+                    
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label for="interventionDate">Date prévue :</label>
+                            <input type="date" id="interventionDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="interventionTime">Heure :</label>
+                            <input type="time" id="interventionTime" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interventionProvider">Prestataire :</label>
+                        <select id="interventionProvider" class="form-control" required>
+                            <option value="">Choisir un prestataire</option>
+                            <option value="atelier-central">Atelier Central</option>
+                            <option value="garage-municipal">Garage Municipal</option>
+                            <option value="station-total">Station Total</option>
+                            <option value="pneumatique-express">Pneumatique Express</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interventionPriority">Priorité :</label>
+                        <select id="interventionPriority" class="form-control" required>
+                            <option value="normal">Normale</option>
+                            <option value="high">Élevée</option>
+                            <option value="urgent">Urgente</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="estimatedCost">Coût estimé (FCFA) :</label>
+                        <input type="number" id="estimatedCost" class="form-control" step="0.01" placeholder="0.00">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('newInterventionModal')">Annuler</button>
+                <button type="button" class="btn btn-primary" onclick="saveNewIntervention()">Programmer l'intervention</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Détails Véhicule -->
+    <div id="vehicleHealthModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-eye"></i> Détails véhicule - <span id="vehicleHealthId"></span></h2>
+                <span class="close" onclick="closeModal('vehicleHealthModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab-nav">
+                        <button class="tab-btn active" onclick="showTab('health-overview')">Vue d'ensemble</button>
+                        <button class="tab-btn" onclick="showTab('health-history')">Historique</button>
+                        <button class="tab-btn" onclick="showTab('health-diagnostics')">Diagnostics</button>
+                    </div>
+                    
+                    <div id="health-overview" class="tab-content active">
+                        <div class="vehicle-health-overview">
+                            <div class="grid grid-3 mb-4">
+                                <div class="health-metric">
+                                    <h4>État général</h4>
+                                    <div class="health-gauge">
+                                        <div class="gauge-bar">
+                                            <div class="gauge-fill" style="width: 85%"></div>
+                                        </div>
+                                        <span class="gauge-value">85%</span>
+                                    </div>
+                                </div>
+                                <div class="health-metric">
+                                    <h4>Moteur</h4>
+                                    <div class="health-gauge">
+                                        <div class="gauge-bar">
+                                            <div class="gauge-fill" style="width: 90%"></div>
+                                        </div>
+                                        <span class="gauge-value">90%</span>
+                                    </div>
+                                </div>
+                                <div class="health-metric">
+                                    <h4>Freinage</h4>
+                                    <div class="health-gauge">
+                                        <div class="gauge-bar">
+                                            <div class="gauge-fill" style="width: 75%"></div>
+                                        </div>
+                                        <span class="gauge-value">75%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-specs">
+                                <h4>Spécifications techniques</h4>
+                                <div class="grid grid-2">
+                                    <div class="spec-item">
+                                        <strong>Kilométrage :</strong> 127,543 km
+                                    </div>
+                                    <div class="spec-item">
+                                        <strong>Heures moteur :</strong> 3,245 h
+                                    </div>
+                                    <div class="spec-item">
+                                        <strong>Dernière révision :</strong> 15/05/2025
+                                    </div>
+                                    <div class="spec-item">
+                                        <strong>Prochaine révision :</strong> Dans 15 jours
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="health-history" class="tab-content">
+                        <div class="maintenance-history">
+                            <h4>Historique de maintenance</h4>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-date">28/06/2025</div>
+                                    <div class="timeline-content">
+                                        <strong>Révision périodique</strong>
+                                        <p>Changement filtres, vidange, contrôle général</p>
+                                        <small>Garage Municipal - 450 FCFA</small>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-date">15/05/2025</div>
+                                    <div class="timeline-content">
+                                        <strong>Remplacement plaquettes de frein</strong>
+                                        <p>Usure importante détectée lors du contrôle</p>
+                                        <small>Atelier Central - 280 FCFA</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="health-diagnostics" class="tab-content">
+                        <div class="diagnostics-panel">
+                            <h4>Diagnostics en temps réel</h4>
+                            <div class="diagnostic-alerts">
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <strong>Attention :</strong> Pression pneu avant gauche légèrement faible
+                                </div>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <strong>Info :</strong> Prochain contrôle technique dans 3 mois
+                                </div>
+                            </div>
+                            
+                            <div class="sensor-data">
+                                <h5>Données capteurs</h5>
+                                <div class="grid grid-2">
+                                    <div class="sensor-item">
+                                        <span>Température moteur :</span>
+                                        <strong class="text-success">82°C</strong>
+                                    </div>
+                                    <div class="sensor-item">
+                                        <span>Pression huile :</span>
+                                        <strong class="text-success">4.2 bar</strong>
+                                    </div>
+                                    <div class="sensor-item">
+                                        <span>Niveau carburant :</span>
+                                        <strong class="text-warning">65%</strong>
+                                    </div>
+                                    <div class="sensor-item">
+                                        <span>Batterie :</span>
+                                        <strong class="text-success">12.8V</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Démarrer Maintenance -->
+    <div id="startMaintenanceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-tools"></i> Démarrer maintenance - <span id="startMaintenanceVehicle"></span></h2>
+                <span class="close" onclick="closeModal('startMaintenanceModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Attention :</strong> Cette action va sortir le véhicule de service.
+                </div>
+                
+                <form id="startMaintenanceForm">
+                    <div class="form-group">
+                        <label for="maintenanceTechnician">Technicien responsable :</label>
+                        <select id="maintenanceTechnician" class="form-control" required>
+                            <option value="">Sélectionner un technicien</option>
+                            <option value="tech1">Pierre Martin - Mécanicien senior</option>
+                            <option value="tech2">Marie Dubois - Spécialiste moteur</option>
+                            <option value="tech3">Jean Lefebvre - Technicien général</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="maintenanceWorkshop">Atelier :</label>
+                        <select id="maintenanceWorkshop" class="form-control" required>
+                            <option value="">Choisir un atelier</option>
+                            <option value="atelier1">Atelier Central - Box 1</option>
+                            <option value="atelier2">Atelier Central - Box 2</option>
+                            <option value="garage">Garage Municipal</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="estimatedDuration">Durée estimée :</label>
+                        <select id="estimatedDuration" class="form-control" required>
+                            <option value="">Estimer la durée</option>
+                            <option value="2">2 heures</option>
+                            <option value="4">4 heures</option>
+                            <option value="8">1 jour</option>
+                            <option value="16">2 jours</option>
+                            <option value="24">3 jours</option>
+                            <option value="40">1 semaine</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="maintenanceNotes">Notes d'intervention :</label>
+                        <textarea id="maintenanceNotes" class="form-control" rows="3" placeholder="Observations, problèmes identifiés, actions prévues..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('startMaintenanceModal')">Annuler</button>
+                <button type="button" class="btn btn-danger" onclick="confirmStartMaintenance()">Démarrer la maintenance</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Programmer Maintenance -->
+    <div id="scheduleMaintenanceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-plus"></i> Programmer maintenance - <span id="scheduleMaintenanceVehicle"></span></h2>
+                <span class="close" onclick="closeModal('scheduleMaintenanceModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="scheduleMaintenanceForm">
+                    <div class="form-group">
+                        <label for="scheduledType">Type de maintenance :</label>
+                        <select id="scheduledType" class="form-control" required>
+                            <option value="">Choisir le type</option>
+                            <option value="revision-150k">Révision 150K km</option>
+                            <option value="revision-periodique">Révision périodique</option>
+                            <option value="controle-technique">Contrôle technique</option>
+                            <option value="diagnostic">Diagnostic complet</option>
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label for="scheduledDate">Date souhaitée :</label>
+                            <input type="date" id="scheduledDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduledTime">Heure :</label>
+                            <input type="time" id="scheduledTime" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="scheduledProvider">Prestataire :</label>
+                        <select id="scheduledProvider" class="form-control" required>
+                            <option value="">Choisir un prestataire</option>
+                            <option value="atelier-central">Atelier Central</option>
+                            <option value="garage-municipal">Garage Municipal</option>
+                            <option value="station-agrée">Station agréée CT</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="scheduledUrgency">Niveau d'urgence :</label>
+                        <select id="scheduledUrgency" class="form-control" required>
+                            <option value="normal">Normal</option>
+                            <option value="high">Élevé - À programmer rapidement</option>
+                            <option value="urgent">Urgent - Véhicule à risque</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="scheduledNotes">Remarques :</label>
+                        <textarea id="scheduledNotes" class="form-control" rows="2" placeholder="Observations particulières..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('scheduleMaintenanceModal')">Annuler</button>
+                <button type="button" class="btn btn-primary" onclick="confirmScheduleMaintenance()">Programmer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+    
+    <script>
+        // Scripts spécifiques à la maintenance
+        
+        // Fonction pour ouvrir le planning de maintenance
+        function openMaintenancePlanning() {
+            openModal('maintenancePlanningModal');
+            loadMaintenancePlanning();
+        }
+        
+        // Fonction pour ouvrir la modale de nouvelle intervention
+        function openNewInterventionModal() {
+            openModal('newInterventionModal');
+            document.getElementById('newInterventionForm').reset();
+            document.getElementById('interventionDate').valueAsDate = new Date();
+        }
+        
+        // Fonction pour voir les détails de santé d'un véhicule
+        function viewVehicleHealth(vehicleId) {
+            document.getElementById('vehicleHealthId').textContent = vehicleId;
+            openModal('vehicleHealthModal');
+            loadVehicleHealthData(vehicleId);
+        }
+        
+        // Fonction pour démarrer une maintenance
+        function startMaintenance(vehicleId) {
+            document.getElementById('startMaintenanceVehicle').textContent = vehicleId;
+            openModal('startMaintenanceModal');
+            document.getElementById('startMaintenanceForm').reset();
+        }
+        
+        // Fonction pour programmer une maintenance
+        function scheduleMaintenance(vehicleId) {
+            document.getElementById('scheduleMaintenanceVehicle').textContent = vehicleId;
+            openModal('scheduleMaintenanceModal');
+            document.getElementById('scheduleMaintenanceForm').reset();
+            
+            // Définir la date par défaut à demain
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('scheduledDate').valueAsDate = tomorrow;
+        }
+        
+        // Fonction pour sauvegarder une nouvelle intervention
+        function saveNewIntervention() {
+            const form = document.getElementById('newInterventionForm');
+            const formData = new FormData(form);
+            
+            if (form.checkValidity()) {
+                const vehicleId = document.getElementById('vehicleSelect').value;
+                const type = document.getElementById('interventionType').value;
+                const date = document.getElementById('interventionDate').value;
+                const time = document.getElementById('interventionTime').value;
+                
+                // Simulation de sauvegarde
+                setTimeout(() => {
+                    closeModal('newInterventionModal');
+                    showNotification('Intervention programmée avec succès pour ' + vehicleId + ' le ' + date + ' à ' + time, 'success');
+                    
+                    // Rafraîchir la vue (simulation)
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                }, 500);
+            } else {
+                showNotification('Veuillez remplir tous les champs obligatoires', 'error');
+            }
+        }
+        
+        // Fonction pour confirmer le démarrage de maintenance
+        function confirmStartMaintenance() {
+            const vehicleId = document.getElementById('startMaintenanceVehicle').textContent;
+            const technician = document.getElementById('maintenanceTechnician').value;
+            const workshop = document.getElementById('maintenanceWorkshop').value;
+            
+            if (!technician || !workshop) {
+                showNotification('Veuillez sélectionner un technicien et un atelier', 'error');
+                return;
+            }
+            
+            // Simulation de démarrage
+            setTimeout(() => {
+                closeModal('startMaintenanceModal');
+                showNotification('Maintenance démarrée pour ' + vehicleId + '. Le véhicule est maintenant hors service.', 'success');
+                
+                // Mettre à jour le statut dans l'interface
+                updateVehicleStatus(vehicleId, 'En maintenance');
+            }, 500);
+        }
+        
+        // Fonction pour confirmer la programmation de maintenance
+        function confirmScheduleMaintenance() {
+            const form = document.getElementById('scheduleMaintenanceForm');
+            
+            if (form.checkValidity()) {
+                const vehicleId = document.getElementById('scheduleMaintenanceVehicle').textContent;
+                const type = document.getElementById('scheduledType').value;
+                const date = document.getElementById('scheduledDate').value;
+                const time = document.getElementById('scheduledTime').value;
+                
+                setTimeout(() => {
+                    closeModal('scheduleMaintenanceModal');
+                    showNotification('Maintenance programmée pour ' + vehicleId + ' le ' + date + ' à ' + time, 'success');
+                }, 500);
+            } else {
+                showNotification('Veuillez remplir tous les champs obligatoires', 'error');
+            }
+        }
+        
+        // Fonction pour charger les données du planning
+        function loadMaintenancePlanning() {
+            // Simulation de chargement des données du planning
+            console.log('Chargement du planning de maintenance...');
+        }
+        
+        // Fonction pour charger les données de santé d'un véhicule
+        function loadVehicleHealthData(vehicleId) {
+            // Simulation de chargement des données de santé
+            const healthData = {
+                'BUS001': { general: 85, motor: 90, brakes: 75, mileage: '127,543 km' },
+                'BUS003': { general: 45, motor: 30, brakes: 60, mileage: '156,789 km' },
+                'BUS005': { general: 65, motor: 70, brakes: 55, mileage: '149,234 km' }
+            };
+            
+            const data = healthData[vehicleId] || { general: 80, motor: 85, brakes: 75, mileage: '120,000 km' };
+            
+            // Mettre à jour les jauges
+            setTimeout(() => {
+                const gauges = document.querySelectorAll('.gauge-fill');
+                const values = document.querySelectorAll('.gauge-value');
+                
+                if (gauges[0]) {
+                    gauges[0].style.width = data.general + '%';
+                    values[0].textContent = data.general + '%';
+                }
+                if (gauges[1]) {
+                    gauges[1].style.width = data.motor + '%';
+                    values[1].textContent = data.motor + '%';
+                }
+                if (gauges[2]) {
+                    gauges[2].style.width = data.brakes + '%';
+                    values[2].textContent = data.brakes + '%';
+                }
+            }, 200);
+        }
+        
+        // Fonction pour mettre à jour le statut d'un véhicule
+        function updateVehicleStatus(vehicleId, status) {
+            // Simulation de mise à jour du statut
+            console.log('Statut de ' + vehicleId + ' mis à jour : ' + status);
+        }
+        
+        // Fonction pour afficher/masquer les onglets
+        function showTab(tabId) {
+            // Masquer tous les contenus d'onglets
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Désactiver tous les boutons d'onglets
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            
+            // Afficher le contenu sélectionné
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Activer le bouton correspondant
+            const clickedBtn = event.target;
+            clickedBtn.classList.add('active');
+        }
+        
+        // Fonctions utilitaires
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Créer la notification
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            // Ajouter au DOM
+            document.body.appendChild(notification);
+            
+            // Animation d'entrée
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            // Suppression automatique
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+        
+        // Fermeture des modales en cliquant à l'extérieur
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page maintenance initialisée');
+        });
+    </script>
+</body>
+</html>

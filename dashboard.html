@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransportAdmin - Tableau de bord</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <a href="home.html" style="text-decoration: none;">
+                <h2 style="font-weight: 700;">
+                    <i class="fas fa-route"></i>
+                    TransportAdmin
+                </h2>
+            </a>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html" class="sidebar-nav-item active">
+                <i class="fas fa-home sidebar-nav-icon"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="pages/billetterie.html" class="sidebar-nav-item">
+                <i class="fas fa-ticket-alt sidebar-nav-icon"></i>
+                <span>Billetterie</span>
+            </a>
+            <a href="pages/flotte.html" class="sidebar-nav-item">
+                <i class="fas fa-bus sidebar-nav-icon"></i>
+                <span>Gestion de flotte</span>
+            </a>
+            <a href="pages/lignes.html" class="sidebar-nav-item">
+                <i class="fas fa-route sidebar-nav-icon"></i>
+                <span>Lignes & Itinéraires</span>
+            </a>
+            <a href="pages/chauffeurs.html" class="sidebar-nav-item">
+                <i class="fas fa-user-tie sidebar-nav-icon"></i>
+                <span>Chauffeurs</span>
+            </a>
+            <a href="pages/signaletique.html" class="sidebar-nav-item">
+                <i class="fas fa-tv sidebar-nav-icon"></i>
+                <span>Signalétique</span>
+            </a>
+            <a href="pages/analytics.html" class="sidebar-nav-item">
+                <i class="fas fa-chart-line sidebar-nav-icon"></i>
+                <span>Analyses & Rapports</span>
+            </a>
+            <a href="pages/maintenance.html" class="sidebar-nav-item">
+                <i class="fas fa-tools sidebar-nav-icon"></i>
+                <span>Maintenance</span>
+            </a>
+            <a href="pages/settings.html" class="sidebar-nav-item">
+                <i class="fas fa-cog sidebar-nav-icon"></i>
+                <span>Paramètres</span>
+            </a>
+            <div style="margin-top: auto; padding: 24px;">
+                <a href="index.html" class="sidebar-nav-item" style="color: var(--primary-white);">
+                    <i class="fas fa-sign-out-alt sidebar-nav-icon"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--primary-black); margin-bottom: 8px;">
+                    Tableau de bord
+                </h1>
+                <p style="color: var(--dark-gray);">Vue d'ensemble de votre activité transport</p>
+            </div>
+            <div class="flex items-center gap-16px">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    Exporter
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Nouveau trajet
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistiques principales -->
+        <div class="grid grid-4 mb-4">
+            <div class="stat-card">
+                <div class="stat-value" data-stat="totalRevenue">0</div>
+                <div class="stat-label">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    Revenus du jour
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d);">
+                <div class="stat-value" data-stat="dailyPassengers">0</div>
+                <div class="stat-label">
+                    <i class="fas fa-users"></i>
+                    Passagers aujourd'hui
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ff7900, #ff9500);">
+                <div class="stat-value" data-stat="activeVehicles">0</div>
+                <div class="stat-label">
+                    <i class="fas fa-bus"></i>
+                    Véhicules en service
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #2d2d2d, #1a1a1a);">
+                <div class="stat-value" data-stat="onTimePerformance">0</div>
+                <div class="stat-label">
+                    <i class="fas fa-clock"></i>
+                    Ponctualité (%)
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphiques et données -->
+        <div class="grid grid-2 mb-4">
+            <!-- Graphique des revenus -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-chart-line" style="color: var(--primary-orange);"></i>
+                        Évolution des revenus
+                    </h3>
+                    <canvas id="revenueChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Graphique de fréquentation -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-chart-pie" style="color: var(--primary-orange);"></i>
+                        Fréquentation par ligne
+                    </h3>
+                    <canvas id="frequentationChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableaux de données -->
+        <div class="grid grid-2">
+            <!-- Transactions récentes -->
+            <div class="table-container">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-receipt" style="color: var(--primary-orange);"></i>
+                        Transactions récentes
+                    </h3>
+                    <table class="table" id="transactionsTable">
+                        <thead>
+                            <tr>
+                                <th>ID Transaction</th>
+                                <th>Ligne</th>
+                                <th>Montant</th>
+                                <th>Heure</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Données chargées via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Statut des véhicules -->
+            <div class="table-container">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-bus" style="color: var(--primary-orange);"></i>
+                        Véhicules en temps réel
+                    </h3>
+                    <table class="table" id="vehiclesTable">
+                        <thead>
+                            <tr>
+                                <th>Véhicule</th>
+                                <th>Ligne</th>
+                                <th>Statut</th>
+                                <th>Passagers</th>
+                                <th>Position</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Données chargées via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alertes et notifications -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-bell" style="color: var(--primary-orange);"></i>
+                    Alertes et notifications
+                </h3>
+                <div class="grid grid-3">
+                    <div class="alert alert-warning" style="padding: 16px; background-color: #fff3cd; border-left: 4px solid #ff7900; border-radius: var(--border-radius);">
+                        <h4 style="color: #856404; margin-bottom: 8px;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Maintenance programmée
+                        </h4>
+                        <p style="color: #856404; margin: 0; font-size: 14px;">
+                            BUS003 - Révision programmée demain à 8h00
+                        </p>
+                    </div>
+                    <div class="alert alert-info" style="padding: 16px; background-color: #d4edda; border-left: 4px solid #1a1a1a; border-radius: var(--border-radius);">
+                        <h4 style="color: #155724; margin-bottom: 8px;">
+                            <i class="fas fa-info-circle"></i>
+                            Pic de fréquentation
+                        </h4>
+                        <p style="color: #155724; margin: 0; font-size: 14px;">
+                            Ligne A - 85% de capacité atteinte
+                        </p>
+                    </div>
+                    <div class="alert alert-success" style="padding: 16px; background-color: #d1ecf1; border-left: 4px solid var(--primary-orange); border-radius: var(--border-radius);">
+                        <h4 style="color: #0c5460; margin-bottom: 8px;">
+                            <i class="fas fa-check-circle"></i>
+                            Objectif atteint
+                        </h4>
+                        <p style="color: #0c5460; margin: 0; font-size: 14px;">
+                            Revenus quotidiens : +15% par rapport à hier
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransportAdmin - Signalétique Intelligente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2 style=" font-weight: 700;">
+                <i class="fas fa-route"></i>
+                TransportAdmin
+            </h2>
+        </div>
+        <div class="sidebar-nav">
+            <a href="../dashboard.html" class="sidebar-nav-item">
+                <i class="fas fa-home sidebar-nav-icon"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="billetterie.html" class="sidebar-nav-item">
+                <i class="fas fa-ticket-alt sidebar-nav-icon"></i>
+                <span>Billetterie</span>
+            </a>
+            <a href="flotte.html" class="sidebar-nav-item">
+                <i class="fas fa-bus sidebar-nav-icon"></i>
+                <span>Gestion de flotte</span>
+            </a>
+            <a href="lignes.html" class="sidebar-nav-item">
+                <i class="fas fa-route sidebar-nav-icon"></i>
+                <span>Lignes & Itinéraires</span>
+            </a>
+            <a href="chauffeurs.html" class="sidebar-nav-item">
+                <i class="fas fa-user-tie sidebar-nav-icon"></i>
+                <span>Chauffeurs</span>
+            </a>
+            <a href="signaletique.html" class="sidebar-nav-item active">
+                <i class="fas fa-tv sidebar-nav-icon"></i>
+                <span>Signalétique</span>
+            </a>
+            <a href="analytics.html" class="sidebar-nav-item">
+                <i class="fas fa-chart-line sidebar-nav-icon"></i>
+                <span>Analyses & Rapports</span>
+            </a>
+            <a href="maintenance.html" class="sidebar-nav-item">
+                <i class="fas fa-tools sidebar-nav-icon"></i>
+                <span>Maintenance</span>
+            </a>
+            <a href="settings.html" class="sidebar-nav-item">
+                <i class="fas fa-cog sidebar-nav-icon"></i>
+                <span>Paramètres</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--primary-black); margin-bottom: 8px;">
+                    Signalétique Intelligente
+                </h1>
+                <p style="color: var(--dark-gray);">Gestion des écrans dynamiques et communication voyageurs</p>
+            </div>
+            <div class="flex items-center gap-16px">                        <button class="btn btn-secondary">
+                    <i class="fas fa-broadcast-tower"></i>
+                    Diffusion d'urgence
+                </button>
+                <button class="btn btn-primary" onclick="createNewContent()">
+                    <i class="fas fa-plus"></i>
+                    Nouveau contenu
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistiques signalétique -->
+        <div class="grid grid-4 mb-4">
+            <div class="stat-card">
+                <div class="stat-value">45</div>
+                <div class="stat-label">
+                    <i class="fas fa-tv"></i>
+                    Écrans actifs
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                <div class="stat-value">42</div>
+                <div class="stat-label">
+                    <i class="fas fa-check-circle"></i>
+                    En ligne
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ffc107, #ffab00);">
+                <div class="stat-value">156k</div>
+                <div class="stat-label">
+                    <i class="fas fa-eye"></i>
+                    Vues aujourd'hui
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #17a2b8, #138496);">
+                <div class="stat-value">2 340 FCFA</div>
+                <div class="stat-label">
+                    <i class="fas fa-ad"></i>
+                    Revenus pub/mois
+                </div>
+            </div>
+        </div>
+
+        <!-- Onglets de gestion -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="flex mb-4" style="border-bottom: 2px solid var(--medium-gray);">
+                    <button class="tab-button active" data-tab="ecrans">
+                        <i class="fas fa-tv"></i>
+                        Gestion des écrans
+                    </button>
+                    <button class="tab-button" data-tab="contenu">
+                        <i class="fas fa-file-alt"></i>
+                        Contenu & Messages
+                    </button>
+                    <button class="tab-button" data-tab="publicite">
+                        <i class="fas fa-ad"></i>
+                        Publicité
+                    </button>
+                    <button class="tab-button" data-tab="analytics">
+                        <i class="fas fa-chart-line"></i>
+                        Analytics
+                    </button>
+                </div>
+
+                <!-- Contenu des onglets -->
+                <div id="ecrans" class="tab-content active">
+                    <div class="table-container">
+                        <table class="table data-table">
+                            <thead>
+                                <tr>
+                                    <th>Écran</th>
+                                    <th>Localisation</th>
+                                    <th>Statut</th>
+                                    <th>Contenu actuel</th>
+                                    <th>Dernière mise à jour</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>ECR-001</strong></td>
+                                    <td>Gare Centrale - Quai A</td>
+                                    <td><span class="badge badge-success">En ligne</span></td>
+                                    <td>Horaires temps réel</td>
+                                    <td>Il y a 2 min</td>
+                                    <td>
+                                        <div class="flex gap-8px">
+                                            <button class="btn btn-secondary" style="padding: 8px;" title="Voir l'écran" onclick="viewScreen('ECR-001')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-secondary" style="padding: 8px;" title="Configurer" onclick="configureScreen('ECR-001')">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <button class="btn btn-secondary" style="padding: 8px;" title="Redémarrer" onclick="restartScreen('ECR-001')">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ECR-002</strong></td>
+                                    <td>Centre Ville - Arrêt Principal</td>
+                                    <td><span class="badge badge-success">En ligne</span></td>
+                                    <td>Publicité + Info trafic</td>
+                                    <td>Il y a 5 min</td>
+                                    <td>
+                                        <div class="flex gap-8px">
+                                            <button class="btn btn-secondary" style="padding: 8px;" onclick="viewScreen('ECR-002')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-secondary" style="padding: 8px;" onclick="configureScreen('ECR-002')">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <button class="btn btn-secondary" style="padding: 8px;" onclick="restartScreen('ECR-002')">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ECR-003</strong></td>
+                                    <td>Université - Hall d'entrée</td>
+                                    <td><span class="badge badge-warning">Maintenance</span></td>
+                                    <td>-</td>
+                                    <td>Il y a 2h</td>
+                                    <td>
+                                        <div class="flex gap-8px">
+                                            <button class="btn btn-secondary" style="padding: 8px;" disabled onclick="viewScreen('ECR-003')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-secondary" style="padding: 8px;" onclick="configureScreen('ECR-003')">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <button class="btn btn-primary" style="padding: 8px;" onclick="startMaintenance('ECR-003')">
+                                                <i class="fas fa-tools"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="grid grid-3 mt-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 style="color: var(--primary-orange); margin-bottom: 12px;">
+                                    <i class="fas fa-desktop"></i>
+                                    Aperçu ECR-001
+                                </h4>
+                                <div style="background-color: #000; color: var(--primary-orange); padding: 16px; border-radius: 8px; font-family: 'Courier New', monospace; text-align: center;">
+                                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 12px;">LIGNE A</div>
+                                    <div style="font-size: 14px; margin-bottom: 8px;">Prochain départ: 15:32</div>
+                                    <div style="font-size: 12px; color: #fff;">Direction: Université</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>État du réseau</h4>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span>Écrans opérationnels:</span>
+                                    <strong style="color: #28a745;">42/45</strong>
+                                </div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span>Taux de disponibilité:</span>
+                                    <strong style="color: var(--primary-orange);">93.3%</strong>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span>Maintenance planifiée:</span>
+                                    <strong>3 écrans</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Actions rapides</h4>
+                                <button class="btn btn-primary w-full mb-2" onclick="sendEmergencyMessage()">
+                                    <i class="fas fa-broadcast-tower"></i>
+                                    Message d'urgence
+                                </button>
+                                <button class="btn btn-secondary w-full mb-2" onclick="turnOffAllScreens()">
+                                    <i class="fas fa-power-off"></i>
+                                    Éteindre tous les écrans
+                                </button>
+                                <button class="btn btn-secondary w-full" onclick="syncContent()">
+                                    <i class="fas fa-sync-alt"></i>
+                                    Synchroniser le contenu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="contenu" class="tab-content">
+                    <div class="grid grid-2 mb-4">
+                        <div>
+                            <h4>Modèles de contenu</h4>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 style="color: var(--primary-orange);">Horaires temps réel</h5>
+                                    <p style="font-size: 14px; color: var(--dark-gray);">Affichage automatique des prochains départs</p>
+                                    <div class="flex justify-between items-center">
+                                        <span class="badge badge-success">Actif sur 28 écrans</span>
+                                        <button class="btn btn-secondary" style="padding: 8px 12px; font-size: 12px;">
+                                            Modifier
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 style="color: var(--primary-orange);">Informations trafic</h5>
+                                    <p style="font-size: 14px; color: var(--dark-gray);">Alertes de perturbations et retards</p>
+                                    <div class="flex justify-between items-center">
+                                        <span class="badge badge-warning">Actif sur 12 écrans</span>
+                                        <button class="btn btn-secondary" style="padding: 8px 12px; font-size: 12px;">
+                                            Modifier
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Messages programmés</h4>
+                            <div class="alert alert-info" style="padding: 16px; background-color: #d1ecf1; border-radius: var(--border-radius); margin-bottom: 12px;">
+                                <h5 style="color: #0c5460; margin-bottom: 8px;">
+                                    <i class="fas fa-info-circle"></i>
+                                    Maintenance Ligne C
+                                </h5>
+                                <p style="color: #0c5460; margin: 0; font-size: 14px;">
+                                    Affichage: Demain 06:00 - 10:00
+                                </p>
+                            </div>
+                            <div class="alert alert-warning" style="padding: 16px; background-color: #fff3cd; border-radius: var(--border-radius);">
+                                <h5 style="color: #856404; margin-bottom: 8px;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Fermeture anticipée
+                                </h5>
+                                <p style="color: #856404; margin: 0; font-size: 14px;">
+                                    Affichage: Vendredi 20:00 - 23:59
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="publicite" class="tab-content">
+                    <div class="grid grid-2">
+                        <div>
+                            <h4>Campagnes actives</h4>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <h5>Restaurant "Le Gourmet"</h5>
+                                            <p style="font-size: 14px; color: var(--dark-gray);">Promotion déjeuner 11h-14h</p>
+                                        </div>
+                                        <span class="badge badge-success">Actif</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span style="font-size: 14px;">Revenus: 420 FCFA/mois</span>
+                                        <button class="btn btn-secondary" style="padding: 8px 12px; font-size: 12px;">
+                                            Gérer
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <h5>Université - Cours d'été</h5>
+                                            <p style="font-size: 14px; color: var(--dark-gray);">Inscriptions ouvertes</p>
+                                        </div>
+                                        <span class="badge badge-success">Actif</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span style="font-size: 14px;">Partenariat gratuit</span>
+                                        <button class="btn btn-secondary" style="padding: 8px 12px; font-size: 12px;">
+                                            Gérer
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Performances publicitaires</h4>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span>Impressions aujourd'hui:</span>
+                                        <strong>45,230</strong>
+                                    </div>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span>Taux d'engagement:</span>
+                                        <strong style="color: var(--primary-orange);">12.5%</strong>
+                                    </div>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span>Revenus ce mois:</span>
+                                        <strong style="color: #28a745;">2 340 FCFA</strong>
+                                    </div>
+                                    <button class="btn btn-primary w-full">
+                                        <i class="fas fa-chart-line"></i>
+                                        Rapport détaillé
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="analytics" class="tab-content">
+                    <div class="grid grid-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Audience totale</h4>
+                                <div style="font-size: 36px; font-weight: 700; color: var(--primary-orange); margin: 16px 0;">
+                                    156k
+                                </div>
+                                <p style="color: var(--dark-gray);">Vues cette semaine</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Temps d'affichage</h4>
+                                <div style="font-size: 36px; font-weight: 700; color: #28a745; margin: 16px 0;">
+                                    8.2s
+                                </div>
+                                <p style="color: var(--dark-gray);">Moyenne par message</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Taux de lecture</h4>
+                                <div style="font-size: 36px; font-weight: 700; color: #17a2b8; margin: 16px 0;">
+                                    67%
+                                </div>
+                                <p style="color: var(--dark-gray);">Messages lus intégralement</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Gestion des onglets
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                button.classList.add('active');
+                const tabId = button.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Fonctions pour la gestion des écrans
+        function viewScreen(screenId) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 800px; height: 600px;">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-tv"></i> Aperçu de l'écran ${screenId}</h3>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body" style="padding: 0; background: #000; color: #ff7900; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 500px; font-family: 'Courier New', monospace;">
+                        <div style="text-align: center; padding: 40px;">
+                            <div style="font-size: 48px; font-weight: bold; margin-bottom: 20px; color: #ff7900;">TRANSPORT URBAIN</div>
+                            <div style="font-size: 24px; margin-bottom: 15px; color: #fff;">LIGNE A - DIRECTION UNIVERSITÉ</div>
+                            <div style="font-size: 32px; font-weight: bold; margin-bottom: 20px; color: #ff7900;">PROCHAIN DÉPART: 15:32</div>
+                            <div style="font-size: 18px; margin-bottom: 10px;">Temps d'attente: 8 minutes</div>
+                            <div style="font-size: 16px; opacity: 0.8;">Bus climatisé • Accessible PMR</div>
+                            <div style="margin-top: 30px; font-size: 14px; opacity: 0.6;">
+                                ${new Date().toLocaleString('fr-FR')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function configureScreen(screenId) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-cog"></i> Configuration de l'écran ${screenId}</h3>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Type de contenu:</label>
+                                <select class="form-control">
+                                    <option>Horaires temps réel</option>
+                                    <option>Informations trafic</option>
+                                    <option>Publicité + Info</option>
+                                    <option>Message personnalisé</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Fréquence de mise à jour (secondes):</label>
+                                <input type="number" class="form-control" value="30" min="10" max="300">
+                            </div>
+                            <div class="form-group">
+                                <label>Luminosité (%):</label>
+                                <input type="range" class="form-control" value="80" min="0" max="100">
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" checked> Affichage automatique
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox"> Mode maintenance
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                        <button class="btn btn-primary" onclick="saveScreenConfig('${screenId}')">Enregistrer</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function restartScreen(screenId) {
+            if (confirm(`Êtes-vous sûr de vouloir redémarrer l'écran ${screenId} ?`)) {
+                showNotification(`Redémarrage de l'écran ${screenId} en cours...`, 'info');
+                setTimeout(() => {
+                    showNotification(`Écran ${screenId} redémarré avec succès`, 'success');
+                    updateScreenStatus(screenId, 'En ligne');
+                }, 3000);
+            }
+        }
+
+        function startMaintenance(screenId) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-tools"></i> Maintenance de l'écran ${screenId}</h3>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Type de maintenance:</label>
+                                <select class="form-control">
+                                    <option>Nettoyage</option>
+                                    <option>Réparation</option>
+                                    <option>Mise à jour logicielle</option>
+                                    <option>Remplacement</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Durée estimée:</label>
+                                <select class="form-control">
+                                    <option>30 minutes</option>
+                                    <option>1 heure</option>
+                                    <option>2 heures</option>
+                                    <option>Demi-journée</option>
+                                    <option>Journée complète</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Technicien assigné:</label>
+                                <select class="form-control">
+                                    <option>Jean Dupont</option>
+                                    <option>Marie Martin</option>
+                                    <option>Pierre Durand</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Notes:</label>
+                                <textarea class="form-control" rows="3" placeholder="Détails de la maintenance..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                        <button class="btn btn-primary" onclick="scheduleMaintenance('${screenId}')">Programmer</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function sendEmergencyMessage() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header" style="background: #dc3545; color: white;">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Message d'urgence</h3>
+                        <button class="modal-close" onclick="closeModal()" style="color: white;">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            <strong>Attention :</strong> Ce message sera diffusé sur tous les écrans actifs immédiatement.
+                        </div>
+                        <form>
+                            <div class="form-group">
+                                <label>Type d'urgence:</label>
+                                <select class="form-control">
+                                    <option>Interruption de service</option>
+                                    <option>Évacuation</option>
+                                    <option>Incident de sécurité</option>
+                                    <option>Conditions météo</option>
+                                    <option>Autre</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Message:</label>
+                                <textarea class="form-control" rows="4" placeholder="Saisissez votre message d'urgence..." maxlength="200"></textarea>
+                                <small>Maximum 200 caractères</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Durée d'affichage:</label>
+                                <select class="form-control">
+                                    <option>5 minutes</option>
+                                    <option>15 minutes</option>
+                                    <option>30 minutes</option>
+                                    <option>1 heure</option>
+                                    <option>Jusqu'à annulation manuelle</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                        <button class="btn btn-danger" onclick="broadcastEmergency()">Diffuser maintenant</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function turnOffAllScreens() {
+            if (confirm('Êtes-vous sûr de vouloir éteindre tous les écrans ? Cette action affectera l\'information voyageurs.')) {
+                showNotification('Extinction de tous les écrans en cours...', 'warning');
+                setTimeout(() => {
+                    showNotification('Tous les écrans ont été éteints', 'success');
+                    // Mettre à jour l'interface
+                    document.querySelectorAll('.badge-success').forEach(badge => {
+                        badge.className = 'badge badge-danger';
+                        badge.textContent = 'Hors ligne';
+                    });
+                }, 2000);
+            }
+        }
+
+        function syncContent() {
+            showNotification('Synchronisation du contenu en cours...', 'info');
+            setTimeout(() => {
+                showNotification('Contenu synchronisé sur tous les écrans', 'success');
+            }, 2000);
+        }
+
+        function createNewContent() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 900px;">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-plus"></i> Créer un nouveau contenu</h3>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Type de contenu:</label>
+                                <select class="form-control" onchange="toggleContentFields(this.value)">
+                                    <option value="message">Message personnalisé</option>
+                                    <option value="pub">Publicité</option>
+                                    <option value="info">Information service</option>
+                                    <option value="horaire">Horaires spéciaux</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Titre:</label>
+                                <input type="text" class="form-control" placeholder="Titre du contenu">
+                            </div>
+                            <div class="form-group">
+                                <label>Message:</label>
+                                <textarea class="form-control" rows="4" placeholder="Contenu du message..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Écrans cibles:</label>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px;">
+                                    <label><input type="checkbox" checked> ECR-001 (Gare Centrale)</label>
+                                    <label><input type="checkbox" checked> ECR-002 (Centre Ville)</label>
+                                    <label><input type="checkbox"> ECR-003 (Université)</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Programmation:</label>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <div>
+                                        <label>Date de début:</label>
+                                        <input type="datetime-local" class="form-control">
+                                    </div>
+                                    <div>
+                                        <label>Date de fin:</label>
+                                        <input type="datetime-local" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                        <button class="btn btn-primary" onclick="saveNewContent()">Créer et programmer</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Fonctions utilitaires
+        function closeModal() {
+            const modal = document.querySelector('.modal-overlay');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function saveScreenConfig(screenId) {
+            showNotification(`Configuration de l'écran ${screenId} sauvegardée`, 'success');
+            closeModal();
+        }
+
+        function scheduleMaintenance(screenId) {
+            showNotification(`Maintenance programmée pour l'écran ${screenId}`, 'success');
+            updateScreenStatus(screenId, 'Maintenance');
+            closeModal();
+        }
+
+        function broadcastEmergency() {
+            showNotification('Message d\'urgence diffusé sur tous les écrans', 'success');
+            closeModal();
+        }
+
+        function saveNewContent() {
+            showNotification('Nouveau contenu créé et programmé avec succès', 'success');
+            closeModal();
+        }
+
+        function updateScreenStatus(screenId, status) {
+            const row = document.querySelector(`td:contains('${screenId}')`).closest('tr');
+            if (row) {
+                const statusBadge = row.querySelector('.badge');
+                statusBadge.className = status === 'En ligne' ? 'badge badge-success' : 'badge badge-warning';
+                statusBadge.textContent = status;
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} notification`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10000;
+                min-width: 300px;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                animation: slideIn 0.3s ease;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+    </script>
+    <style>
+        .tab-button {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .tab-button.active {
+            color: var(--primary-orange);
+            border-bottom-color: var(--primary-orange);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Styles pour les modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary-orange);
+            color: white;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--primary-black);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 2px rgba(255, 121, 0, 0.1);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #b6d7ff;
+            color: #0c5460;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .notification {
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to { 
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from { 
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to { 
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Styles spécifiques pour les écrans */
+        .screen-preview {
+            background: #000;
+            color: #ff7900;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 10px;
+            }
+            
+            .modal-header {
+                padding: 15px;
+            }
+            
+            .modal-body {
+                padding: 15px;
+            }
+            
+            .modal-footer {
+                padding: 15px;
+                flex-direction: column;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</body>
+</html>

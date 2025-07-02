@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransportAdmin - Connexion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Section gauche avec image -->
+        <div class="auth-left">
+            <div class="auth-image-placeholder">
+                <div>
+                    <i class="fas fa-sign-in-alt fa-4x"></i>
+                    <h2>Bienvenue !</h2>
+                    <p>Connectez-vous à votre espace d'administration pour gérer efficacement votre système de transport</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section droite avec formulaire -->
+        <div class="auth-right">
+            <div class="auth-form">
+                <div class="auth-header">
+                    <h1 class="auth-title">
+                        <i class="fas fa-route" style="color: var(--primary-orange);"></i>
+                        TransportAdmin
+                    </h1>
+                    <h2 class="auth-title">Connexion</h2>
+                    <p class="auth-subtitle">Accédez à votre tableau de bord</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <i class="fas fa-envelope form-icon"></i>
+                        <input type="email" name="email" id="login-email" class="form-input" placeholder=" " required>
+                        <label class="form-label" for="login-email">Adresse email</label>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" name="password" id="login-password" class="form-input" placeholder=" " required>
+                        <label class="form-label" for="login-password">Mot de passe</label>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="remember" style="margin-right: 8px;">
+                            <span style="font-size: 14px; color: var(--dark-gray);">Se souvenir de moi</span>
+                        </label>
+                        <a href="#" class="auth-link" style="font-size: 14px;">Mot de passe oublié ?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-full mb-4">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Se connecter
+                    </button>
+
+                    <div class="text-center">
+                        <p style="color: var(--dark-gray);">
+                            Pas encore de compte ? 
+                            <a href="register.html" class="auth-link">Créer un compte</a>
+                        </p>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

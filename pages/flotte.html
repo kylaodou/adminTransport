@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransportAdmin - Gestion de Flotte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <a href="../home.html" style="text-decoration: none;">
+                <h2 style=" font-weight: 700;">
+                    <i class="fas fa-route"></i>
+                    TransportAdmin
+                </h2>
+            </a>
+        </div>
+        <div class="sidebar-nav">
+            <a href="../dashboard.html" class="sidebar-nav-item">
+                <i class="fas fa-home sidebar-nav-icon"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="billetterie.html" class="sidebar-nav-item">
+                <i class="fas fa-ticket-alt sidebar-nav-icon"></i>
+                <span>Billetterie</span>
+            </a>
+            <a href="flotte.html" class="sidebar-nav-item active">
+                <i class="fas fa-bus sidebar-nav-icon"></i>
+                <span>Gestion de flotte</span>
+            </a>
+            <a href="lignes.html" class="sidebar-nav-item">
+                <i class="fas fa-route sidebar-nav-icon"></i>
+                <span>Lignes & Itinéraires</span>
+            </a>
+            <a href="chauffeurs.html" class="sidebar-nav-item">
+                <i class="fas fa-user-tie sidebar-nav-icon"></i>
+                <span>Chauffeurs</span>
+            </a>
+            <a href="signaletique.html" class="sidebar-nav-item">
+                <i class="fas fa-tv sidebar-nav-icon"></i>
+                <span>Signalétique</span>
+            </a>
+            <a href="analytics.html" class="sidebar-nav-item">
+                <i class="fas fa-chart-line sidebar-nav-icon"></i>
+                <span>Analyses & Rapports</span>
+            </a>
+            <a href="maintenance.html" class="sidebar-nav-item">
+                <i class="fas fa-tools sidebar-nav-icon"></i>
+                <span>Maintenance</span>
+            </a>
+            <a href="settings.html" class="sidebar-nav-item">
+                <i class="fas fa-cog sidebar-nav-icon"></i>
+                <span>Paramètres</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--primary-black); margin-bottom: 8px;">
+                    Gestion de Flotte
+                </h1>
+                <p style="color: var(--dark-gray);">Suivi en temps réel et gestion de vos véhicules</p>
+            </div>
+            <div class="flex items-center gap-16px">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-map-marked-alt"></i>
+                    Carte en temps réel
+                </button>
+                <button class="btn btn-primary" id="addVehicleBtn" data-modal="addVehicleModal">
+                    <i class="fas fa-plus"></i>
+                    Ajouter un véhicule
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistiques de flotte -->
+        <div class="grid grid-4 mb-4">
+            <div class="stat-card">
+                <div class="stat-value">28</div>
+                <div class="stat-label">
+                    <i class="fas fa-bus"></i>
+                    Véhicules totaux
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                <div class="stat-value">24</div>
+                <div class="stat-label">
+                    <i class="fas fa-play-circle"></i>
+                    En service
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ffc107, #ffab00);">
+                <div class="stat-value">3</div>
+                <div class="stat-label">
+                    <i class="fas fa-tools"></i>
+                    En maintenance
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+                <div class="stat-value">1</div>
+                <div class="stat-label">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Hors service
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtres et recherche -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="grid grid-4">
+                    <div class="form-group">
+                        <i class="fas fa-search form-icon"></i>
+                        <input type="text" id="searchVehicle" class="form-input" placeholder=" ">
+                        <label for="searchVehicle" class="form-label">Rechercher un véhicule</label>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-filter form-icon"></i>
+                        <select id="statusFilter" class="form-input">
+                            <option value="">Tous les statuts</option>
+                            <option value="service">En service</option>
+                            <option value="maintenance">En maintenance</option>
+                            <option value="depot">Au dépôt</option>
+                            <option value="panne">En panne</option>
+                        </select>
+                        <label for="statusFilter" class="form-label">Filtrer par statut</label>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-route form-icon"></i>
+                        <select id="lineFilter" class="form-input">
+                            <option value="">Toutes les lignes</option>
+                            <option value="A">Ligne A</option>
+                            <option value="B">Ligne B</option>
+                            <option value="C">Ligne C</option>
+                            <option value="D">Ligne D</option>
+                        </select>
+                        <label for="lineFilter" class="form-label">Filtrer par ligne</label>
+                    </div>
+                    <button class="btn btn-primary" style="align-self: end; height: fit-content;">
+                        <i class="fas fa-sync-alt"></i>
+                        Actualiser
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau des véhicules -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-list" style="color: var(--primary-orange);"></i>
+                    Liste des véhicules
+                </h3>
+                <div class="table-container">
+                    <table class="table data-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="0">ID Véhicule</th>
+                                <th data-sort="1">Ligne</th>
+                                <th data-sort="2">Statut</th>
+                                <th data-sort="3">Chauffeur</th>
+                                <th data-sort="4">Passagers</th>
+                                <th data-sort="5">Position</th>
+                                <th data-sort="6">Kilométrage</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>BUS001</strong></td>
+                                <td><span class="badge" style="background-color: var(--primary-orange); color: white;">Ligne A</span></td>
+                                <td><span class="badge badge-success">En service</span></td>
+                                <td>Jean Dupont</td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                                            <div style="width: 75%; height: 100%; background-color: var(--primary-orange);"></div>
+                                        </div>
+                                        <span>45/60</span>
+                                    </div>
+                                </td>
+                                <td>Gare Centrale</td>
+                                <td>127,543 km</td>
+                                <td>
+                                    <div class="flex gap-8px">
+                                        <button class="btn btn-primary" style="padding: 8px;" onclick="viewBusDetails('BUS001')" title="Voir le bus">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="viewVehicleLocation('BUS001')" title="Voir la position">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="editVehicle('BUS001')" title="Modifier">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-warning" style="padding: 8px;" onclick="scheduleVehicleMaintenance('BUS001')" title="Maintenance">
+                                            <i class="fas fa-tools"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>BUS002</strong></td>
+                                <td><span class="badge" style="background-color: #1a1a1a; color: white;">Ligne B</span></td>
+                                <td><span class="badge badge-success">En service</span></td>
+                                <td>Marie Martin</td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                                            <div style="width: 53%; height: 100%; background-color: var(--primary-orange);"></div>
+                                        </div>
+                                        <span>32/60</span>
+                                    </div>
+                                </td>
+                                <td>Centre Ville</td>
+                                <td>89,234 km</td>
+                                <td>
+                                    <div class="flex gap-8px">
+                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="vehicleLocationModal" data-vehicle="BUS002" title="Voir la position">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="editVehicleModal" data-vehicle="BUS002" title="Modifier">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>BUS003</strong></td>
+                                <td><span class="badge" style="background-color: #6c757d; color: white;">-</span></td>
+                                <td><span class="badge badge-warning">Maintenance</span></td>
+                                <td>-</td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                                            <div style="width: 0%; height: 100%; background-color: var(--primary-orange);"></div>
+                                        </div>
+                                        <span>0/60</span>
+                                    </div>
+                                </td>
+                                <td>Dépôt Central</td>
+                                <td>156,789 km</td>
+                                <td>
+                                    <div class="flex gap-8px">
+                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="maintenanceModal" data-vehicle="BUS003" title="Voir maintenance">
+                                            <i class="fas fa-tools"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="editVehicleModal" data-vehicle="BUS003" title="Modifier">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>BUS004</strong></td>
+                                <td><span class="badge" style="background-color: var(--primary-orange); color: white;">Ligne A</span></td>
+                                <td><span class="badge badge-success">En service</span></td>
+                                <td>Pierre Durand</td>
+                                <td>
+                                    <div class="flex items-center gap-8px">
+                                        <div style="width: 60px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                                            <div style="width: 47%; height: 100%; background-color: var(--primary-orange);"></div>
+                                        </div>
+                                        <span>28/60</span>
+                                    </div>
+                                </td>
+                                <td>Université</td>
+                                <td>98,456 km</td>
+                                <td>
+                                    <div class="flex gap-8px">
+                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="vehicleLocationModal" data-vehicle="BUS004" title="Voir la position">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="editVehicleModal" data-vehicle="BUS004" title="Modifier">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alertes et maintenance -->
+        <div class="grid grid-2">
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-exclamation-triangle" style="color: var(--primary-orange);"></i>
+                        Alertes véhicules
+                    </h3>
+                    <div class="alert alert-warning" style="padding: 16px; background-color: #fff3cd; border-left: 4px solid #ffc107; border-radius: var(--border-radius); margin-bottom: 12px;">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <strong>BUS005 - Maintenance requise</strong>
+                                <br>
+                                <small>Révision des 150,000 km atteinte</small>
+                            </div>
+                            <span class="badge badge-warning">Urgent</span>
+                        </div>
+                    </div>
+                    <div class="alert alert-info" style="padding: 16px; background-color: #d1ecf1; border-left: 4px solid #17a2b8; border-radius: var(--border-radius); margin-bottom: 12px;">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <strong>BUS007 - Contrôle technique</strong>
+                                <br>
+                                <small>Échéance dans 15 jours</small>
+                            </div>
+                            <span class="badge" style="background-color: #17a2b8; color: white;">Info</span>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" style="padding: 16px; background-color: #f8d7da; border-left: 4px solid #dc3545; border-radius: var(--border-radius);">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <strong>BUS009 - Panne signalée</strong>
+                                <br>
+                                <small>Problème moteur - Immobilisé</small>
+                            </div>
+                            <span class="badge badge-danger">Critique</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-chart-bar" style="color: var(--primary-orange);"></i>
+                        Performance de flotte
+                    </h3>
+                    <div class="flex justify-between items-center mb-3">
+                        <span>Taux d'utilisation:</span>
+                        <div class="flex items-center gap-8px">
+                            <div style="width: 100px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                                <div style="width: 85%; height: 100%; background-color: var(--primary-orange);"></div>
+                            </div>
+                            <strong>85%</strong>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span>Ponctualité moyenne:</span>
+                        <div class="flex items-center gap-8px">
+                            <div style="width: 100px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                                <div style="width: 92%; height: 100%; background-color: #28a745;"></div>
+                            </div>
+                            <strong>92%</strong>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span>Consommation carburant:</span>
+                        <strong style="color: var(--primary-orange);">28.5L/100km</strong>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>Kilométrage moyen:</span>
+                        <strong>245 km/jour</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Modal Ajouter Véhicule -->
+    <div id="addVehicleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-plus" style="color: var(--primary-orange);"></i>
+                    Ajouter un nouveau véhicule
+                </h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addVehicleForm">
+                    <div class="grid grid-2" style="gap: 16px;">
+                        <div class="form-group">
+                            <i class="fas fa-id-card form-icon"></i>
+                            <input type="text" name="vehicleId" id="vehicleId" class="form-input" placeholder=" " required>
+                            <label class="form-label" for="vehicleId">ID du véhicule</label>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-route form-icon"></i>
+                            <select name="line" id="vehicleLine" class="form-input" required>
+                                <option value="">Sélectionner une ligne</option>
+                                <option value="A">Ligne A</option>
+                                <option value="B">Ligne B</option>
+                                <option value="C">Ligne C</option>
+                                <option value="D">Ligne D</option>
+                            </select>
+                            <label class="form-label" for="vehicleLine">Ligne assignée</label>
+                        </div>
+                    </div>
+                    <div class="grid grid-2" style="gap: 16px;">
+                        <div class="form-group">
+                            <i class="fas fa-calendar form-icon"></i>
+                            <input type="number" name="year" id="vehicleYear" class="form-input" placeholder=" " required>
+                            <label class="form-label" for="vehicleYear">Année de fabrication</label>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-users form-icon"></i>
+                            <input type="number" name="capacity" id="vehicleCapacity" class="form-input" placeholder=" " required>
+                            <label class="form-label" for="vehicleCapacity">Capacité (passagers)</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-car form-icon"></i>
+                        <input type="text" name="model" id="vehicleModel" class="form-input" placeholder=" " required>
+                        <label class="form-label" for="vehicleModel">Modèle du véhicule</label>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary modal-close">Annuler</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Ajouter le véhicule
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Modifier Véhicule -->
+    <div id="editVehicleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-edit" style="color: var(--primary-orange);"></i>
+                    Modifier le véhicule
+                </h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editVehicleForm">
+                    <div class="grid grid-2" style="gap: 16px;">
+                        <div class="form-group">
+                            <i class="fas fa-id-card form-icon"></i>
+                            <input type="text" name="vehicleId" id="editVehicleId" class="form-input" placeholder=" " readonly>
+                            <label class="form-label" for="editVehicleId">ID du véhicule</label>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-route form-icon"></i>
+                            <select name="line" id="editVehicleLine" class="form-input" required>
+                                <option value="A">Ligne A</option>
+                                <option value="B">Ligne B</option>
+                                <option value="C">Ligne C</option>
+                                <option value="D">Ligne D</option>
+                            </select>
+                            <label class="form-label" for="editVehicleLine">Ligne assignée</label>
+                        </div>
+                    </div>
+                    <div class="grid grid-2" style="gap: 16px;">
+                        <div class="form-group">
+                            <i class="fas fa-toggle-on form-icon"></i>
+                            <select name="status" id="editVehicleStatus" class="form-input" required>
+                                <option value="En service">En service</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Hors service">Hors service</option>
+                            </select>
+                            <label class="form-label" for="editVehicleStatus">Statut</label>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-user-tie form-icon"></i>
+                            <select name="driver" id="editVehicleDriver" class="form-input">
+                                <option value="">Aucun chauffeur assigné</option>
+                                <option value="Jean Dupont">Jean Dupont</option>
+                                <option value="Marie Martin">Marie Martin</option>
+                                <option value="Pierre Durand">Pierre Durand</option>
+                            </select>
+                            <label class="form-label" for="editVehicleDriver">Chauffeur assigné</label>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary modal-close">Annuler</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Sauvegarder
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Position Véhicule -->
+    <div id="vehicleLocationModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-map-marker-alt" style="color: var(--primary-orange);"></i>
+                    Position du véhicule
+                </h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="vehicle-location-info mb-4">
+                    <div class="grid grid-2" style="gap: 16px;">
+                        <div>
+                            <strong>Véhicule:</strong> <span id="locationVehicleId">BUS001</span>
+                        </div>
+                        <div>
+                            <strong>Ligne:</strong> <span id="locationVehicleLine">Ligne A</span>
+                        </div>
+                        <div>
+                            <strong>Position actuelle:</strong> <span id="locationCurrent">Gare Centrale</span>
+                        </div>
+                        <div>
+                            <strong>Prochaine station:</strong> <span id="locationNext">Centre Ville</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-placeholder" style="height: 300px; background-color: var(--light-gray); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--dark-gray);">
+                    <div style="text-align: center;">
+                        <i class="fas fa-map fa-3x" style="color: var(--primary-orange); margin-bottom: 16px;"></i>
+                        <p>Carte GPS en temps réel</p>
+                        <p style="font-size: 14px;">Intégration Google Maps/OpenStreetMap</p>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary modal-close">Fermer</button>
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-external-link-alt"></i>
+                        Ouvrir dans Google Maps
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Vue Détaillée du Bus (Vue dynamique) -->
+    <div id="busDetailsModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-bus"></i> Vue détaillée - <span id="busDetailsId">BUS001</span></h2>
+                <span class="close" onclick="closeBusDetailsModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab-nav">
+                        <button class="tab-btn active" onclick="showBusTab('bus-overview')">Vue d'ensemble</button>
+                        <button class="tab-btn" onclick="showBusTab('bus-passengers')">Passagers</button>
+                        <button class="tab-btn" onclick="showBusTab('bus-route')">Itinéraire</button>
+                        <button class="tab-btn" onclick="showBusTab('bus-technical')">Technique</button>
+                    </div>
+                    
+                    <div id="bus-overview" class="tab-content active">
+                        <div class="bus-view-container">
+                            <!-- Vue du bus de dessus avec places -->
+                            <div class="bus-visualization">
+                                <div class="bus-top-view">
+                                    <div class="bus-driver-area">
+                                        <i class="fas fa-steering-wheel"></i>
+                                        <span>Chauffeur</span>
+                                    </div>
+                                    
+                                    <!-- Rangées de sièges -->
+                                    <div class="bus-seats">
+                                        <!-- Première rangée -->
+                                        <div class="seat-row">
+                                            <div class="seat occupied" data-seat="1A"><span>1A</span></div>
+                                            <div class="aisle"></div>
+                                            <div class="seat occupied" data-seat="1B"><span>1B</span></div>
+                                            <div class="seat available" data-seat="1C"><span>1C</span></div>
+                                        </div>
+                                        
+                                        <!-- Deuxième rangée -->
+                                        <div class="seat-row">
+                                            <div class="seat occupied" data-seat="2A"><span>2A</span></div>
+                                            <div class="aisle"></div>
+                                            <div class="seat occupied" data-seat="2B"><span>2B</span></div>
+                                            <div class="seat occupied" data-seat="2C"><span>2C</span></div>
+                                        </div>
+                                        
+                                        <!-- Troisième rangée -->
+                                        <div class="seat-row">
+                                            <div class="seat available" data-seat="3A"><span>3A</span></div>
+                                            <div class="aisle"></div>
+                                            <div class="seat occupied" data-seat="3B"><span>3B</span></div>
+                                            <div class="seat available" data-seat="3C"><span>3C</span></div>
+                                        </div>
+                                        
+                                        <!-- Plus de rangées... -->
+                                        <div class="seat-row">
+                                            <div class="seat occupied" data-seat="4A"><span>4A</span></div>
+                                            <div class="aisle"></div>
+                                            <div class="seat available" data-seat="4B"><span>4B</span></div>
+                                            <div class="seat occupied" data-seat="4C"><span>4C</span></div>
+                                        </div>
+                                        
+                                        <div class="seat-row">
+                                            <div class="seat available" data-seat="5A"><span>5A</span></div>
+                                            <div class="aisle"></div>
+                                            <div class="seat available" data-seat="5B"><span>5B</span></div>
+                                            <div class="seat available" data-seat="5C"><span>5C</span></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Zone arrière -->
+                                    <div class="bus-rear-area">
+                                        <div class="standing-area">
+                                            <i class="fas fa-users"></i>
+                                            <span>Zone debout (15 personnes)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Légende -->
+                                <div class="seat-legend">
+                                    <div class="legend-item">
+                                        <div class="seat occupied"></div>
+                                        <span>Occupé</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="seat available"></div>
+                                        <span>Libre</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="seat reserved"></div>
+                                        <span>Réservé</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Statistiques en temps réel -->
+                            <div class="bus-stats">
+                                <div class="stat-box">
+                                    <h4>Taux d'occupation</h4>
+                                    <div class="big-stat">75%</div>
+                                    <small>45/60 places</small>
+                                </div>
+                                <div class="stat-box">
+                                    <h4>Vitesse actuelle</h4>
+                                    <div class="big-stat">35 km/h</div>
+                                    <small>Vitesse limite: 50 km/h</small>
+                                </div>
+                                <div class="stat-box">
+                                    <h4>Retard</h4>
+                                    <div class="big-stat text-success">+2 min</div>
+                                    <small>Dans les temps</small>
+                                </div>
+                                <div class="stat-box">
+                                    <h4>Carburant</h4>
+                                    <div class="big-stat">65%</div>
+                                    <small>Autonomie: 250 km</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="bus-passengers" class="tab-content">
+                        <div class="passengers-info">
+                            <h4>Informations passagers</h4>
+                            <div class="passenger-stats-grid">
+                                <div class="passenger-stat">
+                                    <i class="fas fa-users"></i>
+                                    <span class="stat-value">45</span>
+                                    <span class="stat-label">Passagers à bord</span>
+                                </div>
+                                <div class="passenger-stat">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <span class="stat-value">12</span>
+                                    <span class="stat-label">Montées cet arrêt</span>
+                                </div>
+                                <div class="passenger-stat">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span class="stat-value">8</span>
+                                    <span class="stat-label">Descentes prévues</span>
+                                </div>
+                                <div class="passenger-stat">
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                    <span class="stat-value">6750 FCFA</span>
+                                    <span class="stat-label">Recettes trajet</span>
+                                </div>
+                            </div>
+                            
+                            <div class="passenger-flow">
+                                <h5>Flux de passagers</h5>
+                                <canvas id="passengerFlowChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="bus-route" class="tab-content">
+                        <div class="route-progress">
+                            <h4>Progression sur l'itinéraire</h4>
+                            <div class="route-timeline">
+                                <div class="route-stop completed">
+                                    <div class="stop-marker"></div>
+                                    <div class="stop-info">
+                                        <strong>Gare Centrale</strong>
+                                        <small>08:15 - Départ effectué</small>
+                                    </div>
+                                </div>
+                                <div class="route-stop completed">
+                                    <div class="stop-marker"></div>
+                                    <div class="stop-info">
+                                        <strong>République</strong>
+                                        <small>08:22 - Passé</small>
+                                    </div>
+                                </div>
+                                <div class="route-stop current">
+                                    <div class="stop-marker pulsing"></div>
+                                    <div class="stop-info">
+                                        <strong>Centre Ville</strong>
+                                        <small>08:28 - Position actuelle</small>
+                                    </div>
+                                </div>
+                                <div class="route-stop upcoming">
+                                    <div class="stop-marker"></div>
+                                    <div class="stop-info">
+                                        <strong>Université</strong>
+                                        <small>08:35 - Prochain arrêt</small>
+                                    </div>
+                                </div>
+                                <div class="route-stop upcoming">
+                                    <div class="stop-marker"></div>
+                                    <div class="stop-info">
+                                        <strong>Hôpital</strong>
+                                        <small>08:42 - À venir</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="bus-technical" class="tab-content">
+                        <div class="technical-data">
+                            <h4>Données techniques en temps réel</h4>
+                            <div class="tech-grid">
+                                <div class="tech-metric">
+                                    <i class="fas fa-thermometer-half"></i>
+                                    <span class="metric-label">Température moteur</span>
+                                    <span class="metric-value text-success">82°C</span>
+                                </div>
+                                <div class="tech-metric">
+                                    <i class="fas fa-oil-can"></i>
+                                    <span class="metric-label">Pression huile</span>
+                                    <span class="metric-value text-success">4.2 bar</span>
+                                </div>
+                                <div class="tech-metric">
+                                    <i class="fas fa-car-battery"></i>
+                                    <span class="metric-label">Tension batterie</span>
+                                    <span class="metric-value text-success">12.8V</span>
+                                </div>
+                                <div class="tech-metric">
+                                    <i class="fas fa-gauge"></i>
+                                    <span class="metric-label">Pression pneus</span>
+                                    <span class="metric-value text-warning">7.8 bar</span>
+                                </div>
+                                <div class="tech-metric">
+                                    <i class="fas fa-gas-pump"></i>
+                                    <span class="metric-label">Niveau carburant</span>
+                                    <span class="metric-value text-warning">65%</span>
+                                </div>
+                                <div class="tech-metric">
+                                    <i class="fas fa-broadcast-tower"></i>
+                                    <span class="metric-label">Signal GPS</span>
+                                    <span class="metric-value text-success">Excellent</span>
+                                </div>
+                            </div>
+                            
+                            <div class="system-alerts">
+                                <h5>Alertes système</h5>
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <strong>Attention :</strong> Pression pneu avant gauche légèrement faible
+                                </div>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <strong>Info :</strong> Maintenance préventive due dans 2 semaines
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Carte en Temps Réel -->
+    <div id="realtimeMapModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-map-marked-alt"></i> Carte en temps réel de la flotte</h2>
+                <span class="close" onclick="closeRealtimeMapModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="map-controls mb-4">
+                    <div class="grid grid-4">
+                        <div class="form-group">
+                            <select id="mapLineFilter" class="form-control">
+                                <option value="">Toutes les lignes</option>
+                                <option value="A">Ligne A</option>
+                                <option value="B">Ligne B</option>
+                                <option value="C">Ligne C</option>
+                                <option value="D">Ligne D</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select id="mapStatusFilter" class="form-control">
+                                <option value="">Tous les statuts</option>
+                                <option value="service">En service</option>
+                                <option value="maintenance">En maintenance</option>
+                                <option value="depot">Au dépôt</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-secondary" onclick="centerMap()">
+                            <i class="fas fa-crosshairs"></i>
+                            Centrer la carte
+                        </button>
+                        <button class="btn btn-primary" onclick="refreshMapData()">
+                            <i class="fas fa-sync-alt"></i>
+                            Actualiser
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="realtime-map-container">
+                    <div class="map-placeholder" style="height: 500px; background-color: var(--light-gray); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--dark-gray); position: relative;">
+                        <!-- Simulation d'une carte avec véhicules -->
+                        <div style="position: absolute; top: 20%; left: 30%;" class="vehicle-marker" data-vehicle="BUS001">
+                            <i class="fas fa-bus" style="color: var(--primary-orange); font-size: 24px;"></i>
+                            <div class="vehicle-tooltip">BUS001 - Ligne A<br>45 passagers</div>
+                        </div>
+                        <div style="position: absolute; top: 60%; right: 25%;" class="vehicle-marker" data-vehicle="BUS002">
+                            <i class="fas fa-bus" style="color: #1a1a1a; font-size: 24px;"></i>
+                            <div class="vehicle-tooltip">BUS002 - Ligne B<br>32 passagers</div>
+                        </div>
+                        <div style="position: absolute; bottom: 20%; left: 45%;" class="vehicle-marker" data-vehicle="BUS004">
+                            <i class="fas fa-bus" style="color: var(--primary-orange); font-size: 24px;"></i>
+                            <div class="vehicle-tooltip">BUS004 - Ligne A<br>28 passagers</div>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <i class="fas fa-map fa-3x" style="color: var(--primary-orange); margin-bottom: 16px;"></i>
+                            <p>Carte interactive en temps réel</p>
+                            <p style="font-size: 14px;">Intégration avec API de cartographie</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-legend mt-4">
+                    <h5>Légende</h5>
+                    <div class="legend-grid">
+                        <div class="legend-item">
+                            <i class="fas fa-bus" style="color: var(--primary-orange);"></i>
+                            <span>Véhicule en service</span>
+                        </div>
+                        <div class="legend-item">
+                            <i class="fas fa-bus" style="color: #ffc107;"></i>
+                            <span>Véhicule en maintenance</span>
+                        </div>
+                        <div class="legend-item">
+                            <i class="fas fa-bus" style="color: #dc3545;"></i>
+                            <span>Véhicule en panne</span>
+                        </div>
+                        <div class="legend-item">
+                            <i class="fas fa-map-marker-alt" style="color: #28a745;"></i>
+                            <span>Arrêt de bus</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Scripts spécifiques à la page flotte
+        
+        // Données simulées des véhicules
+        const vehiclesData = {
+            'BUS001': {
+                id: 'BUS001',
+                line: 'Ligne A',
+                status: 'En service',
+                driver: 'Jean Dupont',
+                passengers: 45,
+                capacity: 60,
+                position: 'Gare Centrale',
+                mileage: '127,543 km',
+                speed: 35,
+                delay: '+2 min',
+                fuel: 65
+            },
+            'BUS002': {
+                id: 'BUS002',
+                line: 'Ligne B',
+                status: 'En service',
+                driver: 'Marie Martin',
+                passengers: 32,
+                capacity: 60,
+                position: 'Centre Ville',
+                mileage: '89,234 km',
+                speed: 28,
+                delay: 'À l\'heure',
+                fuel: 78
+            },
+            'BUS003': {
+                id: 'BUS003',
+                line: '-',
+                status: 'Maintenance',
+                driver: '-',
+                passengers: 0,
+                capacity: 60,
+                position: 'Dépôt Central',
+                mileage: '156,789 km',
+                speed: 0,
+                delay: '-',
+                fuel: 45
+            },
+            'BUS004': {
+                id: 'BUS004',
+                line: 'Ligne A',
+                status: 'En service',
+                driver: 'Pierre Durand',
+                passengers: 28,
+                capacity: 60,
+                position: 'Université',
+                mileage: '98,456 km',
+                speed: 42,
+                delay: '-1 min',
+                fuel: 52
+            }
+        };
+
+        // Fonction pour afficher les détails du bus avec vue dynamique
+        function viewBusDetails(vehicleId) {
+            const vehicle = vehiclesData[vehicleId];
+            if (!vehicle) return;
+
+            document.getElementById('busDetailsId').textContent = vehicleId;
+            
+            // Mettre à jour les statistiques en temps réel
+            const statsBoxes = document.querySelectorAll('#bus-overview .stat-box');
+            if (statsBoxes.length >= 4) {
+                // Taux d'occupation
+                const occupancyRate = Math.round((vehicle.passengers / vehicle.capacity) * 100);
+                statsBoxes[0].querySelector('.big-stat').textContent = occupancyRate + '%';
+                statsBoxes[0].querySelector('small').textContent = `${vehicle.passengers}/${vehicle.capacity} places`;
+                
+                // Vitesse
+                statsBoxes[1].querySelector('.big-stat').textContent = vehicle.speed + ' km/h';
+                
+                // Retard
+                statsBoxes[2].querySelector('.big-stat').textContent = vehicle.delay;
+                statsBoxes[2].querySelector('.big-stat').className = 'big-stat ' + 
+                    (vehicle.delay.includes('+') ? 'text-warning' : 'text-success');
+                
+                // Carburant
+                statsBoxes[3].querySelector('.big-stat').textContent = vehicle.fuel + '%';
+                const autonomy = Math.round(vehicle.fuel * 4); // Simulation autonomie
+                statsBoxes[3].querySelector('small').textContent = `Autonomie: ${autonomy} km`;
+            }
+
+            // Simuler l'occupation aléatoire des sièges
+            generateSeatOccupancy(vehicle.passengers, vehicle.capacity);
+            
+            // Afficher la modale
+            document.getElementById('busDetailsModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Générer l'occupation des sièges de manière réaliste
+        function generateSeatOccupancy(passengers, capacity) {
+            const seats = document.querySelectorAll('.seat');
+            const totalSeats = Math.min(seats.length, capacity);
+            
+            // Réinitialiser tous les sièges
+            seats.forEach(seat => {
+                seat.className = 'seat available';
+            });
+            
+            // Occuper des sièges de manière réaliste (de l'avant vers l'arrière)
+            let occupiedCount = 0;
+            const targetOccupied = Math.min(passengers, totalSeats);
+            
+            // Occupation prioritaire des sièges avant
+            for (let i = 0; i < seats.length && occupiedCount < targetOccupied; i++) {
+                if (Math.random() < 0.8 || occupiedCount < targetOccupied * 0.6) {
+                    seats[i].className = 'seat occupied';
+                    occupiedCount++;
+                }
+            }
+            
+            // Compléter l'occupation si nécessaire
+            for (let i = 0; i < seats.length && occupiedCount < targetOccupied; i++) {
+                if (seats[i].classList.contains('available')) {
+                    seats[i].className = 'seat occupied';
+                    occupiedCount++;
+                }
+            }
+            
+            // Quelques sièges réservés
+            const reservedCount = Math.min(2, Math.floor(totalSeats * 0.05));
+            let reservedAdded = 0;
+            for (let i = seats.length - 1; i >= 0 && reservedAdded < reservedCount; i--) {
+                if (seats[i].classList.contains('available')) {
+                    seats[i].className = 'seat reserved';
+                    reservedAdded++;
+                }
+            }
+        }
+
+        // Fonction pour voir la position d'un véhicule
+        function viewVehicleLocation(vehicleId) {
+            const vehicle = vehiclesData[vehicleId];
+            if (!vehicle) return;
+
+            document.getElementById('locationVehicleId').textContent = vehicleId;
+            document.getElementById('locationVehicleLine').textContent = vehicle.line;
+            document.getElementById('locationCurrent').textContent = vehicle.position;
+            
+            // Simuler la prochaine station
+            const nextStations = {
+                'Gare Centrale': 'Centre Ville',
+                'Centre Ville': 'Université',
+                'Université': 'Hôpital',
+                'Dépôt Central': 'Garage'
+            };
+            document.getElementById('locationNext').textContent = 
+                nextStations[vehicle.position] || 'Terminus';
+
+            document.getElementById('vehicleLocationModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Fonction pour éditer un véhicule
+        function editVehicle(vehicleId) {
+            const vehicle = vehiclesData[vehicleId];
+            if (!vehicle) return;
+
+            document.getElementById('editVehicleId').value = vehicleId;
+            document.getElementById('editVehicleLine').value = vehicle.line.replace('Ligne ', '');
+            document.getElementById('editVehicleStatus').value = vehicle.status;
+            document.getElementById('editVehicleDriver').value = vehicle.driver === '-' ? '' : vehicle.driver;
+
+            document.getElementById('editVehicleModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Fonction pour programmer la maintenance d'un véhicule
+        function scheduleVehicleMaintenance(vehicleId) {
+            const vehicle = vehiclesData[vehicleId];
+            if (!vehicle) return;
+
+            showNotification(`Redirection vers la page maintenance pour ${vehicleId}`, 'info');
+            
+            // Simulation de redirection vers la page maintenance
+            setTimeout(() => {
+                window.location.href = 'maintenance.html';
+            }, 1500);
+        }
+
+        // Fonction pour ouvrir la carte en temps réel
+        function openRealtimeMap() {
+            document.getElementById('realtimeMapModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Simuler l'animation des véhicules sur la carte
+            animateVehiclesOnMap();
+        }
+
+        // Animer les véhicules sur la carte
+        function animateVehiclesOnMap() {
+            const markers = document.querySelectorAll('.vehicle-marker');
+            markers.forEach((marker, index) => {
+                setTimeout(() => {
+                    marker.style.animation = 'bounce 1s ease-in-out';
+                }, index * 200);
+            });
+        }
+
+        // Gestion des onglets dans la modale bus
+        function showBusTab(tabId) {
+            // Masquer tous les contenus d'onglets
+            document.querySelectorAll('#busDetailsModal .tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Désactiver tous les boutons d'onglets
+            document.querySelectorAll('#busDetailsModal .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Afficher le contenu sélectionné
+            document.getElementById(tabId).classList.add('active');
+            
+            // Activer le bouton correspondant
+            event.target.classList.add('active');
+        }
+
+        // Fonctions utilitaires pour les modales
+        function closeBusDetailsModal() {
+            document.getElementById('busDetailsModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeRealtimeMapModal() {
+            document.getElementById('realtimeMapModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function centerMap() {
+            showNotification('Carte centrée sur la zone de service', 'success');
+        }
+
+        function refreshMapData() {
+            showNotification('Données de la carte actualisées', 'success');
+            animateVehiclesOnMap();
+        }
+
+        // Fonction de notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Gestion des événements pour les boutons principaux
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bouton carte en temps réel
+            const realtimeMapBtn = document.querySelector('.btn.btn-secondary');
+            if (realtimeMapBtn && realtimeMapBtn.textContent.includes('Carte')) {
+                realtimeMapBtn.addEventListener('click', openRealtimeMap);
+            }
+
+            // Gestion des modales avec gestion des clics extérieurs
+            window.onclick = function(event) {
+                const modals = ['busDetailsModal', 'realtimeMapModal', 'addVehicleModal', 'editVehicleModal', 'vehicleLocationModal'];
+                modals.forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            };
+
+            // Gestion des boutons de fermeture
+            document.querySelectorAll('.modal-close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            });
+
+            // Interaction avec les sièges
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('seat')) {
+                    const seatNumber = e.target.dataset.seat;
+                    const isOccupied = e.target.classList.contains('occupied');
+                    const passenger = isOccupied ? 'Marie D.' : 'Libre';
+                    showNotification(`Siège ${seatNumber}: ${passenger}`, 'info');
+                }
+            });
+
+            // Simulation de mise à jour en temps réel des données
+            setInterval(updateRealtimeData, 30000); // Mise à jour toutes les 30 secondes
+        });
+
+        // Mise à jour des données en temps réel
+        function updateRealtimeData() {
+            // Simuler de légères variations dans les données
+            Object.keys(vehiclesData).forEach(vehicleId => {
+                const vehicle = vehiclesData[vehicleId];
+                if (vehicle.status === 'En service') {
+                    // Variation aléatoire du nombre de passagers
+                    const variation = Math.floor(Math.random() * 6) - 3; // -3 à +3
+                    vehicle.passengers = Math.max(0, Math.min(vehicle.capacity, vehicle.passengers + variation));
+                    
+                    // Variation de la vitesse
+                    vehicle.speed = Math.max(0, Math.min(50, vehicle.speed + Math.floor(Math.random() * 6) - 3));
+                    
+                    // Variation du carburant (diminution graduelle)
+                    vehicle.fuel = Math.max(15, vehicle.fuel - Math.random() * 0.5);
+                }
+            });
+            
+            // Mettre à jour l'affichage du tableau si visible
+            updateVehicleTable();
+        }
+
+        // Mettre à jour le tableau des véhicules
+        function updateVehicleTable() {
+            const tableRows = document.querySelectorAll('table tbody tr');
+            tableRows.forEach((row, index) => {
+                const vehicleId = Object.keys(vehiclesData)[index];
+                if (vehicleId && vehiclesData[vehicleId]) {
+                    const vehicle = vehiclesData[vehicleId];
+                    const passengersCell = row.cells[4];
+                    if (passengersCell) {
+                        const progressBar = passengersCell.querySelector('div[style*="width:"]');
+                        const passengersText = passengersCell.querySelector('span');
+                        if (progressBar && passengersText) {
+                            const percentage = Math.round((vehicle.passengers / vehicle.capacity) * 100);
+                            progressBar.style.width = percentage + '%';
+                            passengersText.textContent = `${vehicle.passengers}/${vehicle.capacity}`;
+                        }
+                    }
+                }
+            });
+        }
+
+        console.log('Scripts de la page flotte initialisés');
+    </script>
+</body>
+</html>

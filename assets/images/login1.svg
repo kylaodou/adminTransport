@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <!-- Fond dégradé -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff7900;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#e56a00;stop-opacity:0.1"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Arrière-plan -->
+  <rect width="400" height="300" fill="url(#bgGradient)"/>
+  
+  <!-- Formes géométriques représentant un système de transport -->
+  <!-- Bus stylisé -->
+  <rect x="80" y="120" width="80" height="50" rx="8" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+  <circle cx="95" cy="185" r="8" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="145" cy="185" r="8" fill="rgba(255,255,255,0.3)"/>
+  <rect x="85" y="125" width="15" height="12" rx="2" fill="rgba(255,255,255,0.3)"/>
+  <rect x="105" y="125" width="15" height="12" rx="2" fill="rgba(255,255,255,0.3)"/>
+  <rect x="125" y="125" width="15" height="12" rx="2" fill="rgba(255,255,255,0.3)"/>
+  <rect x="145" y="125" width="10" height="12" rx="2" fill="rgba(255,255,255,0.3)"/>
+  
+  <!-- Lignes de transport -->
+  <path d="M50 80 Q120 90 200 85 T350 80" stroke="rgba(255,255,255,0.4)" stroke-width="3" fill="none"/>
+  <path d="M50 220 Q120 210 200 215 T350 220" stroke="rgba(255,255,255,0.4)" stroke-width="3" fill="none"/>
+  
+  <!-- Points d'arrêt -->
+  <circle cx="70" cy="80" r="4" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="160" cy="87" r="4" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="270" cy="82" r="4" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="330" cy="80" r="4" fill="rgba(255,255,255,0.6)"/>
+  
+  <circle cx="70" cy="220" r="4" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="160" cy="213" r="4" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="270" cy="218" r="4" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="330" cy="220" r="4" fill="rgba(255,255,255,0.6)"/>
+  
+  <!-- Bâtiments stylisés -->
+  <rect x="220" y="100" width="25" height="80" fill="rgba(255,255,255,0.2)"/>
+  <rect x="250" y="110" width="20" height="70" fill="rgba(255,255,255,0.2)"/>
+  <rect x="275" y="90" width="30" height="90" fill="rgba(255,255,255,0.2)"/>
+  
+  <!-- Fenêtres des bâtiments -->
+  <rect x="225" y="110" width="4" height="6" fill="rgba(255,255,255,0.3)"/>
+  <rect x="232" y="110" width="4" height="6" fill="rgba(255,255,255,0.3)"/>
+  <rect x="225" y="130" width="4" height="6" fill="rgba(255,255,255,0.3)"/>
+  <rect x="232" y="130" width="4" height="6" fill="rgba(255,255,255,0.3)"/>
+  
+  <rect x="254" y="120" width="4" height="6" fill="rgba(255,255,255,0.3)"/>
+  <rect x="261" y="120" width="4" height="6" fill="rgba(255,255,255,0.3)"/>
+  <rect x="254" y="140" width="4" height="6" fill="rgba(255,255,255,0.3)"/>
+  <rect x="261" y="140" width="4" height="6" fill="rgba(255,255,255,0.3)"/>
+  
+  <rect x="282" y="100" width="5" height="7" fill="rgba(255,255,255,0.3)"/>
+  <rect x="290" y="100" width="5" height="7" fill="rgba(255,255,255,0.3)"/>
+  <rect x="298" y="100" width="5" height="7" fill="rgba(255,255,255,0.3)"/>
+  <rect x="282" y="120" width="5" height="7" fill="rgba(255,255,255,0.3)"/>
+  <rect x="290" y="120" width="5" height="7" fill="rgba(255,255,255,0.3)"/>
+  <rect x="298" y="120" width="5" height="7" fill="rgba(255,255,255,0.3)"/>
+  
+  <!-- Particules flottantes pour l'effet -->
+  <circle cx="100" cy="50" r="2" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="180" cy="40" r="1.5" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="250" cy="60" r="2.5" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="320" cy="45" r="1" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="150" cy="250" r="2" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="300" cy="260" r="1.5" fill="rgba(255,255,255,0.3)"/>
+</svg>
