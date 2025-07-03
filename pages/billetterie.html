@@ -6,7 +6,739 @@
     <title>TransportAdmin - Billetterie</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="../assets/css/style.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* Reset et Variables CSS */
+:root {
+    --primary-orange: #ff7900;
+    --primary-black: #1a1a1a;
+    --primary-white: #ffffff;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+textarea{
+    padding-left: 18px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--primary-black);
+    background-color: var(--light-gray);
+}
+
+/* Container et Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+/* Composants de formulaire personnalisés */
+.form-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 16px 16px 16px 48px;
+    border: 2px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: var(--transition);
+    background-color: var(--primary-white);
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(255, 121, 0, 0.1);
+}
+
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) + .form-label {
+    transform: translateY(-26px) scale(0.85);
+    color: var(--primary-orange);
+    font-weight: 600;
+}
+input {
+    padding-left: 60px !important;
+}
+
+.form-label {
+    position: absolute;
+    left: 48px;
+    top: 8px;
+    font-size: 16px;
+    color: var(--dark-gray);
+    transition: var(--transition);
+    pointer-events: none;
+    background-color: var(--primary-white);
+    padding: 0 8px;
+}
+
+.form-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dark-gray);
+    font-size: 20px;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus ~ .form-icon {
+    color: var(--primary-orange);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Boutons */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-orange);
+    color: var(--primary-white);
+}
+
+.btn-primary:hover {
+    background-color: #e56a00;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background-color: var(--primary-white);
+    color: var(--primary-black);
+    border: 2px solid var(--medium-gray);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary-orange);
+    color: var(--primary-orange);
+}
+
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 18px;
+}
+
+/* Cards */
+.card {
+    background-color: var(--primary-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.card-body {
+    padding: 24px;
+}
+
+/* Navigation */
+.navbar {
+    background-color: var(--primary-white);
+    box-shadow: var(--shadow);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-orange);
+    text-decoration: none;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+}
+
+.nav-link {
+    color: var(--primary-black);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-orange);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--primary-orange);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background-color: var(--primary-orange);
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    transition: var(--transition);
+}
+
+.sidebar-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.sidebar-header a {
+    color:var(--primary-white);
+}
+
+.sidebar-nav {
+    padding: 16px 0;
+}
+
+.sidebar-nav-item {
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--primary-white);
+    text-decoration: none;
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+}
+
+.sidebar-nav-item:hover,
+.sidebar-nav-item.active {
+    background-color: rgba(255, 255, 255, 0.495);
+    border-left-color: var(--primary-white);
+    color: var(--primary-white);
+}
+
+.sidebar-nav-icon {
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 280px;
+    padding: 24px;
+    background-color: var(--light-gray);
+    min-height: 100vh;
+}
+
+/* Grid System */
+.grid {
+    display: grid;
+    gap: 24px;
+}
+
+.grid-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Stats Cards */
+.stat-card {
+    background: linear-gradient(135deg, var(--primary-orange), #ff9500);
+    color: var(--primary-white);
+    padding: 24px;
+    border-radius: var(--border-radius);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(30px, -30px);
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* Tables */
+.table-container {
+    background-color: var(--primary-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.table th {
+    background-color: var(--light-gray);
+    font-weight: 600;
+    color: var(--primary-black);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255, 121, 0, 0.05);
+}
+
+/* Status badges */
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-success {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.badge-warning {
+    background-color: rgba(251, 191, 36, 0.1);
+    color: #f59e0b;
+}
+
+/* Utilities */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-4 {
+    margin-bottom: 24px;
+}
+
+.mt-4 {
+    margin-top: 24px;
+}
+
+.p-4 {
+    padding: 24px;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.gap-8px {
+    gap: 8px;
+}
+
+.gap-16px {
+    gap: 16px;
+}
+
+.tab-button {
+    padding: 12px 24px;
+    border: none;
+    background: none;
+    color: var(--dark-gray);
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: var(--transition);
+}
+
+.tab-button.active {
+    color: var(--primary-orange);
+    border-bottom-color: var(--primary-orange);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Styles pour les modaux améliorés */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--primary-black);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--dark-gray);
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: #f5f5f5;
+    color: var(--primary-black);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--medium-gray);
+}
+
+/* Styles pour les sélecteurs modernes */
+.custom-select {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.custom-select select {
+    appearance: none;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px 48px 16px 16px;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--primary-black);
+}
+
+.custom-select select:focus {
+    outline: none;
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.1);
+}
+
+.custom-select::after {
+    content: '▼';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-orange);
+    pointer-events: none;
+    font-size: 12px;
+}
+
+/* Multi-select moderne */
+.multi-select {
+    position: relative;
+}
+
+.multi-select-display {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 20px;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.multi-select-display:focus,
+.multi-select.open .multi-select-display {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.1);
+}
+
+.multi-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid var(--primary-orange);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    display: none;
+}
+
+.multi-select.open .multi-select-options {
+    display: block;
+}
+
+.multi-select-option {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.multi-select-option:hover {
+    background: #f8f9fa;
+}
+
+.multi-select-option.selected {
+    background: rgba(255, 149, 0, 0.1);
+    color: var(--primary-orange);
+}
+
+.selected-tag {
+    display: inline-block;
+    background: var(--primary-orange);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin: 2px;
+}
+
+/* Message de succès */
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    animation: slideInRight 0.5s ease;
+}
+
+.success-message.show {
+    display: flex;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Bouton supprimer */
+.btn-danger {
+    background: linear-gradient(135deg, #ff4757, #ff3838);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 71, 87, 0.3);
+}
+
+/* Modal de confirmation */
+.confirm-modal .modal-content {
+    max-width: 400px;
+    text-align: center;
+}
+
+.confirm-icon {
+    font-size: 48px;
+    color: #ff4757;
+    margin-bottom: 16px;
+}
+
+.confirm-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-black);
+    margin-bottom: 8px;
+}
+
+.confirm-text {
+    color: var(--dark-gray);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+    </style>
 </head>
 <body>
     <!-- Sidebar -->
@@ -35,26 +767,10 @@
             <a href="lignes.html" class="sidebar-nav-item">
                 <i class="fas fa-route sidebar-nav-icon"></i>
                 <span>Lignes & Itinéraires</span>
-            </a>
+            </a> 
             <a href="chauffeurs.html" class="sidebar-nav-item">
                 <i class="fas fa-user-tie sidebar-nav-icon"></i>
                 <span>Chauffeurs</span>
-            </a>
-            <a href="signaletique.html" class="sidebar-nav-item">
-                <i class="fas fa-tv sidebar-nav-icon"></i>
-                <span>Signalétique</span>
-            </a>
-            <a href="analytics.html" class="sidebar-nav-item">
-                <i class="fas fa-chart-line sidebar-nav-icon"></i>
-                <span>Analyses & Rapports</span>
-            </a>
-            <a href="maintenance.html" class="sidebar-nav-item">
-                <i class="fas fa-tools sidebar-nav-icon"></i>
-                <span>Maintenance</span>
-            </a>
-            <a href="settings.html" class="sidebar-nav-item">
-                <i class="fas fa-cog sidebar-nav-icon"></i>
-                <span>Paramètres</span>
             </a>
         </div>
     </nav>
@@ -70,7 +786,7 @@
                 <p style="color: var(--dark-gray);">Centralisation et suivi de la billetterie numérique</p>
             </div>
             <div class="flex items-center gap-16px">
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary" onclick="generateSalesReport()">
                     <i class="fas fa-download"></i>
                     Rapport des ventes
                 </button>
@@ -127,7 +843,7 @@
                 <div id="tarifs" class="tab-content active">
                     <div class="flex justify-between items-center mb-4">
                         <h3>Configuration des tarifs</h3>
-                        <button class="btn btn-primary" data-modal="addTariffModal">
+                        <button class="btn btn-primary" onclick="openModal('addTariffModal')">
                             <i class="fas fa-plus"></i>
                             Ajouter un tarif
                         </button>
@@ -152,10 +868,15 @@
                                     <span>Statut:</span>
                                     <span class="badge badge-success">Actif</span>
                                 </div>
-                                <button class="btn btn-secondary w-full">
-                                    <i class="fas fa-edit"></i>
-                                    Modifier
-                                </button>
+                                <div class="flex gap-8px">
+                                    <button class="btn btn-secondary flex-1" onclick="editTariff('simple')">
+                                        <i class="fas fa-edit"></i>
+                                        Modifier
+                                    </button>
+                                    <button class="btn btn-danger" onclick="deleteTariff('simple', 'Billet Simple')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -177,10 +898,15 @@
                                     <span>Statut:</span>
                                     <span class="badge badge-success">Actif</span>
                                 </div>
-                                <button class="btn btn-secondary w-full">
-                                    <i class="fas fa-edit"></i>
-                                    Modifier
-                                </button>
+                                <div class="flex gap-8px">
+                                    <button class="btn btn-secondary flex-1" onclick="editTariff('daily')">
+                                        <i class="fas fa-edit"></i>
+                                        Modifier
+                                    </button>
+                                    <button class="btn btn-danger" onclick="deleteTariff('daily', 'Pass Journalier')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -202,10 +928,15 @@
                                     <span>Statut:</span>
                                     <span class="badge badge-success">Actif</span>
                                 </div>
-                                <button class="btn btn-secondary w-full">
-                                    <i class="fas fa-edit"></i>
-                                    Modifier
-                                </button>
+                                <div class="flex gap-8px">
+                                    <button class="btn btn-secondary flex-1" onclick="editTariff('monthly')">
+                                        <i class="fas fa-edit"></i>
+                                        Modifier
+                                    </button>
+                                    <button class="btn btn-danger" onclick="deleteTariff('monthly', 'Abonnement Mensuel')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -251,54 +982,9 @@
                     </div>
                 </div>
 
-
             </div>
         </div>
     </main>
-
-    <script src="../assets/js/app.js"></script>
-    <script>
-        // Gestion des onglets
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', () => {
-                // Retirer la classe active de tous les boutons et contenus
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-                
-                // Ajouter la classe active au bouton cliqué
-                button.classList.add('active');
-                
-                // Afficher le contenu correspondant
-                const tabId = button.dataset.tab;
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-    </script>
-    <style>
-        .tab-button {
-            padding: 12px 24px;
-            border: none;
-            background: none;
-            color: var(--dark-gray);
-            font-weight: 500;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: var(--transition);
-        }
-        
-        .tab-button.active {
-            color: var(--primary-orange);
-            border-bottom-color: var(--primary-orange);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-    </style>
 
     <!-- Modal Nouveau Tarif -->
     <div id="addTariffModal" class="modal">
@@ -308,7 +994,7 @@
                     <i class="fas fa-plus" style="color: var(--primary-orange);"></i>
                     Créer un nouveau tarif
                 </h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" onclick="closeModal('addTariffModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="addTariffForm">
@@ -319,33 +1005,53 @@
                     </div>
                     <div class="grid grid-2" style="gap: 16px;">
                         <div class="form-group">
-                            <i class="fa-solid fa-money-bill-wave"></i>
+                            <i class="fa-solid fa-money-bill-wave form-icon"></i>
                             <input type="number" name="price" id="tariffPrice" class="form-input" placeholder=" " step="0.01" min="0" required>
                             <label class="form-label" for="tariffPrice">Prix (FCFA)</label>
                         </div>
                         <div class="form-group">
-                            <i class="fas fa-clock form-icon"></i>
-                            <select name="validity" id="tariffValidity" class="form-input" required>
-                                <option value="">Sélectionner</option>
-                                <option value="1h">1 heure</option>
-                                <option value="1j">1 jour</option>
-                                <option value="1s">1 semaine</option>
-                                <option value="1m">1 mois</option>
-                                <option value="1a">1 an</option>
-                            </select>
                             <label class="form-label" for="tariffValidity">Validité</label>
+                            <div class="custom-select">
+                                <select name="validity" id="tariffValidity" required>
+                                    <option value="">Sélectionner la validité</option>
+                                    <option value="1h">1 heure</option>
+                                    <option value="1j">1 jour</option>
+                                    <option value="1s">1 semaine</option>
+                                    <option value="1m">1 mois</option>
+                                    <option value="1a">1 an</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <i class="fas fa-route form-icon"></i>
-                        <select name="lines" id="tariffLines" class="form-input" multiple>
-                            <option value="A">Ligne A</option>
-                            <option value="B">Ligne B</option>
-                            <option value="C">Ligne C</option>
-                            <option value="D">Ligne D</option>
-                            <option value="all">Toutes les lignes</option>
-                        </select>
                         <label class="form-label" for="tariffLines">Lignes concernées</label>
+                        <div class="multi-select" id="linesMultiSelect">
+                            <button type="button" class="multi-select-display">
+                                <span class="placeholder">Sélectionner les lignes</span>
+                            </button>
+                            <div class="multi-select-options">
+                                <div class="multi-select-option" data-value="A">
+                                    <input type="checkbox" id="line_A" value="A">
+                                    <label for="line_A">Ligne A</label>
+                                </div>
+                                <div class="multi-select-option" data-value="B">
+                                    <input type="checkbox" id="line_B" value="B">
+                                    <label for="line_B">Ligne B</label>
+                                </div>
+                                <div class="multi-select-option" data-value="C">
+                                    <input type="checkbox" id="line_C" value="C">
+                                    <label for="line_C">Ligne C</label>
+                                </div>
+                                <div class="multi-select-option" data-value="D">
+                                    <input type="checkbox" id="line_D" value="D">
+                                    <label for="line_D">Ligne D</label>
+                                </div>
+                                <div class="multi-select-option" data-value="all">
+                                    <input type="checkbox" id="line_all" value="all">
+                                    <label for="line_all">Toutes les lignes</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <i class="fas fa-comment form-icon"></i>
@@ -353,7 +1059,7 @@
                         <label class="form-label" for="tariffDescription">Description</label>
                     </div>
                     <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary modal-close">Annuler</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('addTariffModal')">Annuler</button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-plus"></i>
                             Créer le tarif
@@ -364,6 +1070,565 @@
         </div>
     </div>
 
-    <script src="../assets/js/app.js"></script>
+    <!-- Modal d'édition de tarif -->
+    <div id="editTariffModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-edit" style="color: var(--primary-orange);"></i>
+                    Modifier le tarif
+                </h3>
+                <button class="modal-close" onclick="closeModal('editTariffModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editTariffForm">
+                    <div class="form-group">
+                        <i class="fas fa-tag form-icon"></i>
+                        <input type="text" name="tariffName" id="editTariffName" class="form-input" placeholder=" " required>
+                        <label class="form-label" for="editTariffName">Nom du tarif</label>
+                    </div>
+                    <div class="grid grid-2" style="gap: 16px;">
+                        <div class="form-group">
+                            <i class="fa-solid fa-money-bill-wave form-icon"></i>
+                            <input type="number" name="price" id="editTariffPrice" class="form-input" placeholder=" " step="0.01" min="0" required>
+                            <label class="form-label" for="editTariffPrice">Prix (FCFA)</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="editTariffValidity">Validité</label>
+                            <div class="custom-select">
+                                <select name="validity" id="editTariffValidity" required>
+                                    <option value="">Sélectionner la validité</option>
+                                    <option value="1h">1 heure</option>
+                                    <option value="1j">1 jour</option>
+                                    <option value="1s">1 semaine</option>
+                                    <option value="1m">1 mois</option>
+                                    <option value="1a">1 an</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-comment form-icon"></i>
+                        <textarea name="description" id="editTariffDescription" class="form-input" placeholder=" " rows="3"></textarea>
+                        <label class="form-label" for="editTariffDescription">Description</label>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('editTariffModal')">Annuler</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Sauvegarder
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation de suppression -->
+    <div id="deleteConfirmModal" class="modal confirm-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="confirm-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="confirm-title">Confirmer la suppression</h3>
+                <p class="confirm-text">
+                    Êtes-vous sûr de vouloir supprimer le tarif "<span id="deleteItemName"></span>" ?
+                    <br>Cette action est irréversible.
+                </p>
+                <div class="confirm-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('deleteConfirmModal')">Annuler</button>
+                    <button class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-trash"></i>
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message de succès -->
+    <div id="successMessage" class="success-message">
+        <i class="fas fa-check-circle"></i>
+        <span id="successText">Opération réussie !</span>
+    </div>
+
+    <script>
+        // Variables globales pour la billetterie
+        let itemToDelete = null;
+
+        // Fonction pour afficher le message de succès
+        function showSuccessMessage(message) {
+            const successDiv = document.getElementById('successMessage');
+            const textSpan = document.getElementById('successText');
+            
+            if (successDiv && textSpan) {
+                textSpan.textContent = message;
+                successDiv.classList.add('show');
+                
+                setTimeout(() => {
+                    successDiv.classList.remove('show');
+                }, 4000);
+            }
+        }
+
+        // Fonction pour obtenir les données d'un tarif
+        function getTariffData(tariffId) {
+            const tariffs = {
+                'simple': {
+                    name: 'Billet Simple',
+                    price: 1500,
+                    validity: '1j',
+                    description: 'Billet valable pour un trajet simple'
+                },
+                'daily': {
+                    name: 'Pass Journalier',
+                    price: 8000,
+                    validity: '1j',
+                    description: 'Accès illimité pendant 24 heures'
+                },
+                'monthly': {
+                    name: 'Abonnement Mensuel',
+                    price: 45000,
+                    validity: '1m',
+                    description: 'Abonnement valable 30 jours'
+                }
+            };
+            return tariffs[tariffId] || {};
+        }
+
+        // Gestion des Modaux
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Actions sur les tarifs
+        function editTariff(tariffId) {
+            const tariffData = getTariffData(tariffId);
+            const form = document.getElementById('editTariffForm');
+            
+            if (!form) return;
+
+            // Pré-remplir le formulaire avec les données actuelles
+            form.dataset.tariffId = tariffId;
+            
+            const nameInput = document.getElementById('editTariffName');
+            const priceInput = document.getElementById('editTariffPrice');
+            const validitySelect = document.getElementById('editTariffValidity');
+            const descriptionTextarea = document.getElementById('editTariffDescription');
+            
+            if (nameInput) nameInput.value = tariffData.name || '';
+            if (priceInput) priceInput.value = tariffData.price || '';
+            if (validitySelect) validitySelect.value = tariffData.validity || '';
+            if (descriptionTextarea) descriptionTextarea.value = tariffData.description || '';
+            
+            // Ouvrir le modal
+            openModal('editTariffModal');
+        }
+
+        function deleteTariff(tariffId, tariffName) {
+            itemToDelete = tariffId;
+            
+            const deleteItemNameSpan = document.getElementById('deleteItemName');
+            if (deleteItemNameSpan) {
+                deleteItemNameSpan.textContent = tariffName;
+            }
+            
+            // Ouvrir le modal de confirmation
+            openModal('deleteConfirmModal');
+        }
+
+        // Génération de rapport PDF
+        function generateSalesReport() {
+            showSuccessMessage('Génération du rapport en cours...');
+            
+            setTimeout(() => {
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    
+                    // Configuration du document
+                    const pageWidth = doc.internal.pageSize.width;
+                    const pageHeight = doc.internal.pageSize.height;
+                    const margin = 20;
+                    const bottomMargin = 30;
+                    let yPosition = 25;
+                    let currentPage = 1;
+                    
+                    // Couleurs
+                    const orangeColor = [255, 149, 0];
+                    const blackColor = [26, 26, 26];
+                    const grayColor = [128, 128, 128];
+                    
+                    // Fonction pour ajouter une nouvelle page
+                    function addNewPage() {
+                        doc.addPage();
+                        currentPage++;
+                        yPosition = 25;
+                        addPageHeader();
+                    }
+                    
+                    // Fonction pour vérifier s'il faut une nouvelle page
+                    function checkPageSpace(neededSpace) {
+                        if (yPosition + neededSpace > pageHeight - bottomMargin) {
+                            addNewPage();
+                            return true;
+                        }
+                        return false;
+                    }
+                    
+                    // Fonction pour ajouter l'en-tête de page
+                    function addPageHeader() {
+                        // En-tête avec fond coloré
+                        doc.setFillColor(...orangeColor);
+                        doc.rect(0, 0, pageWidth, 40, 'F');
+                        
+                        // Titre en blanc sur fond orange
+                        doc.setTextColor(255, 255, 255);
+                        doc.setFontSize(20);
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('TRANSPORTADMIN', pageWidth / 2, 15, { align: 'center' });
+                        
+                        doc.setFontSize(14);
+                        doc.setFont('helvetica', 'normal');
+                        doc.text('RAPPORT DES VENTES', pageWidth / 2, 28, { align: 'center' });
+                        
+                        yPosition = 55;
+                    }
+                    
+                    // Première page - En-tête
+                    addPageHeader();
+                    
+                    // Date et informations
+                    doc.setTextColor(...blackColor);
+                    doc.setFontSize(12);
+                    const today = new Date().toLocaleDateString('fr-FR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    doc.text(`Date de génération: ${today}`, margin, yPosition);
+                    
+                    // Ligne de séparation stylée
+                    yPosition += 15;
+                    doc.setDrawColor(...orangeColor);
+                    doc.setLineWidth(2);
+                    doc.line(margin, yPosition, pageWidth - margin, yPosition);
+                    yPosition += 10;
+                    
+                    // Section Statistiques avec encadré
+                    checkPageSpace(100);
+                    doc.setFillColor(248, 249, 250);
+                    doc.roundedRect(margin, yPosition, pageWidth - 2 * margin, 85, 5, 5, 'F');
+                    
+                    doc.setTextColor(...orangeColor);
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('STATISTIQUES GÉNÉRALES', margin + 10, yPosition + 15);
+                    
+                    yPosition += 30;
+                    doc.setTextColor(...blackColor);
+                    doc.setFontSize(12);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    const stats = [
+                        'Billets vendus aujourd\'hui: 1,247',
+                        'Revenus billetterie: 3,450 FCFA',
+                        'Achats Orange Money: 89%',
+                        'Total des billets actifs: 156'
+                    ];
+                    
+                    stats.forEach(stat => {
+                        doc.text(`• ${stat}`, margin + 15, yPosition);
+                        yPosition += 12;
+                    });
+                    
+                    yPosition += 20;
+                    
+                    // Section Ventes récentes
+                    checkPageSpace(120);
+                    doc.setFillColor(255, 245, 235);
+                    doc.roundedRect(margin, yPosition, pageWidth - 2 * margin, 100, 5, 5, 'F');
+                    
+                    doc.setTextColor(...orangeColor);
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('VENTES RÉCENTES', margin + 10, yPosition + 15);
+                    
+                    yPosition += 30;
+                    doc.setTextColor(...blackColor);
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    const sales = [
+                        '15:24 - Billet Simple - Ligne A - 2,500 FCFA - Validé',
+                        '15:22 - Pass Journalier - Ligne B - 8,000 FCFA - Validé',
+                        '15:20 - Billet Simple - Ligne C - 2,500 FCFA - En attente',
+                        '15:18 - Abonnement Mensuel - Ligne D - 45,000 FCFA - Validé',
+                        '15:15 - Billet Simple - Ligne A - 1,500 FCFA - Validé',
+                        '15:12 - Pass Journalier - Ligne B - 8,000 FCFA - En attente'
+                    ];
+                    
+                    sales.forEach(sale => {
+                        checkPageSpace(15);
+                        doc.text(`• ${sale}`, margin + 15, yPosition);
+                        yPosition += 12;
+                    });
+                    
+                    yPosition += 20;
+                    
+                    // Section Tarifs avec tableau stylé
+                    checkPageSpace(80);
+                    doc.setTextColor(...orangeColor);
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('TARIFS ACTIFS', margin, yPosition);
+                    
+                    yPosition += 20;
+                    
+                    // En-tête du tableau
+                    checkPageSpace(60);
+                    doc.setFillColor(...orangeColor);
+                    doc.rect(margin, yPosition, pageWidth - 2 * margin, 12, 'F');
+                    
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('TYPE DE BILLET', margin + 5, yPosition + 8);
+                    doc.text('PRIX', margin + 80, yPosition + 8);
+                    doc.text('VALIDITÉ', margin + 120, yPosition + 8);
+                    doc.text('STATUT', margin + 160, yPosition + 8);
+                    
+                    yPosition += 12;
+                    
+                    // Lignes du tableau
+                    const tariffs = [
+                        ['Billet Simple', '1,500 FCFA', '1 trajet', 'Actif'],
+                        ['Pass Journalier', '8,000 FCFA', '24 heures', 'Actif'],
+                        ['Abonnement Mensuel', '45,000 FCFA', '30 jours', 'Actif']
+                    ];
+                    
+                    doc.setTextColor(...blackColor);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(10);
+                    
+                    tariffs.forEach((tariff, index) => {
+                        checkPageSpace(15);
+                        
+                        if (index % 2 === 0) {
+                            doc.setFillColor(248, 249, 250);
+                            doc.rect(margin, yPosition, pageWidth - 2 * margin, 12, 'F');
+                        }
+                        
+                        doc.text(tariff[0], margin + 5, yPosition + 8);
+                        doc.text(tariff[1], margin + 80, yPosition + 8);
+                        doc.text(tariff[2], margin + 120, yPosition + 8);
+                        doc.text(tariff[3], margin + 160, yPosition + 8);
+                        
+                        yPosition += 12;
+                    });
+                    
+                    // Ajouter les pieds de page à toutes les pages
+                    const totalPages = doc.getNumberOfPages();
+                    for (let i = 1; i <= totalPages; i++) {
+                        doc.setPage(i);
+                        const footerY = pageHeight - 20;
+                        
+                        doc.setDrawColor(...orangeColor);
+                        doc.setLineWidth(1);
+                        doc.line(margin, footerY, pageWidth - margin, footerY);
+                        
+                        doc.setTextColor(...grayColor);
+                        doc.setFontSize(10);
+                        doc.setFont('helvetica', 'italic');
+                        doc.text('Rapport généré automatiquement par TransportAdmin', pageWidth / 2, footerY + 10, { align: 'center' });
+                        doc.text(`Page ${i} sur ${totalPages} - ${today}`, pageWidth / 2, footerY + 15, { align: 'center' });
+                    }
+                    
+                    // Sauvegarde du PDF
+                    const filename = `rapport_ventes_${new Date().toISOString().split('T')[0]}.pdf`;
+                    doc.save(filename);
+                    
+                    showSuccessMessage(`Rapport PDF généré avec succès! (${totalPages} pages)`);
+                } catch (error) {
+                    console.error('Erreur lors de la génération du PDF:', error);
+                    showSuccessMessage('Erreur lors de la génération du PDF');
+                }
+            }, 2000);
+        }
+
+        // Initialisation des composants
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialisation des onglets
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    button.classList.add('active');
+                    const tabContent = document.getElementById(button.dataset.tab);
+                    if (tabContent) {
+                        tabContent.classList.add('active');
+                    }
+                });
+            });
+
+            // Fermeture des modals en cliquant sur le fond
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+
+            // Initialisation du formulaire d'ajout
+            const addForm = document.getElementById('addTariffForm');
+            if (addForm) {
+                addForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const tariffName = formData.get('tariffName') || 'Nouveau tarif';
+                    showSuccessMessage(`Tarif "${tariffName}" créé avec succès !`);
+                    closeModal('addTariffModal');
+                    e.target.reset();
+                });
+            }
+
+            // Initialisation du formulaire d'édition
+            const editForm = document.getElementById('editTariffForm');
+            if (editForm) {
+                editForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const tariffName = formData.get('tariffName') || 'le tarif';
+                    showSuccessMessage(`Tarif "${tariffName}" modifié avec succès !`);
+                    closeModal('editTariffModal');
+                    e.target.reset();
+                });
+            }
+
+            // Initialisation du bouton de confirmation de suppression
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', () => {
+                    if (itemToDelete) {
+                        const itemName = document.getElementById('deleteItemName').textContent || "l'élément";
+                        showSuccessMessage(`Tarif "${itemName}" supprimé avec succès !`);
+                        closeModal('deleteConfirmModal');
+                        itemToDelete = null;
+                    }
+                });
+            }
+
+            // Initialisation du multi-select
+            initMultiSelect();
+        });
+
+        // Fonctions spécifiques (MultiSelect, etc.)
+        function initMultiSelect() {
+            const multiSelect = document.getElementById('linesMultiSelect');
+            if (!multiSelect) return;
+
+            const display = multiSelect.querySelector('.multi-select-display');
+            const checkboxes = multiSelect.querySelectorAll('input[type="checkbox"]');
+
+            if (display) {
+                display.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    multiSelect.classList.toggle('open');
+                });
+
+                display.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        multiSelect.classList.toggle('open');
+                    }
+                });
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    updateDisplay();
+                });
+                
+                // Empêcher la fermeture lors du clic sur une option
+                const option = checkbox.closest('.multi-select-option');
+                if (option) {
+                    option.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        checkbox.checked = !checkbox.checked;
+                        updateDisplay();
+                    });
+                }
+            });
+
+            // Gestion de "Toutes les lignes"
+            const allCheckbox = document.getElementById('line_all');
+            if (allCheckbox) {
+                allCheckbox.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    const otherCheckboxes = [...checkboxes].filter(cb => cb !== allCheckbox);
+                    
+                    if (e.target.checked) {
+                        otherCheckboxes.forEach(cb => {
+                            cb.checked = false;
+                            cb.disabled = true;
+                        });
+                    } else {
+                        otherCheckboxes.forEach(cb => {
+                            cb.disabled = false;
+                        });
+                    }
+                    updateDisplay();
+                });
+            }
+
+            function updateDisplay() {
+                const selectedOptions = [...checkboxes].filter(cb => cb.checked);
+                
+                if (display) {
+                    if (selectedOptions.length === 0) {
+                        display.innerHTML = '<span class="placeholder">Sélectionner les lignes</span>';
+                    } else {
+                        const tags = selectedOptions.map(option => 
+                            `<span class="selected-tag">${option.nextElementSibling?.textContent || ''}</span>`
+                        ).join('');
+                        display.innerHTML = tags;
+                    }
+                }
+            }
+
+            // Fermer en cliquant à l'extérieur
+            document.addEventListener('click', (e) => {
+                if (!multiSelect.contains(e.target)) {
+                    multiSelect.classList.remove('open');
+                }
+            });
+        }
+
+        // Exposer les fonctions nécessaires globalement
+        window.generateSalesReport = generateSalesReport;
+        window.editTariff = editTariff;
+        window.deleteTariff = deleteTariff;
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+    </script>
+
 </body>
 </html>

@@ -6,7 +6,687 @@
     <title>TransportAdmin - Gestion des Chauffeurs</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="../assets/css/style.css" rel="stylesheet">
+    <style>
+        /* Reset et Variables CSS */
+:root {
+    --primary-orange: #ff7900;
+    --primary-black: #1a1a1a;
+    --primary-white: #ffffff;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+textarea{
+    padding-left: 18px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--primary-black);
+    background-color: var(--light-gray);
+}
+
+/* Container et Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+/* Composants de formulaire personnalisés */
+.form-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 16px 16px 16px 48px;
+    border: 2px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: var(--transition);
+    background-color: var(--primary-white);
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(255, 121, 0, 0.1);
+}
+
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) + .form-label {
+    transform: translateY(-26px) scale(0.85);
+    color: var(--primary-orange);
+    font-weight: 600;
+}
+input {
+    padding-left: 60px !important;
+}
+
+.form-label {
+    position: absolute;
+    left: 48px;
+    top: 8px;
+    font-size: 16px;
+    color: var(--dark-gray);
+    transition: var(--transition);
+    pointer-events: none;
+    background-color: var(--primary-white);
+    padding: 0 8px;
+}
+
+.form-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dark-gray);
+    font-size: 20px;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus ~ .form-icon {
+    color: var(--primary-orange);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Boutons */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-orange);
+    color: var(--primary-white);
+}
+
+.btn-primary:hover {
+    background-color: #e56a00;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background-color: var(--primary-white);
+    color: var(--primary-black);
+    border: 2px solid var(--medium-gray);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary-orange);
+    color: var(--primary-orange);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff4757, #ff3838);
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 71, 87, 0.3);
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: var(--primary-black);
+}
+
+.btn-warning:hover {
+    background-color: #ffab00;
+    transform: translateY(-2px);
+}
+
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 18px;
+}
+
+/* Cards */
+.card {
+    background-color: var(--primary-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.card-body {
+    padding: 24px;
+}
+
+/* Navigation */
+.navbar {
+    background-color: var(--primary-white);
+    box-shadow: var(--shadow);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-orange);
+    text-decoration: none;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+}
+
+.nav-link {
+    color: var(--primary-black);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-orange);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--primary-orange);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background-color: var(--primary-orange);
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    transition: var(--transition);
+}
+
+.sidebar-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--medium-gray);
+    color: var(--primary-white);
+}
+
+.sidebar-nav {
+    padding: 16px 0;
+}
+
+.sidebar-nav-item {
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--primary-white);
+    text-decoration: none;
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+}
+
+.sidebar-nav-item:hover,
+.sidebar-nav-item.active {
+    background-color: rgba(255, 255, 255, 0.495);
+    border-left-color: var(--primary-white);
+    color: var(--primary-white);
+}
+
+.sidebar-nav-icon {
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 280px;
+    padding: 24px;
+    background-color: var(--light-gray);
+    min-height: 100vh;
+}
+
+/* Grid System */
+.grid {
+    display: grid;
+    gap: 24px;
+}
+
+.grid-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-7 {
+    grid-template-columns: repeat(7, 1fr);
+}
+
+/* Stats Cards */
+.stat-card {
+    background: linear-gradient(135deg, var(--primary-orange), #ff9500);
+    color: var(--primary-white);
+    padding: 24px;
+    border-radius: var(--border-radius);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(30px, -30px);
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* Tables */
+.table-container {
+    background-color: var(--primary-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.table th {
+    background-color: var(--light-gray);
+    font-weight: 600;
+    color: var(--primary-black);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255, 121, 0, 0.05);
+}
+
+/* Status badges */
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-success {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.badge-warning {
+    background-color: rgba(251, 191, 36, 0.1);
+    color: #f59e0b;
+}
+
+.badge-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Utilities */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-4 {
+    margin-bottom: 24px;
+}
+
+.mt-4 {
+    margin-top: 24px;
+}
+
+.p-4 {
+    padding: 24px;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.gap-8px {
+    gap: 8px;
+}
+
+.gap-12px {
+    gap: 12px;
+}
+
+.gap-16px {
+    gap: 16px;
+}
+
+.tab-button {
+    padding: 12px 24px;
+    border: none;
+    background: none;
+    color: var(--dark-gray);
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: var(--transition);
+}
+
+.tab-button.active {
+    color: var(--primary-orange);
+    border-bottom-color: var(--primary-orange);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Styles pour les modaux */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--primary-black);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--dark-gray);
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: #f5f5f5;
+    color: var(--primary-black);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--medium-gray);
+}
+
+/* Alert styles */
+.alert {
+    padding: 16px;
+    border-radius: var(--border-radius);
+    margin-bottom: 16px;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-white);
+    border-left: 4px solid var(--primary-orange);
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.success {
+    border-left-color: #22c55e;
+}
+
+.notification.error {
+    border-left-color: #ef4444;
+}
+
+.notification.info {
+    border-left-color: #3b82f6;
+}
+
+/* Confirmation modal styles */
+.confirm-modal .modal-content {
+    max-width: 400px;
+    text-align: center;
+}
+
+.confirm-icon {
+    font-size: 48px;
+    color: #ff4757;
+    margin-bottom: 16px;
+}
+
+.confirm-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-black);
+    margin-bottom: 8px;
+}
+
+.confirm-text {
+    color: var(--dark-gray);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* Planning styles */
+.planning-day h5 {
+    margin-bottom: 12px;
+    color: var(--primary-black);
+}
+
+.planning-slot {
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4, .grid-7 {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+    }
+}
+    </style>
 </head>
 <body>
     <!-- Sidebar -->
@@ -31,28 +711,12 @@
                 <span>Gestion de flotte</span>
             </a>
             <a href="lignes.html" class="sidebar-nav-item">
-                <i class="fas fa-route sidebar-nav-icon"></i>
-                <span>Lignes & Itinéraires</span>
-            </a>
+          <i class="fas fa-route sidebar-nav-icon"></i>
+          <span>Lignes & Itinéraires</span>
+        </a> 
             <a href="chauffeurs.html" class="sidebar-nav-item active">
                 <i class="fas fa-user-tie sidebar-nav-icon"></i>
                 <span>Chauffeurs</span>
-            </a>
-            <a href="signaletique.html" class="sidebar-nav-item">
-                <i class="fas fa-tv sidebar-nav-icon"></i>
-                <span>Signalétique</span>
-            </a>
-            <a href="analytics.html" class="sidebar-nav-item">
-                <i class="fas fa-chart-line sidebar-nav-icon"></i>
-                <span>Analyses & Rapports</span>
-            </a>
-            <a href="maintenance.html" class="sidebar-nav-item">
-                <i class="fas fa-tools sidebar-nav-icon"></i>
-                <span>Maintenance</span>
-            </a>
-            <a href="settings.html" class="sidebar-nav-item">
-                <i class="fas fa-cog sidebar-nav-icon"></i>
-                <span>Paramètres</span>
             </a>
         </div>
     </nav>
@@ -68,11 +732,11 @@
                 <p style="color: var(--dark-gray);">Planning, performance et suivi du personnel de conduite</p>
             </div>
             <div class="flex items-center gap-16px">
-                <button class="btn btn-secondary" onclick="openPlanningModal()">
+                <button class="btn btn-secondary" onclick="openModal('planningModal')">
                     <i class="fas fa-calendar-alt"></i>
                     Planning général
                 </button>
-                <button class="btn btn-primary" onclick="openNewDriverModal()">
+                <button class="btn btn-primary" onclick="openModal('newDriverModal')">
                     <i class="fas fa-user-plus"></i>
                     Nouveau chauffeur
                 </button>
@@ -153,10 +817,10 @@
                                     <td>
                                         <div class="flex items-center gap-12px">
                                             <div style="width: 40px; height: 40px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                                JD
+                                                KL
                                             </div>
                                             <div>
-                                                <strong>Jean Dupont</strong>
+                                                <strong>Ky Laodou</strong>
                                                 <br>
                                                 <small style="color: var(--dark-gray);">ID: CHA001</small>
                                             </div>
@@ -182,6 +846,9 @@
                                             <button class="btn btn-secondary" style="padding: 8px;" onclick="editDriver('CHA001')" title="Modifier">
                                                 <i class="fas fa-edit"></i>
                                             </button>
+                                            <button class="btn btn-danger" style="padding: 8px;" onclick="deleteDriver('CHA001', 'Ky Laodou')" title="Supprimer">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -189,10 +856,10 @@
                                     <td>
                                         <div class="flex items-center gap-12px">
                                             <div style="width: 40px; height: 40px; background-color: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                                MM
+                                                OR
                                             </div>
                                             <div>
-                                                <strong>Marie Martin</strong>
+                                                <strong>Ouédraogo Razack</strong>
                                                 <br>
                                                 <small style="color: var(--dark-gray);">ID: CHA002</small>
                                             </div>
@@ -218,6 +885,9 @@
                                             <button class="btn btn-secondary" style="padding: 8px;" onclick="editDriver('CHA002')" title="Modifier">
                                                 <i class="fas fa-edit"></i>
                                             </button>
+                                            <button class="btn btn-danger" style="padding: 8px;" onclick="deleteDriver('CHA002', 'Ouédraogo Razack')" title="Supprimer">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -225,10 +895,10 @@
                                     <td>
                                         <div class="flex items-center gap-12px">
                                             <div style="width: 40px; height: 40px; background-color: var(--dark-gray); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                                PD
+                                                KC
                                             </div>
                                             <div>
-                                                <strong>Pierre Durand</strong>
+                                                <strong>Kaboré Cédric</strong>
                                                 <br>
                                                 <small style="color: var(--dark-gray);">ID: CHA003</small>
                                             </div>
@@ -254,6 +924,9 @@
                                             <button class="btn btn-secondary" style="padding: 8px;" onclick="editDriver('CHA003')" title="Modifier">
                                                 <i class="fas fa-edit"></i>
                                             </button>
+                                            <button class="btn btn-danger" style="padding: 8px;" onclick="deleteDriver('CHA003', 'Kaboré Cédric')" title="Supprimer">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -271,10 +944,10 @@
                                     <div class="planning-day">
                                         <h5>Lundi 1er Juillet</h5>
                                         <div class="planning-slot" style="margin: 8px 0; padding: 12px; background-color: rgba(255, 121, 0, 0.1); border-left: 4px solid var(--primary-orange); border-radius: 4px;">
-                                            <strong>06:00 - 14:00</strong> | Jean Dupont - Ligne A (BUS001)
+                                            <strong>06:00 - 14:00</strong> | Ky Laodou - Ligne A (BUS001)
                                         </div>
                                         <div class="planning-slot" style="margin: 8px 0; padding: 12px; background-color: rgba(26, 26, 26, 0.1); border-left: 4px solid #1a1a1a; border-radius: 4px;">
-                                            <strong>14:00 - 22:00</strong> | Marie Martin - Ligne B (BUS002)
+                                            <strong>14:00 - 22:00</strong> | Ouédraogo Razack - Ligne B (BUS002)
                                         </div>
                                     </div>
                                 </div>
@@ -285,8 +958,8 @@
                             <div class="alert alert-warning" style="padding: 16px; background-color: #fff3cd; border-radius: var(--border-radius); margin-bottom: 12px;">
                                 <strong>Remplacement nécessaire</strong>
                                 <br>
-                                <small>Pierre Durand absent demain - Ligne C sans chauffeur</small>
-                                <button class="btn btn-primary" style="margin-top: 8px; padding: 8px 16px; font-size: 14px;" onclick="assignReplacement()">
+                                <small>Kaboré Cédric absent demain - Ligne C sans chauffeur</small>
+                                <button class="btn btn-primary" style="margin-top: 8px; padding: 8px 16px; font-size: 14px;" onclick="openModal('replacementModal')">
                                     Assigner un remplaçant
                                 </button>
                             </div>
@@ -370,7 +1043,6 @@
         </div>
     </main>
 
-    <!-- Modales -->
     <!-- Modal Planning Général -->
     <div id="planningModal" class="modal">
         <div class="modal-content" style="max-width: 800px;">
@@ -379,7 +1051,7 @@
                     <i class="fas fa-calendar-alt" style="color: var(--primary-orange);"></i>
                     Planning général des chauffeurs
                 </h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" onclick="closeModal('planningModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="grid grid-7 mb-4" style="gap: 8px;">
@@ -392,19 +1064,19 @@
                     <div><strong>Dimanche</strong></div>
                     
                     <div style="background: rgba(255, 121, 0, 0.1); padding: 8px; border-radius: 4px; font-size: 12px;">
-                        06:00-14:00<br>Jean Dupont<br>Ligne A
+                        06:00-14:00<br>Ky Laodou<br>Ligne A
                     </div>
                     <div style="background: rgba(26, 26, 26, 0.1); padding: 8px; border-radius: 4px; font-size: 12px;">
-                        06:00-14:00<br>Marie Martin<br>Ligne B
+                        06:00-14:00<br>Ouédraogo Razack<br>Ligne B
                     </div>
                     <div style="background: rgba(255, 121, 0, 0.1); padding: 8px; border-radius: 4px; font-size: 12px;">
-                        06:00-14:00<br>Jean Dupont<br>Ligne A
+                        06:00-14:00<br>Ky Laodou<br>Ligne A
                     </div>
                     <div style="background: rgba(26, 26, 26, 0.1); padding: 8px; border-radius: 4px; font-size: 12px;">
-                        06:00-14:00<br>Marie Martin<br>Ligne B
+                        06:00-14:00<br>Ouédraogo Razack<br>Ligne B
                     </div>
                     <div style="background: rgba(255, 121, 0, 0.1); padding: 8px; border-radius: 4px; font-size: 12px;">
-                        06:00-14:00<br>Jean Dupont<br>Ligne A
+                        06:00-14:00<br>Ky Laodou<br>Ligne A
                     </div>
                     <div style="background: rgba(220, 53, 69, 0.1); padding: 8px; border-radius: 4px; font-size: 12px; color: #dc3545;">
                         Non assigné<br>Ligne C
@@ -414,7 +1086,7 @@
                     </div>
                 </div>
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary modal-close">Fermer</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('planningModal')">Fermer</button>
                     <button type="button" class="btn btn-primary" onclick="exportPlanning()">
                         <i class="fas fa-download"></i>
                         Exporter PDF
@@ -432,7 +1104,7 @@
                     <i class="fas fa-user-plus" style="color: var(--primary-orange);"></i>
                     Nouveau chauffeur
                 </h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" onclick="closeModal('newDriverModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="newDriverForm">
@@ -467,9 +1139,9 @@
                             <label class="form-label" for="driverEmail">Email</label>
                         </div>
                         <div class="form-group">
-                            <i class="fas fa-telephone form-icon"></i>
+                            <i class="fas fa-phone form-icon"></i>
                             <input type="tel" name="telephone" id="drivertelephone" class="form-input" placeholder=" " required>
-                            <label class="form-label" for="drivertelephone">Télételephone</label>
+                            <label class="form-label" for="drivertelephone">Téléphone</label>
                         </div>
                     </div>
                     <div class="form-group">
@@ -478,7 +1150,7 @@
                         <label class="form-label" for="driverLicense">Numéro de permis</label>
                     </div>
                     <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary modal-close">Annuler</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('newDriverModal')">Annuler</button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-user-plus"></i>
                             Ajouter le chauffeur
@@ -497,14 +1169,14 @@
                     <i class="fas fa-user" style="color: var(--primary-orange);"></i>
                     Détails du chauffeur
                 </h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" onclick="closeModal('driverDetailsModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div id="driverDetailsContent">
                     <!-- Contenu chargé dynamiquement -->
                 </div>
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary modal-close">Fermer</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('driverDetailsModal')">Fermer</button>
                     <button type="button" class="btn btn-primary" onclick="printDriverCard()">
                         <i class="fas fa-print"></i>
                         Imprimer fiche
@@ -522,7 +1194,7 @@
                     <i class="fas fa-edit" style="color: var(--primary-orange);"></i>
                     Modifier le chauffeur
                 </h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" onclick="closeModal('editDriverModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="editDriverForm">
@@ -530,7 +1202,7 @@
                         <!-- Contenu chargé dynamiquement -->
                     </div>
                     <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary modal-close">Annuler</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('editDriverModal')">Annuler</button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i>
                             Sauvegarder
@@ -549,11 +1221,11 @@
                     <i class="fas fa-user-check" style="color: var(--primary-orange);"></i>
                     Assigner un remplaçant
                 </h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" onclick="closeModal('replacementModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-warning mb-4">
-                    <strong>Remplacement nécessaire :</strong> Pierre Durand absent demain - Ligne C sans chauffeur
+                    <strong>Remplacement nécessaire :</strong> Kaboré Cédric absent demain - Ligne C sans chauffeur
                 </div>
                 <form id="replacementForm">
                     <div class="form-group">
@@ -579,7 +1251,7 @@
                         </div>
                     </div>
                     <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary modal-close">Annuler</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('replacementModal')">Annuler</button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-check"></i>
                             Confirmer l'assignation
@@ -590,8 +1262,92 @@
         </div>
     </div>
 
-    <script src="../assets/js/app.js"></script>
+    <!-- Modal Confirmation Suppression -->
+    <div id="deleteDriverModal" class="modal confirm-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="confirm-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="confirm-title">Confirmer la suppression</h3>
+                <p class="confirm-text">
+                    Êtes-vous sûr de vouloir supprimer le chauffeur "<span id="deleteDriverName"></span>" ?
+                    <br>Cette action est irréversible et supprimera toutes les données associées.
+                </p>
+                <div class="confirm-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('deleteDriverModal')">Annuler</button>
+                    <button class="btn btn-danger" id="confirmDeleteDriverBtn">
+                        <i class="fas fa-trash"></i>
+                        Supprimer définitivement
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Données des chauffeurs
+        const driversData = {
+            'CHA001': {
+                name: 'Ky Laodou',
+                id: 'CHA001',
+                status: 'En service',
+                vehicle: 'BUS001',
+                line: 'Ligne A',
+                hours: '6h 30min',
+                performance: '92%',
+                telephone: '+226 70 12 34 56',
+                email: 'ky.laodou@transport.bf',
+                hireDate: '15/03/2020',
+                license: 'D123456789'
+            },
+            'CHA002': {
+                name: 'Ouédraogo Razack',
+                id: 'CHA002',
+                status: 'En service',
+                vehicle: 'BUS002',
+                line: 'Ligne B',
+                hours: '5h 45min',
+                performance: '88%',
+                telephone: '+226 70 98 76 54',
+                email: 'ouedraogo.razack@transport.bf',
+                hireDate: '22/08/2019',
+                license: 'D987654321'
+            },
+            'CHA003': {
+                name: 'Kaboré Cédric',
+                id: 'CHA003',
+                status: 'En pause',
+                vehicle: '-',
+                line: '-',
+                hours: '4h 15min',
+                performance: '85%',
+                telephone: '+226 70 45 67 89',
+                email: 'kabore.cedric@transport.bf',
+                hireDate: '10/01/2021',
+                license: 'D456789123'
+            }
+        };
+
+        let currentDriverToDelete = null;
+
+        // Gestion des Modaux
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
         // Gestion des onglets
         document.querySelectorAll('.tab-button').forEach(button => {
             button.addEventListener('click', () => {
@@ -604,188 +1360,189 @@
             });
         });
 
-        // Fonctions pour les boutons d'action
-        function openPlanningModal() {
-            showModal('planningModal');
-        }
-
-        function openNewDriverModal() {
-            showModal('newDriverModal');
-        }
-
+        // Fonction pour afficher les détails d'un chauffeur
         function viewDriverDetails(driverId) {
-            const drivers = {
-                'CHA001': {
-                    name: 'Jean Dupont',
-                    id: 'CHA001',
-                    status: 'En service',
-                    vehicle: 'BUS001',
-                    line: 'Ligne A',
-                    hours: '6h 30min',
-                    performance: '92%',
-                    telephone: '+33 6 12 34 56 78',
-                    email: 'jean.dupont@transport.fr',
-                    hireDate: '15/03/2020',
-                    license: 'D123456789'
-                },
-                'CHA002': {
-                    name: 'Marie Martin',
-                    id: 'CHA002',
-                    status: 'En service',
-                    vehicle: 'BUS002',
-                    line: 'Ligne B',
-                    hours: '5h 45min',
-                    performance: '88%',
-                    telephone: '+33 6 98 76 54 32',
-                    email: 'marie.martin@transport.fr',
-                    hireDate: '22/08/2019',
-                    license: 'D987654321'
-                },
-                'CHA003': {
-                    name: 'Pierre Durand',
-                    id: 'CHA003',
-                    status: 'En pause',
-                    vehicle: '-',
-                    line: '-',
-                    hours: '4h 15min',
-                    performance: '85%',
-                    telephone: '+33 6 45 67 89 12',
-                    email: 'pierre.durand@transport.fr',
-                    hireDate: '10/01/2021',
-                    license: 'D456789123'
-                }
-            };
+            const driver = driversData[driverId];
+            if (!driver) return;
 
-            const driver = drivers[driverId];
-            if (driver) {
-                document.getElementById('driverDetailsContent').innerHTML = `
-                    <div class="grid grid-2" style="gap: 16px;">
-                        <div><strong>Nom :</strong> ${driver.name}</div>
-                        <div><strong>ID :</strong> ${driver.id}</div>
-                        <div><strong>Statut :</strong> <span class="badge badge-${driver.status === 'En service' ? 'success' : driver.status === 'En pause' ? 'warning' : 'danger'}">${driver.status}</span></div>
-                        <div><strong>Véhicule assigné :</strong> ${driver.vehicle}</div>
-                        <div><strong>Ligne :</strong> ${driver.line}</div>
-                        <div><strong>Heures travaillées :</strong> ${driver.hours}</div>
-                        <div><strong>Performance :</strong> ${driver.performance}</div>
-                        <div><strong>Télételephone :</strong> ${driver.telephone}</div>
-                        <div><strong>Email :</strong> ${driver.email}</div>
-                        <div><strong>Date d'embauche :</strong> ${driver.hireDate}</div>
-                        <div><strong>Permis :</strong> ${driver.license}</div>
-                    </div>
-                `;
-                showModal('driverDetailsModal');
-            }
+            document.getElementById('driverDetailsContent').innerHTML = `
+                <div class="grid grid-2" style="gap: 16px;">
+                    <div><strong>Nom :</strong> ${driver.name}</div>
+                    <div><strong>ID :</strong> ${driver.id}</div>
+                    <div><strong>Statut :</strong> <span class="badge badge-${driver.status === 'En service' ? 'success' : driver.status === 'En pause' ? 'warning' : 'danger'}">${driver.status}</span></div>
+                    <div><strong>Véhicule assigné :</strong> ${driver.vehicle}</div>
+                    <div><strong>Ligne :</strong> ${driver.line}</div>
+                    <div><strong>Heures travaillées :</strong> ${driver.hours}</div>
+                    <div><strong>Performance :</strong> ${driver.performance}</div>
+                    <div><strong>Téléphone :</strong> ${driver.telephone}</div>
+                    <div><strong>Email :</strong> ${driver.email}</div>
+                    <div><strong>Date d'embauche :</strong> ${driver.hireDate}</div>
+                    <div><strong>Permis :</strong> ${driver.license}</div>
+                </div>
+            `;
+            openModal('driverDetailsModal');
         }
 
+        // Fonction pour éditer un chauffeur
         function editDriver(driverId) {
-            const drivers = {
-                'CHA001': { name: 'Jean Dupont', id: 'CHA001', email: 'jean.dupont@transport.fr', telephone: '+33 6 12 34 56 78' },
-                'CHA002': { name: 'Marie Martin', id: 'CHA002', email: 'marie.martin@transport.fr', telephone: '+33 6 98 76 54 32' },
-                'CHA003': { name: 'Pierre Durand', id: 'CHA003', email: 'pierre.durand@transport.fr', telephone: '+33 6 45 67 89 12' }
-            };
+            const driver = driversData[driverId];
+            if (!driver) return;
 
-            const driver = drivers[driverId];
-            if (driver) {
-                const [prenom, nom] = driver.name.split(' ');
-                document.getElementById('editDriverContent').innerHTML = `
-                    <input type="hidden" name="driverId" value="${driver.id}">
-                    <div class="grid grid-2" style="gap: 16px;">
-                        <div class="form-group">
-                            <i class="fas fa-user form-icon"></i>
-                            <input type="text" name="prenom" class="form-input" value="${prenom}" placeholder=" " required>
-                            <label class="form-label">Prénom</label>
-                        </div>
-                        <div class="form-group">
-                            <i class="fas fa-user form-icon"></i>
-                            <input type="text" name="nom" class="form-input" value="${nom}" placeholder=" " required>
-                            <label class="form-label">Nom</label>
-                        </div>
-                    </div>
-                    <div class="grid grid-2" style="gap: 16px;">
-                        <div class="form-group">
-                            <i class="fas fa-envelope form-icon"></i>
-                            <input type="email" name="email" class="form-input" value="${driver.email}" placeholder=" " required>
-                            <label class="form-label">Email</label>
-                        </div>
-                        <div class="form-group">
-                            <i class="fas fa-telephone form-icon"></i>
-                            <input type="tel" name="telephone" class="form-input" value="${driver.telephone}" placeholder=" " required>
-                            <label class="form-label">Télételephone</label>
-                        </div>
+            const [prenom, nom] = driver.name.split(' ');
+            document.getElementById('editDriverContent').innerHTML = `
+                <input type="hidden" name="driverId" value="${driver.id}">
+                <div class="grid grid-2" style="gap: 16px;">
+                    <div class="form-group">
+                        <i class="fas fa-user form-icon"></i>
+                        <input type="text" name="prenom" class="form-input" value="${prenom}" placeholder=" " required>
+                        <label class="form-label">Prénom</label>
                     </div>
                     <div class="form-group">
-                        <i class="fas fa-toggle-on form-icon"></i>
-                        <select name="status" class="form-input" required>
-                            <option value="Actif">Actif</option>
-                            <option value="En pause">En pause</option>
-                            <option value="Congé">En congé</option>
-                            <option value="Formation">En formation</option>
-                        </select>
-                        <label class="form-label">Statut</label>
+                        <i class="fas fa-user form-icon"></i>
+                        <input type="text" name="nom" class="form-input" value="${nom}" placeholder=" " required>
+                        <label class="form-label">Nom</label>
                     </div>
-                `;
-                showModal('editDriverModal');
-            }
+                </div>
+                <div class="grid grid-2" style="gap: 16px;">
+                    <div class="form-group">
+                        <i class="fas fa-envelope form-icon"></i>
+                        <input type="email" name="email" class="form-input" value="${driver.email}" placeholder=" " required>
+                        <label class="form-label">Email</label>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-phone form-icon"></i>
+                        <input type="tel" name="telephone" class="form-input" value="${driver.telephone}" placeholder=" " required>
+                        <label class="form-label">Téléphone</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-toggle-on form-icon"></i>
+                    <select name="status" class="form-input" required>
+                        <option value="En service" ${driver.status === 'En service' ? 'selected' : ''}>En service</option>
+                        <option value="En pause" ${driver.status === 'En pause' ? 'selected' : ''}>En pause</option>
+                        <option value="Congé" ${driver.status === 'Congé' ? 'selected' : ''}>En congé</option>
+                        <option value="Formation" ${driver.status === 'Formation' ? 'selected' : ''}>En formation</option>
+                    </select>
+                    <label class="form-label">Statut</label>
+                </div>
+            `;
+            openModal('editDriverModal');
         }
 
-        function assignReplacement() {
-            showModal('replacementModal');
+        // Fonction pour supprimer un chauffeur
+        function deleteDriver(driverId, driverName) {
+            currentDriverToDelete = driverId;
+            document.getElementById('deleteDriverName').textContent = driverName;
+            openModal('deleteDriverModal');
         }
 
+        // Fonction pour exporter le planning
         function exportPlanning() {
             showNotification('Planning exporté avec succès !', 'success');
-            hideModal('planningModal');
+            closeModal('planningModal');
         }
 
+        // Fonction pour imprimer la fiche chauffeur
         function printDriverCard() {
             showNotification('Fiche chauffeur envoyée à l\'imprimante', 'success');
         }
 
-        // Gestion des formulaires
-        document.getElementById('newDriverForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showNotification('Nouveau chauffeur ajouté avec succès !', 'success');
-            hideModal('newDriverModal');
-            this.reset();
+        // Fonction de notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Gestion des événements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion des modales avec gestion des clics extérieurs
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+
+            // Gestion du formulaire d'ajout de chauffeur
+            const newDriverForm = document.getElementById('newDriverForm');
+            if (newDriverForm) {
+                newDriverForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const prenom = formData.get('prenom');
+                    const nom = formData.get('nom');
+                    showNotification(`Chauffeur "${prenom} ${nom}" ajouté avec succès !`, 'success');
+                    closeModal('newDriverModal');
+                    this.reset();
+                });
+            }
+
+            // Gestion du formulaire d'édition de chauffeur
+            const editDriverForm = document.getElementById('editDriverForm');
+            if (editDriverForm) {
+                editDriverForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const prenom = formData.get('prenom');
+                    const nom = formData.get('nom');
+                    showNotification(`Chauffeur "${prenom} ${nom}" modifié avec succès !`, 'success');
+                    closeModal('editDriverModal');
+                });
+            }
+
+            // Gestion du formulaire de remplacement
+            const replacementForm = document.getElementById('replacementForm');
+            if (replacementForm) {
+                replacementForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    showNotification('Remplaçant assigné avec succès !', 'success');
+                    closeModal('replacementModal');
+                    this.reset();
+                });
+            }
+
+            // Gestion de la confirmation de suppression
+            const confirmDeleteBtn = document.getElementById('confirmDeleteDriverBtn');
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', function() {
+                    if (currentDriverToDelete) {
+                        const driverName = document.getElementById('deleteDriverName').textContent;
+                        showNotification(`Chauffeur "${driverName}" supprimé avec succès !`, 'success');
+                        closeModal('deleteDriverModal');
+                        currentDriverToDelete = null;
+                    }
+                });
+            }
         });
 
-        document.getElementById('editDriverForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showNotification('Informations du chauffeur mises à jour !', 'success');
-            hideModal('editDriverModal');
-        });
+        // Exposer les fonctions nécessaires globalement
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.viewDriverDetails = viewDriverDetails;
+        window.editDriver = editDriver;
+        window.deleteDriver = deleteDriver;
+        window.exportPlanning = exportPlanning;
+        window.printDriverCard = printDriverCard;
 
-        document.getElementById('replacementForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showNotification('Remplaçant assigné avec succès !', 'success');
-            hideModal('replacementModal');
-            this.reset();
-        });
+        console.log('Scripts de la page chauffeurs initialisés avec succès');
     </script>
-    <style>
-        .tab-button {
-            padding: 12px 24px;
-            border: none;
-            background: none;
-            color: var(--dark-gray);
-            font-weight: 500;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: var(--transition);
-        }
-        
-        .tab-button.active {
-            color: var(--primary-orange);
-            border-bottom-color: var(--primary-orange);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-    </style>
+
 </body>
 </html>

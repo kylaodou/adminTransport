@@ -427,15 +427,7 @@ class AuthForm {
             password: formData.get('password')
         };
 
-        try {
-            // Simulation de l'authentification
-            await this.simulateApiCall('/auth/login', loginData);
-            
-            // Redirection vers le dashboard
-            window.location.href = 'dashboard.html';
-        } catch (error) {
-            this.showError('Email ou mot de passe incorrect');
-        }
+       
     }
 
     async handleRegister(e) {
@@ -595,13 +587,13 @@ class ModalManager {
                 id: 'BUS001',
                 line: 'A',
                 status: 'En service',
-                driver: 'Jean Dupont'
+                driver: 'Ky Laodou'
             },
             'BUS002': {
                 id: 'BUS002',
                 line: 'B',
                 status: 'En service',
-                driver: 'Marie Martin'
+                driver: 'Ouédraogo Razack'
             },
             'BUS003': {
                 id: 'BUS003',
@@ -613,7 +605,7 @@ class ModalManager {
                 id: 'BUS004',
                 line: 'A',
                 status: 'En service',
-                driver: 'Pierre Durand'
+                driver: 'Kaboré Cédric'
             }
         };
 

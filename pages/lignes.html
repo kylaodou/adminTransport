@@ -1,1057 +1,2046 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TransportAdmin - Lignes & Itinéraires</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="../assets/css/style.css" rel="stylesheet">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+        /* Reset et Variables CSS */
+:root {
+    --primary-orange: #ff7900;
+    --primary-black: #1a1a1a;
+    --primary-white: #ffffff;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+textarea{
+    padding-left: 18px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--primary-black);
+    background-color: var(--light-gray);
+}
+
+/* Container et Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+/* Composants de formulaire personnalisés */
+.form-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.form-input, input, select, textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: var(--transition);
+    background-color: var(--primary-white);
+    outline: none;
+}
+
+.form-input:focus, input:focus, select:focus, textarea:focus {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(255, 121, 0, 0.1);
+}
+
+.form-label, label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--primary-black);
+}
+
+/* Boutons */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-orange);
+    color: var(--primary-white);
+}
+
+.btn-primary:hover {
+    background-color: #e56a00;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background-color: var(--primary-white);
+    color: var(--primary-black);
+    border: 2px solid var(--medium-gray);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary-orange);
+    color: var(--primary-orange);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff4757, #ff3838);
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 71, 87, 0.3);
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: var(--primary-black);
+}
+
+.btn-warning:hover {
+    background-color: #ffab00;
+    transform: translateY(-2px);
+}
+
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 18px;
+}
+
+/* Cards */
+.card {
+    background-color: var(--primary-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.card-body {
+    padding: 24px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background-color: var(--primary-orange);
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    transition: var(--transition);
+}
+
+.sidebar-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--medium-gray);
+    color: var(--primary-white);
+}
+
+.sidebar-nav {
+    padding: 16px 0;
+}
+
+.sidebar-nav-item {
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--primary-white);
+    text-decoration: none;
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+}
+
+.sidebar-nav-item:hover,
+.sidebar-nav-item.active {
+    background-color: rgba(255, 255, 255, 0.495);
+    border-left-color: var(--primary-white);
+    color: var(--primary-white);
+}
+
+.sidebar-nav-icon {
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 280px;
+    padding: 24px;
+    background-color: var(--light-gray);
+    min-height: 100vh;
+}
+
+/* Grid System */
+.grid {
+    display: grid;
+    gap: 24px;
+}
+
+.grid-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Stats Cards */
+.stat-card {
+    background: linear-gradient(135deg, var(--primary-orange), #ff9500);
+    color: var(--primary-white);
+    padding: 24px;
+    border-radius: var(--border-radius);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(30px, -30px);
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* Tables */
+.table-container {
+    background-color: var(--primary-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.table th {
+    background-color: var(--light-gray);
+    font-weight: 600;
+    color: var(--primary-black);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255, 121, 0, 0.05);
+}
+
+/* Status badges */
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-success {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.badge-warning {
+    background-color: rgba(251, 191, 36, 0.1);
+    color: #f59e0b;
+}
+
+.badge-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Utilities */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-4 {
+    margin-bottom: 24px;
+}
+
+.mt-4 {
+    margin-top: 24px;
+}
+
+.p-4 {
+    padding: 24px;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.gap-8px {
+    gap: 8px;
+}
+
+.gap-12px {
+    gap: 12px;
+}
+
+.gap-16px {
+    gap: 16px;
+}
+
+/* Styles pour les modaux */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-large {
+    max-width: 95%;
+    width: 1200px;
+}
+
+.modal-header {
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title, .modal-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--primary-black);
+}
+
+.modal-close, .close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--dark-gray);
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover, .close:hover {
+    background: #f5f5f5;
+    color: var(--primary-black);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 16px 24px 24px;
+    border-top: 1px solid var(--medium-gray);
+}
+
+/* Tab styles */
+.tabs {
+    width: 100%;
+}
+
+.tab-buttons {
+    display: flex;
+    border-bottom: 2px solid var(--medium-gray);
+    margin-bottom: 24px;
+}
+
+.tab-button {
+    padding: 12px 24px;
+    border: none;
+    background: none;
+    color: var(--dark-gray);
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: var(--transition);
+}
+
+.tab-button.active {
+    color: var(--primary-orange);
+    border-bottom-color: var(--primary-orange);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Form row */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+/* Checkbox group */
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: normal;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.checkbox-group label:hover {
+    background-color: var(--light-gray);
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-white);
+    border-left: 4px solid var(--primary-orange);
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.success {
+    border-left-color: #22c55e;
+}
+
+.notification.error {
+    border-left-color: #ef4444;
+}
+
+.notification.info {
+    border-left-color: #3b82f6;
+}
+
+/* Confirmation modal styles */
+.confirm-modal .modal-content {
+    max-width: 400px;
+    text-align: center;
+}
+
+.confirm-icon {
+    font-size: 48px;
+    color: #ff4757;
+    margin-bottom: 16px;
+}
+
+.confirm-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-black);
+    margin-bottom: 8px;
+}
+
+.confirm-text {
+    color: var(--dark-gray);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* Styles spéciaux pour cette page */
+.route-card {
+    background: var(--primary-white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    transition: var(--transition);
+}
+
+.route-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.route-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.route-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary-black);
+}
+
+.route-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-orange);
+}
+
+.route-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.route-detail {
+    text-align: center;
+}
+
+.route-detail strong {
+    display: block;
+    color: var(--primary-black);
+    margin-bottom: 4px;
+}
+
+.route-detail span {
+    color: var(--dark-gray);
+    font-size: 14px;
+}
+
+.route-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .route-details {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+  </head>
+  <body>
     <!-- Sidebar -->
     <nav class="sidebar">
-        <div class="sidebar-header">
-            <h2 style=" font-weight: 700;">
-                <i class="fas fa-route"></i>
-                TransportAdmin
-            </h2>
-        </div>
-        <div class="sidebar-nav">
-            <a href="../dashboard.html" class="sidebar-nav-item">
-                <i class="fas fa-home sidebar-nav-icon"></i>
-                <span>Tableau de bord</span>
-            </a>
-            <a href="billetterie.html" class="sidebar-nav-item">
-                <i class="fas fa-ticket-alt sidebar-nav-icon"></i>
-                <span>Billetterie</span>
-            </a>
-            <a href="flotte.html" class="sidebar-nav-item">
-                <i class="fas fa-bus sidebar-nav-icon"></i>
-                <span>Gestion de flotte</span>
-            </a>
-            <a href="lignes.html" class="sidebar-nav-item active">
-                <i class="fas fa-route sidebar-nav-icon"></i>
-                <span>Lignes & Itinéraires</span>
-            </a>
-            <a href="chauffeurs.html" class="sidebar-nav-item">
-                <i class="fas fa-user-tie sidebar-nav-icon"></i>
-                <span>Chauffeurs</span>
-            </a>
-            <a href="signaletique.html" class="sidebar-nav-item">
-                <i class="fas fa-tv sidebar-nav-icon"></i>
-                <span>Signalétique</span>
-            </a>
-            <a href="analytics.html" class="sidebar-nav-item">
-                <i class="fas fa-chart-line sidebar-nav-icon"></i>
-                <span>Analyses & Rapports</span>
-            </a>
-            <a href="maintenance.html" class="sidebar-nav-item">
-                <i class="fas fa-tools sidebar-nav-icon"></i>
-                <span>Maintenance</span>
-            </a>
-            <a href="settings.html" class="sidebar-nav-item">
-                <i class="fas fa-cog sidebar-nav-icon"></i>
-                <span>Paramètres</span>
-            </a>
-        </div>
+      <div class="sidebar-header">
+        <h2 style="font-weight: 700">
+          <i class="fas fa-route"></i>
+          TransportAdmin
+        </h2>
+      </div>
+      <div class="sidebar-nav">
+        <a href="../dashboard.html" class="sidebar-nav-item">
+          <i class="fas fa-home sidebar-nav-icon"></i>
+          <span>Tableau de bord</span>
+        </a>
+        <a href="billetterie.html" class="sidebar-nav-item">
+          <i class="fas fa-ticket-alt sidebar-nav-icon"></i>
+          <span>Billetterie</span>
+        </a>
+        <a href="flotte.html" class="sidebar-nav-item">
+          <i class="fas fa-bus sidebar-nav-icon"></i>
+          <span>Gestion de flotte</span>
+        </a>
+        <a href="lignes.html" class="sidebar-nav-item active">
+          <i class="fas fa-route sidebar-nav-icon"></i>
+          <span>Lignes & Itinéraires</span>
+        </a> 
+        <a href="chauffeurs.html" class="sidebar-nav-item">
+          <i class="fas fa-user-tie sidebar-nav-icon"></i>
+          <span>Chauffeurs</span>
+        </a>
+      </div>
     </nav>
 
     <!-- Contenu principal -->
     <main class="main-content">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-4">
-            <div>
-                <h1 style="font-size: 32px; font-weight: 700; color: var(--primary-black); margin-bottom: 8px;">
-                    Lignes & Itinéraires
-                </h1>
-                <p style="color: var(--dark-gray);">Gestion des parcours et optimisation des trajets</p>
-            </div>
-            <div class="flex items-center gap-16px">
-                <button class="btn btn-secondary" onclick="openMapView()">
-                    <i class="fas fa-map"></i>
-                    Vue cartographique
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h1
+            style="
+              font-size: 32px;
+              font-weight: 700;
+              color: var(--primary-black);
+              margin-bottom: 8px;
+            "
+          >
+            Lignes & Itinéraires
+          </h1>
+          <p style="color: var(--dark-gray)">
+            Gestion des trajets et planification des horaires
+          </p>
+        </div>
+        <div class="flex items-center gap-16px">
+          <button class="btn btn-secondary" onclick="openModal('mapViewModal')">
+            <i class="fas fa-map"></i>
+            Vue cartographique
+          </button>
+          <button class="btn btn-primary" onclick="openModal('newTrajetModal')">
+            <i class="fas fa-plus"></i>
+            Nouveau trajet
+          </button>
+        </div>
+      </div>
+
+      <!-- Statistiques des lignes -->
+      <div class="grid grid-4 mb-4">
+        <div class="stat-card">
+          <div class="stat-value">6</div>
+          <div class="stat-label">
+            <i class="fas fa-route"></i>
+            Trajets actifs
+          </div>
+        </div>
+        <div
+          class="stat-card"
+          style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d)"
+        >
+          <div class="stat-value">24</div>
+          <div class="stat-label">
+            <i class="fas fa-calendar-alt"></i>
+            Plannings aujourd'hui
+          </div>
+        </div>
+        <div
+          class="stat-card"
+          style="background: linear-gradient(135deg, #ff7900, #ff9500)"
+        >
+          <div class="stat-value">87%</div>
+          <div class="stat-label">
+            <i class="fas fa-clock"></i>
+            Ponctualité moyenne
+          </div>
+        </div>
+        <div
+          class="stat-card"
+          style="background: linear-gradient(135deg, #2d2d2d, #1a1a1a)"
+        >
+          <div class="stat-value">156km</div>
+          <div class="stat-label">
+            <i class="fas fa-road"></i>
+            Distance totale
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste des trajets -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-4">
+            <h3 style="display: flex; align-items: center; gap: 8px">
+              <i class="fas fa-route" style="color: var(--primary-orange)"></i>
+              Trajets disponibles
+            </h3>
+          </div>
+
+          <div class="grid grid-2">
+            <!-- Trajet 1 -->
+            <div class="route-card">
+              <div class="route-header">
+                <div class="route-name">Ouagadougou → Bobo-Dioulasso</div>
+                <div class="route-price">4500 FCFA</div>
+              </div>
+              <div class="route-details">
+                <div class="route-detail">
+                  <strong>Départ</strong>
+                  <span>Gare Centrale</span>
+                </div>
+                <div class="route-detail">
+                  <strong>Arrivée</strong>
+                  <span>Gare de Bobo</span>
+                </div>
+                <div class="route-detail">
+                  <strong>Durée</strong>
+                  <span>4h 30min</span>
+                </div>
+              </div>
+              <div class="route-actions">
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="viewTrajetDetails('TJ001')" title="Voir détails">
+                  <i class="fas fa-eye"></i>
                 </button>
-                <button class="btn btn-primary" onclick="openNewLineModal()">
-                    <i class="fas fa-plus"></i>
-                    Nouvelle ligne
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="viewTrajetPlanning('TJ001')" title="Voir planning">
+                  <i class="fas fa-calendar-alt"></i>
                 </button>
-            </div>
-        </div>
-
-        <!-- Statistiques des lignes -->
-        <div class="grid grid-4 mb-4">
-            <div class="stat-card">
-                <div class="stat-value">4</div>
-                <div class="stat-label">
-                    <i class="fas fa-route"></i>
-                    Lignes actives
-                </div>
-            </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d);">
-                <div class="stat-value">45</div>
-                <div class="stat-label">
-                    <i class="fas fa-map-marker-alt"></i>
-                    Arrêts totaux
-                </div>
-            </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #ff7900, #ff9500);">
-                <div class="stat-value">87%</div>
-                <div class="stat-label">
-                    <i class="fas fa-clock"></i>
-                    Ponctualité moyenne
-                </div>
-            </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #2d2d2d, #1a1a1a);">
-                <div class="stat-value">156km</div>
-                <div class="stat-label">
-                    <i class="fas fa-road"></i>
-                    Distance totale
-                </div>
-            </div>
-        </div>
-
-        <!-- Vue d'ensemble des lignes -->
-        <div class="grid grid-2 mb-4">
-            <!-- Ligne A -->
-            <div class="card">
-                <div class="card-body">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <h3 style="color: var(--primary-orange); margin-bottom: 8px;">
-                                <i class="fas fa-circle" style="font-size: 12px; margin-right: 8px;"></i>
-                                Ligne A - Gare ↔ Université
-                            </h3>
-                            <p style="color: var(--dark-gray); font-size: 14px;">12 arrêts • 18.5 km • 45 min</p>
-                        </div>
-                        <div class="flex gap-8px">
-                            <button class="btn btn-secondary" style="padding: 8px;" onclick="editLine('A')" title="Modifier la ligne">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-secondary" style="padding: 8px;" onclick="viewLineOnMap('A')" title="Voir sur la carte">
-                                <i class="fas fa-map"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-3 mb-3">
-                        <div class="text-center">
-                            <div style="font-size: 20px; font-weight: 600; color: var(--primary-orange);">2,340</div>
-                            <div style="font-size: 12px; color: var(--dark-gray);">Passagers/jour</div>
-                        </div>
-                        <div class="text-center">
-                            <div style="font-size: 20px; font-weight: 600; color: #28a745;">92%</div>
-                            <div style="font-size: 12px; color: var(--dark-gray);">Ponctualité</div>
-                        </div>
-                        <div class="text-center">
-                            <div style="font-size: 20px; font-weight: 600; color: var(--primary-black);">4 680 FCFA</div>
-                            <div style="font-size: 12px; color: var(--dark-gray);">Revenus/jour</div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-between items-center mb-2">
-                        <span style="font-size: 14px;">Fréquentation:</span>
-                        <div class="flex items-center gap-8px">
-                            <div style="width: 80px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
-                                <div style="width: 78%; height: 100%; background-color: var(--primary-orange);"></div>
-                            </div>
-                            <span style="font-size: 14px; font-weight: 600;">78%</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-between items-center">
-                        <span style="font-size: 14px;">Prochains départs:</span>
-                        <div style="font-size: 14px; color: var(--primary-orange); font-weight: 600;">15:30, 15:45, 16:00</div>
-                    </div>
-                </div>
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="editTrajet('TJ001')" title="Modifier">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger" style="padding: 8px;" onclick="deleteTrajet('TJ001', 'Ouagadougou → Bobo-Dioulasso')" title="Supprimer">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
             </div>
 
-            <!-- Ligne B -->
-            <div class="card">
-                <div class="card-body">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <h3 style="color: #1a1a1a; margin-bottom: 8px;">
-                                <i class="fas fa-circle" style="font-size: 12px; margin-right: 8px;"></i>
-                                Ligne B - Centre ↔ Aéroport
-                            </h3>
-                            <p style="color: var(--dark-gray); font-size: 14px;">8 arrêts • 22.3 km • 35 min</p>
-                        </div>
-                        <div class="flex gap-8px">
-                            <button class="btn btn-secondary" style="padding: 8px;" onclick="editLine('B')" title="Modifier la ligne">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-secondary" style="padding: 8px;" onclick="viewLineOnMap('B')" title="Voir sur la carte">
-                                <i class="fas fa-map"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-3 mb-3">
-                        <div class="text-center">
-                            <div style="font-size: 20px; font-weight: 600; color: var(--primary-orange);">1,890</div>
-                            <div style="font-size: 12px; color: var(--dark-gray);">Passagers/jour</div>
-                        </div>
-                        <div class="text-center">
-                            <div style="font-size: 20px; font-weight: 600; color: #28a745;">88%</div>
-                            <div style="font-size: 12px; color: var(--dark-gray);">Ponctualité</div>
-                        </div>
-                        <div class="text-center">
-                            <div style="font-size: 20px; font-weight: 600; color: var(--primary-black);">3 780 FCFA</div>
-                            <div style="font-size: 12px; color: var(--dark-gray);">Revenus/jour</div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-between items-center mb-2">
-                        <span style="font-size: 14px;">Fréquentation:</span>
-                        <div class="flex items-center gap-8px">
-                            <div style="width: 80px; height: 6px; background-color: var(--medium-gray); border-radius: 3px; overflow: hidden;">
-                                <div style="width: 63%; height: 100%; background-color: #1a1a1a;"></div>
-                            </div>
-                            <span style="font-size: 14px; font-weight: 600;">63%</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-between items-center">
-                        <span style="font-size: 14px;">Prochains départs:</span>
-                        <div style="font-size: 14px; color: #1a1a1a; font-weight: 600;">15:25, 15:55, 16:25</div>
-                    </div>
+            <!-- Trajet 2 -->
+            <div class="route-card">
+              <div class="route-header">
+                <div class="route-name">Ouagadougou → Koudougou</div>
+                <div class="route-price">2500 FCFA</div>
+              </div>
+              <div class="route-details">
+                <div class="route-detail">
+                  <strong>Départ</strong>
+                  <span>Gare Centrale</span>
                 </div>
+                <div class="route-detail">
+                  <strong>Arrivée</strong>
+                  <span>Gare de Koudougou</span>
+                </div>
+                <div class="route-detail">
+                  <strong>Durée</strong>
+                  <span>2h 15min</span>
+                </div>
+              </div>
+              <div class="route-actions">
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="viewTrajetDetails('TJ002')" title="Voir détails">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="viewTrajetPlanning('TJ002')" title="Voir planning">
+                  <i class="fas fa-calendar-alt"></i>
+                </button>
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="editTrajet('TJ002')" title="Modifier">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger" style="padding: 8px;" onclick="deleteTrajet('TJ002', 'Ouagadougou → Koudougou')" title="Supprimer">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
             </div>
-        </div>
 
-        <!-- Gestion des horaires -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 style="display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-clock" style="color: var(--primary-orange);"></i>
-                        Planification des horaires
-                    </h3>
-                    <button class="btn btn-primary" onclick="openNewScheduleModal()">
-                        <i class="fas fa-plus"></i>
-                        Nouveau planning
-                    </button>
+            <!-- Trajet 3 -->
+            <div class="route-card">
+              <div class="route-header">
+                <div class="route-name">Bobo-Dioulasso → Banfora</div>
+                <div class="route-price">1800 FCFA</div>
+              </div>
+              <div class="route-details">
+                <div class="route-detail">
+                  <strong>Départ</strong>
+                  <span>Gare de Bobo</span>
                 </div>
-                
-                <div class="grid grid-2">
-                    <div>
-                        <h4 style="margin-bottom: 12px;">Horaires Ligne A</h4>
-                        <div class="table-container">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Heure</th>
-                                        <th>Gare Centrale</th>
-                                        <th>Centre Ville</th>
-                                        <th>Université</th>
-                                        <th>Statut</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>15:30</strong></td>
-                                        <td>Départ</td>
-                                        <td>15:45</td>
-                                        <td>16:15</td>
-                                        <td><span class="badge badge-success">À l'heure</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>15:45</strong></td>
-                                        <td>Départ</td>
-                                        <td>16:00</td>
-                                        <td>16:30</td>
-                                        <td><span class="badge badge-warning">Retard 3min</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>16:00</strong></td>
-                                        <td>Départ</td>
-                                        <td>16:15</td>
-                                        <td>16:45</td>
-                                        <td><span class="badge badge-success">Programmé</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h4 style="margin-bottom: 12px;">Optimisations suggérées</h4>
-                        <div class="alert alert-info" style="padding: 16px; background-color: #d1ecf1; border-radius: var(--border-radius); margin-bottom: 12px;">
-                            <h5 style="color: #0c5460; margin-bottom: 8px;">
-                                <i class="fas fa-lightbulb"></i>
-                                Fréquence Ligne A
-                            </h5>
-                            <p style="color: #0c5460; margin: 0; font-size: 14px;">
-                                Augmenter la fréquence entre 16h-18h (+20% de demande détectée)
-                            </p>
-                        </div>
-                        <div class="alert alert-warning" style="padding: 16px; background-color: #fff3cd; border-radius: var(--border-radius); margin-bottom: 12px;">
-                            <h5 style="color: #856404; margin-bottom: 8px;">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                Point de congestion
-                            </h5>
-                            <p style="color: #856404; margin: 0; font-size: 14px;">
-                                Retards fréquents à l'arrêt "Centre Commercial" (avg +4min)
-                            </p>
-                        </div>
-                        <div class="alert alert-success" style="padding: 16px; background-color: #d4edda; border-radius: var(--border-radius);">
-                            <h5 style="color: #155724; margin-bottom: 8px;">
-                                <i class="fas fa-check-circle"></i>
-                                Performance Ligne B
-                            </h5>
-                            <p style="color: #155724; margin: 0; font-size: 14px;">
-                                Excellente ponctualité maintenue sur cette ligne
-                            </p>
-                        </div>
-                    </div>
+                <div class="route-detail">
+                  <strong>Arrivée</strong>
+                  <span>Gare de Banfora</span>
                 </div>
+                <div class="route-detail">
+                  <strong>Durée</strong>
+                  <span>1h 45min</span>
+                </div>
+              </div>
+              <div class="route-actions">
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="viewTrajetDetails('TJ003')" title="Voir détails">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="viewTrajetPlanning('TJ003')" title="Voir planning">
+                  <i class="fas fa-calendar-alt"></i>
+                </button>
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="editTrajet('TJ003')" title="Modifier">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger" style="padding: 8px;" onclick="deleteTrajet('TJ003', 'Bobo-Dioulasso → Banfora')" title="Supprimer">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
             </div>
-        </div>
 
-        <!-- Gestion des arrêts -->
-        <div class="card">
-            <div class="card-body">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 style="display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-map-marker-alt" style="color: var(--primary-orange);"></i>
-                        Gestion des arrêts
-                    </h3>
-                    <button class="btn btn-primary" onclick="openNewStopModal()">
-                        <i class="fas fa-plus"></i>
-                        Nouvel arrêt
-                    </button>
+            <!-- Trajet 4 -->
+            <div class="route-card">
+              <div class="route-header">
+                <div class="route-name">Ouagadougou → Fada N'Gourma</div>
+                <div class="route-price">3200 FCFA</div>
+              </div>
+              <div class="route-details">
+                <div class="route-detail">
+                  <strong>Départ</strong>
+                  <span>Gare Centrale</span>
                 </div>
-                
-                <div class="table-container">
-                    <table class="table data-table">
-                        <thead>
-                            <tr>
-                                <th data-sort="0">Nom de l'arrêt</th>
-                                <th data-sort="1">Lignes</th>
-                                <th data-sort="2">Passagers/jour</th>
-                                <th data-sort="3">Temps d'arrêt moyen</th>
-                                <th data-sort="4">Équipements</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Gare Centrale</strong></td>
-                                <td>
-                                    <span class="badge" style="background-color: var(--primary-orange); color: white; margin-right: 4px;">A</span>
-                                    <span class="badge" style="background-color: #1a1a1a; color: white;">B</span>
-                                </td>
-                                <td>1,245</td>
-                                <td>45 sec</td>
-                                <td>
-                                    <i class="fas fa-tv" title="Écran d'information"></i>
-                                    <i class="fas fa-wheelchair" title="Accessible PMR"></i>
-                                    <i class="fas fa-wifi" title="WiFi"></i>
-                                </td>
-                                <td>
-                                    <div class="flex gap-8px">
-                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="editStop('Gare Centrale')" title="Modifier l'arrêt">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="viewStopAnalytics('Gare Centrale')" title="Voir les statistiques">
-                                            <i class="fas fa-chart-line"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Centre Ville</strong></td>
-                                <td>
-                                    <span class="badge" style="background-color: var(--primary-orange); color: white; margin-right: 4px;">A</span>
-                                    <span class="badge" style="background-color: #1a1a1a; color: white;">B</span>
-                                </td>
-                                <td>987</td>
-                                <td>38 sec</td>
-                                <td>
-                                    <i class="fas fa-tv" title="Écran d'information"></i>
-                                    <i class="fas fa-wheelchair" title="Accessible PMR"></i>
-                                </td>
-                                <td>
-                                    <div class="flex gap-8px">
-                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="editStop('Centre Ville')" title="Modifier l'arrêt">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="viewStopAnalytics('Centre Ville')" title="Voir les statistiques">
-                                            <i class="fas fa-chart-line"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Université</strong></td>
-                                <td>
-                                    <span class="badge" style="background-color: var(--primary-orange); color: white;">A</span>
-                                </td>
-                                <td>856</td>
-                                <td>52 sec</td>
-                                <td>
-                                    <i class="fas fa-tv" title="Écran d'information"></i>
-                                    <i class="fas fa-wifi" title="WiFi"></i>
-                                </td>
-                                <td>
-                                    <div class="flex gap-8px">
-                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="editStop('Université')" title="Modifier l'arrêt">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="viewStopAnalytics('Université')" title="Voir les statistiques">
-                                            <i class="fas fa-chart-line"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="route-detail">
+                  <strong>Arrivée</strong>
+                  <span>Gare de Fada</span>
                 </div>
+                <div class="route-detail">
+                  <strong>Durée</strong>
+                  <span>3h 00min</span>
+                </div>
+              </div>
+              <div class="route-actions">
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="viewTrajetDetails('TJ004')" title="Voir détails">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="viewTrajetPlanning('TJ004')" title="Voir planning">
+                  <i class="fas fa-calendar-alt"></i>
+                </button>
+                <button class="btn btn-secondary" style="padding: 8px;" onclick="editTrajet('TJ004')" title="Modifier">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger" style="padding: 8px;" onclick="deleteTrajet('TJ004', 'Ouagadougou → Fada N\'Gourma')" title="Supprimer">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Gestion des plannings -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-4">
+            <h3 style="display: flex; align-items: center; gap: 8px">
+              <i class="fas fa-clock" style="color: var(--primary-orange)"></i>
+              Plannings d'aujourd'hui
+            </h3>
+            <button class="btn btn-primary" onclick="openModal('newScheduleModal')">
+              <i class="fas fa-plus"></i>
+              Nouveau planning
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Heure</th>
+                  <th>Trajet</th>
+                  <th>Chauffeur</th>
+                  <th>Bus</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>06:00</strong></td>
+                  <td>Ouagadougou → Bobo-Dioulasso</td>
+                  <td>Ky Laodou</td>
+                  <td>BUS001</td>
+                  <td><span class="badge badge-success">Validé</span></td>
+                  <td>
+                    <div class="flex gap-8px">
+                      <button class="btn btn-secondary" style="padding: 8px;" onclick="viewPlanningDetails('PL001')" title="Voir détails">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-secondary" style="padding: 8px;" onclick="editPlanning('PL001')" title="Modifier">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger" style="padding: 8px;" onclick="deletePlanning('PL001', '06:00 - Ouagadougou → Bobo-Dioulasso')" title="Supprimer">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>07:30</strong></td>
+                  <td>Ouagadougou → Koudougou</td>
+                  <td>Ouédraogo Razack</td>
+                  <td>BUS002</td>
+                  <td><span class="badge badge-warning">En retard 15min</span></td>
+                  <td>
+                    <div class="flex gap-8px">
+                      <button class="btn btn-secondary" style="padding: 8px;" onclick="viewPlanningDetails('PL002')" title="Voir détails">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-secondary" style="padding: 8px;" onclick="editPlanning('PL002')" title="Modifier">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger" style="padding: 8px;" onclick="deletePlanning('PL002', '07:30 - Ouagadougou → Koudougou')" title="Supprimer">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>09:00</strong></td>
+                  <td>Bobo-Dioulasso → Banfora</td>
+                  <td>Kaboré Cédric</td>
+                  <td>BUS003</td>
+                  <td><span class="badge badge-success">À l'heure</span></td>
+                  <td>
+                    <div class="flex gap-8px">
+                      <button class="btn btn-secondary" style="padding: 8px;" onclick="viewPlanningDetails('PL003')" title="Voir détails">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-secondary" style="padding: 8px;" onclick="editPlanning('PL003')" title="Modifier">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger" style="padding: 8px;" onclick="deletePlanning('PL003', '09:00 - Bobo-Dioulasso → Banfora')" title="Supprimer">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </main>
 
-    <!-- Modales -->
-    <!-- Modale Nouvelle Ligne -->
-    <div id="newLineModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-plus"></i> Créer une nouvelle ligne</h2>
-                <span class="close" onclick="closeModal('newLineModal')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="newLineForm">
-                    <div class="form-group">
-                        <label for="lineName">Nom de la ligne</label>
-                        <input type="text" id="lineName" name="lineName" placeholder="Ex: Ligne C - Hôpital ↔ Zone Commerciale" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="lineColor">Couleur</label>
-                            <input type="color" id="lineColor" name="lineColor" value="#ff7900">
-                        </div>
-                        <div class="form-group">
-                            <label for="lineType">Type de ligne</label>
-                            <select id="lineType" name="lineType">
-                                <option value="urbaine">Urbaine</option>
-                                <option value="interurbaine">Interurbaine</option>
-                                <option value="express">Express</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="startStop">Arrêt de départ</label>
-                            <input type="text" id="startStop" name="startStop" placeholder="Sélectionner l'arrêt de départ" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="endStop">Arrêt d'arrivée</label>
-                            <input type="text" id="endStop" name="endStop" placeholder="Sélectionner l'arrêt d'arrivée" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="lineDescription">Description</label>
-                        <textarea id="lineDescription" name="lineDescription" rows="3" placeholder="Description de la ligne..."></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('newLineModal')">Annuler</button>
-                <button type="submit" form="newLineForm" class="btn btn-primary">Créer la ligne</button>
-            </div>
+    <!-- Modal Nouveau Trajet -->
+    <div id="newTrajetModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-plus"></i> Créer un nouveau trajet</h2>
+          <span class="close" onclick="closeModal('newTrajetModal')">&times;</span>
         </div>
+        <div class="modal-body">
+          <form id="newTrajetForm">
+            <div class="form-group">
+              <label for="trajetName">Nom du trajet</label>
+              <input
+                type="text"
+                id="trajetName"
+                name="trajetName"
+                placeholder="Ex: Ouagadougou → Bobo-Dioulasso"
+                required
+              />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pointDepart">Point de départ</label>
+                <input
+                  type="text"
+                  id="pointDepart"
+                  name="pointDepart"
+                  placeholder="Ex: Gare Centrale"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="pointArrivee">Point d'arrivée</label>
+                <input
+                  type="text"
+                  id="pointArrivee"
+                  name="pointArrivee"
+                  placeholder="Ex: Gare de Bobo"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="dureeEstime">Durée estimée (minutes)</label>
+                <input
+                  type="number"
+                  id="dureeEstime"
+                  name="dureeEstime"
+                  placeholder="270"
+                  min="30"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="prix">Prix (FCFA)</label>
+                <input
+                  type="number"
+                  id="prix"
+                  name="prix"
+                  placeholder="4500"
+                  min="500"
+                  required
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeModal('newTrajetModal')"
+          >
+            Annuler
+          </button>
+          <button type="submit" form="newTrajetForm" class="btn btn-primary">
+            Créer le trajet
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Modale Édition Ligne -->
-    <div id="editLineModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-edit"></i> Modifier la ligne <span id="editLineName"></span></h2>
-                <span class="close" onclick="closeModal('editLineModal')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="tabs">
-                    <div class="tab-buttons">
-                        <button class="tab-button active" onclick="switchTab('edit-info')">Informations</button>
-                        <button class="tab-button" onclick="switchTab('edit-route')">Itinéraire</button>
-                        <button class="tab-button" onclick="switchTab('edit-schedule')">Horaires</button>
-                        <button class="tab-button" onclick="switchTab('edit-stats')">Statistiques</button>
-                    </div>
-                    
-                    <div id="edit-info" class="tab-content active">
-                        <form id="editLineForm">
-                            <div class="form-group">
-                                <label for="editLineNameInput">Nom de la ligne</label>
-                                <input type="text" id="editLineNameInput" name="lineName" required>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="editLineColor">Couleur</label>
-                                    <input type="color" id="editLineColor" name="lineColor">
-                                </div>
-                                <div class="form-group">
-                                    <label for="editLineStatus">Statut</label>
-                                    <select id="editLineStatus" name="lineStatus">
-                                        <option value="active">Active</option>
-                                        <option value="maintenance">En maintenance</option>
-                                        <option value="suspended">Suspendue</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="editLineDescription">Description</label>
-                                <textarea id="editLineDescription" name="lineDescription" rows="3"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <div id="edit-route" class="tab-content">
-                        <div class="route-editor">
-                            <h4>Itinéraire actuel</h4>
-                            <div id="routeStops" class="route-stops">
-                                <!-- Contenu dynamique -->
-                            </div>
-                            <button type="button" class="btn btn-secondary mt-3" onclick="openRouteEditor()">
-                                <i class="fas fa-map"></i> Modifier l'itinéraire
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="edit-schedule" class="tab-content">
-                        <div class="schedule-editor">
-                            <h4>Horaires de la ligne</h4>
-                            <div class="schedule-grid">
-                                <div class="schedule-day">
-                                    <h5>Lundi - Vendredi</h5>
-                                    <div class="time-slots">
-                                        <span class="time-slot">06:00</span>
-                                        <span class="time-slot">06:30</span>
-                                        <span class="time-slot">07:00</span>
-                                        <span class="time-slot">07:30</span>
-                                    </div>
-                                </div>
-                                <div class="schedule-day">
-                                    <h5>Week-end</h5>
-                                    <div class="time-slots">
-                                        <span class="time-slot">08:00</span>
-                                        <span class="time-slot">09:00</span>
-                                        <span class="time-slot">10:00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-primary mt-3" onclick="editScheduleDetails()">
-                                <i class="fas fa-clock"></i> Modifier les horaires
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="edit-stats" class="tab-content">
-                        <div class="stats-overview">
-                            <div class="grid grid-2">
-                                <div class="stat-item">
-                                    <div class="stat-value" id="linePassengers">0</div>
-                                    <div class="stat-label">Passagers aujourd'hui</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value" id="linePunctuality">0%</div>
-                                    <div class="stat-label">Ponctualité</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value" id="lineRevenue">0 FCFA</div>
-                                    <div class="stat-label">Revenus</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value" id="lineOccupancy">0%</div>
-                                    <div class="stat-label">Taux d'occupation</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editLineModal')">Fermer</button>
-                <button type="submit" form="editLineForm" class="btn btn-primary">Sauvegarder</button>
-            </div>
+    <!-- Modal Édition Trajet -->
+    <div id="editTrajetModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>
+            <i class="fas fa-edit"></i> Modifier le trajet
+            <span id="editTrajetName"></span>
+          </h2>
+          <span class="close" onclick="closeModal('editTrajetModal')">&times;</span>
         </div>
+        <div class="modal-body">
+          <form id="editTrajetForm">
+            <input type="hidden" id="editTrajetId" name="trajetId">
+            <div class="form-group">
+              <label for="editTrajetNameInput">Nom du trajet</label>
+              <input
+                type="text"
+                id="editTrajetNameInput"
+                name="trajetName"
+                required
+              />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editPointDepart">Point de départ</label>
+                <input
+                  type="text"
+                  id="editPointDepart"
+                  name="pointDepart"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editPointArrivee">Point d'arrivée</label>
+                <input
+                  type="text"
+                  id="editPointArrivee"
+                  name="pointArrivee"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editDureeEstime">Durée estimée (minutes)</label>
+                <input
+                  type="number"
+                  id="editDureeEstime"
+                  name="dureeEstime"
+                  min="30"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editPrix">Prix (FCFA)</label>
+                <input
+                  type="number"
+                  id="editPrix"
+                  name="prix"
+                  min="500"
+                  required
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeModal('editTrajetModal')"
+          >
+            Fermer
+          </button>
+          <button type="submit" form="editTrajetForm" class="btn btn-primary">
+            Sauvegarder
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Modale Vue Cartographique -->
-    <div id="mapViewModal" class="modal modal-large">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-map"></i> Vue cartographique des lignes</h2>
-                <span class="close" onclick="closeModal('mapViewModal')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="map-container">
-                    <div id="linesMap" style="height: 400px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                        <div style="text-align: center; color: #666;">
-                            <i class="fas fa-map-marked-alt" style="font-size: 48px; margin-bottom: 16px;"></i>
-                            <p>Carte interactive des lignes</p>
-                            <small>Intégration Google Maps / OpenStreetMap</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="map-controls mt-3">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Afficher les lignes :</label>
-                            <div class="checkbox-group">
-                                <label><input type="checkbox" checked> Ligne A</label>
-                                <label><input type="checkbox" checked> Ligne B</label>
-                                <label><input type="checkbox"> Toutes les lignes</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Informations :</label>
-                            <div class="checkbox-group">
-                                <label><input type="checkbox" checked> Arrêts</label>
-                                <label><input type="checkbox"> Trafic en temps réel</label>
-                                <label><input type="checkbox"> Fréquentation</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('mapViewModal')">Fermer</button>
-                <button type="button" class="btn btn-primary" onclick="exportMap()">Exporter la carte</button>
-            </div>
+    <!-- Modal Détails Trajet -->
+    <div id="trajetDetailsModal" class="modal">
+      <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+          <h2>
+            <i class="fas fa-route"></i> Détails du trajet
+            <span id="detailsTrajetName"></span>
+          </h2>
+          <span class="close" onclick="closeModal('trajetDetailsModal')">&times;</span>
         </div>
+        <div class="modal-body">
+          <div id="trajetDetailsContent">
+            <!-- Contenu chargé dynamiquement -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeModal('trajetDetailsModal')"
+          >
+            Fermer
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="printTrajetInfo()"
+          >
+            <i class="fas fa-print"></i>
+            Imprimer
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Modale Nouveau Planning -->
+    <!-- Modal Planning Trajet -->
+    <div id="trajetPlanningModal" class="modal modal-large">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>
+            <i class="fas fa-calendar-alt"></i> Planning du trajet
+            <span id="planningTrajetName"></span>
+          </h2>
+          <span class="close" onclick="closeModal('trajetPlanningModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="flex justify-between items-center mb-4">
+            <h4>Plannings programmés</h4>
+            <button class="btn btn-primary" onclick="createPlanningForTrajet()">
+              <i class="fas fa-plus"></i>
+              Ajouter un planning
+            </button>
+          </div>
+          <div id="trajetPlanningContent">
+            <!-- Contenu chargé dynamiquement -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeModal('trajetPlanningModal')"
+          >
+            Fermer
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="exportTrajetPlanning()"
+          >
+            <i class="fas fa-download"></i>
+            Exporter planning
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Nouveau Planning -->
     <div id="newScheduleModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-clock"></i> Créer un nouveau planning</h2>
-                <span class="close" onclick="closeModal('newScheduleModal')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="newScheduleForm">
-                    <div class="form-group">
-                        <label for="scheduleLine">Ligne</label>
-                        <select id="scheduleLine" name="scheduleLine" required>
-                            <option value="">Sélectionner une ligne</option>
-                            <option value="A">Ligne A - Gare ↔ Université</option>
-                            <option value="B">Ligne B - Centre ↔ Aéroport</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="scheduleType">Type de planning</label>
-                            <select id="scheduleType" name="scheduleType" required>
-                                <option value="regular">Planning régulier</option>
-                                <option value="weekend">Week-end</option>
-                                <option value="holiday">Jours fériés</option>
-                                <option value="special">Événement spécial</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="scheduleFrequency">Fréquence (minutes)</label>
-                            <input type="number" id="scheduleFrequency" name="scheduleFrequency" min="5" max="60" value="15" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="scheduleStart">Heure de début</label>
-                            <input type="time" id="scheduleStart" name="scheduleStart" value="06:00" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="scheduleEnd">Heure de fin</label>
-                            <input type="time" id="scheduleEnd" name="scheduleEnd" value="22:00" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleDays">Jours d'application</label>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" name="scheduleDays" value="1" checked> Lundi</label>
-                            <label><input type="checkbox" name="scheduleDays" value="2" checked> Mardi</label>
-                            <label><input type="checkbox" name="scheduleDays" value="3" checked> Mercredi</label>
-                            <label><input type="checkbox" name="scheduleDays" value="4" checked> Jeudi</label>
-                            <label><input type="checkbox" name="scheduleDays" value="5" checked> Vendredi</label>
-                            <label><input type="checkbox" name="scheduleDays" value="6"> Samedi</label>
-                            <label><input type="checkbox" name="scheduleDays" value="0"> Dimanche</label>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('newScheduleModal')">Annuler</button>
-                <button type="submit" form="newScheduleForm" class="btn btn-primary">Créer le planning</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-clock"></i> Créer un nouveau planning</h2>
+          <span class="close" onclick="closeModal('newScheduleModal')">&times;</span>
         </div>
+        <div class="modal-body">
+          <form id="newScheduleForm">
+            <div class="form-group">
+              <label for="scheduleDate">Date</label>
+              <input
+                type="date"
+                id="scheduleDate"
+                name="scheduleDate"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="scheduleHeure">Heure de départ</label>
+              <input
+                type="time"
+                id="scheduleHeure"
+                name="scheduleHeure"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="scheduleTrajet">Trajet</label>
+              <select id="scheduleTrajet" name="scheduleTrajet" required>
+                <option value="">Sélectionner un trajet</option>
+                <option value="TJ001">Ouagadougou → Bobo-Dioulasso</option>
+                <option value="TJ002">Ouagadougou → Koudougou</option>
+                <option value="TJ003">Bobo-Dioulasso → Banfora</option>
+                <option value="TJ004">Ouagadougou → Fada N'Gourma</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="scheduleChauffeur">Chauffeur</label>
+                <select id="scheduleChauffeur" name="scheduleChauffeur" required>
+                  <option value="">Sélectionner un chauffeur</option>
+                  <option value="CHA001">Ky Laodou</option>
+                  <option value="CHA002">Ouédraogo Razack</option>
+                  <option value="CHA003">Kaboré Cédric</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="scheduleBus">Bus</label>
+                <select id="scheduleBus" name="scheduleBus" required>
+                  <option value="">Sélectionner un bus</option>
+                  <option value="BUS001">BUS001</option>
+                  <option value="BUS002">BUS002</option>
+                  <option value="BUS003">BUS003</option>
+                  <option value="BUS004">BUS004</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" name="valide" id="scheduleValide" checked>
+                Planning validé
+              </label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeModal('newScheduleModal')"
+          >
+            Annuler
+          </button>
+          <button type="submit" form="newScheduleForm" class="btn btn-primary">
+            Créer le planning
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Modale Nouvel Arrêt -->
-    <div id="newStopModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-map-marker-alt"></i> Créer un nouvel arrêt</h2>
-                <span class="close" onclick="closeModal('newStopModal')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="newStopForm">
-                    <div class="form-group">
-                        <label for="stopName">Nom de l'arrêt</label>
-                        <input type="text" id="stopName" name="stopName" placeholder="Ex: Place de la République" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="stopLatitude">Latitude</label>
-                            <input type="number" id="stopLatitude" name="stopLatitude" step="0.000001" placeholder="45.764043" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="stopLongitude">Longitude</label>
-                            <input type="number" id="stopLongitude" name="stopLongitude" step="0.000001" placeholder="4.835659" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="stopLines">Lignes desservies</label>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" name="stopLines" value="A"> Ligne A</label>
-                            <label><input type="checkbox" name="stopLines" value="B"> Ligne B</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="stopEquipments">Équipements</label>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" name="stopEquipments" value="screen"> Écran d'information</label>
-                            <label><input type="checkbox" name="stopEquipments" value="wheelchair"> Accessible PMR</label>
-                            <label><input type="checkbox" name="stopEquipments" value="wifi"> WiFi</label>
-                            <label><input type="checkbox" name="stopEquipments" value="shelter"> Abri</label>
-                            <label><input type="checkbox" name="stopEquipments" value="bench"> Banc</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="stopNotes">Notes</label>
-                        <textarea id="stopNotes" name="stopNotes" rows="3" placeholder="Informations supplémentaires..."></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('newStopModal')">Annuler</button>
-                <button type="submit" form="newStopForm" class="btn btn-primary">Créer l'arrêt</button>
-            </div>
+    <!-- Modal Édition Planning -->
+    <div id="editPlanningModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>
+            <i class="fas fa-edit"></i> Modifier le planning
+            <span id="editPlanningName"></span>
+          </h2>
+          <span class="close" onclick="closeModal('editPlanningModal')">&times;</span>
         </div>
+        <div class="modal-body">
+          <form id="editPlanningForm">
+            <input type="hidden" id="editPlanningId" name="planningId">
+            <div id="editPlanningContent">
+              <!-- Contenu chargé dynamiquement -->
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeModal('editPlanningModal')"
+          >
+            Fermer
+          </button>
+          <button type="submit" form="editPlanningForm" class="btn btn-primary">
+            Sauvegarder
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Modale Édition Arrêt -->
-    <div id="editStopModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-edit"></i> Modifier l'arrêt <span id="editStopName"></span></h2>
-                <span class="close" onclick="closeModal('editStopModal')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="tabs">
-                    <div class="tab-buttons">
-                        <button class="tab-button active" onclick="switchTab('stop-info')">Informations</button>
-                        <button class="tab-button" onclick="switchTab('stop-equipment')">Équipements</button>
-                        <button class="tab-button" onclick="switchTab('stop-accessibility')">Accessibilité</button>
-                    </div>
-                    
-                    <div id="stop-info" class="tab-content active">
-                        <form id="editStopForm">
-                            <div class="form-group">
-                                <label for="editStopNameInput">Nom de l'arrêt</label>
-                                <input type="text" id="editStopNameInput" name="stopName" required>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="editStopLatitude">Latitude</label>
-                                    <input type="number" id="editStopLatitude" name="stopLatitude" step="0.000001" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editStopLongitude">Longitude</label>
-                                    <input type="number" id="editStopLongitude" name="stopLongitude" step="0.000001" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="editStopStatus">Statut</label>
-                                <select id="editStopStatus" name="stopStatus">
-                                    <option value="active">Actif</option>
-                                    <option value="maintenance">En maintenance</option>
-                                    <option value="suspended">Suspendu</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <div id="stop-equipment" class="tab-content">
-                        <div class="equipment-list">
-                            <h4>Équipements installés</h4>
-                            <div class="checkbox-group">
-                                <label><input type="checkbox" id="equipScreen"> Écran d'information</label>
-                                <label><input type="checkbox" id="equipWifi"> WiFi</label>
-                                <label><input type="checkbox" id="equipShelter"> Abri</label>
-                                <label><input type="checkbox" id="equipBench"> Banc</label>
-                                <label><input type="checkbox" id="equipLighting"> Éclairage</label>
-                                <label><input type="checkbox" id="equipSecurity"> Vidéosurveillance</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="stop-accessibility" class="tab-content">
-                        <div class="accessibility-options">
-                            <h4>Options d'accessibilité</h4>
-                            <div class="checkbox-group">
-                                <label><input type="checkbox" id="accessWheelchair"> Accessible en fauteuil roulant</label>
-                                <label><input type="checkbox" id="accessBlind"> Annonces audio pour malvoyants</label>
-                                <label><input type="checkbox" id="accessLowFloor"> Plancher surbaissé</label>
-                                <label><input type="checkbox" id="accessRamp"> Rampe d'accès</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editStopModal')">Fermer</button>
-                <button type="submit" form="editStopForm" class="btn btn-primary">Sauvegarder</button>
-            </div>
+    <!-- Modal Détails Planning -->
+    <div id="planningDetailsModal" class="modal">
+      <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+          <h2>
+            <i class="fas fa-info-circle"></i> Détails du planning
+            <span id="detailsPlanningName"></span>
+          </h2>
+          <span class="close" onclick="closeModal('planningDetailsModal')">&times;</span>
         </div>
+        <div class="modal-body">
+          <div id="planningDetailsContent">
+            <!-- Contenu chargé dynamiquement -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeModal('planningDetailsModal')"
+          >
+            Fermer
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Modale Statistiques Arrêt -->
-    <div id="stopAnalyticsModal" class="modal modal-large">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-chart-line"></i> Statistiques - <span id="analyticsStopName"></span></h2>
-                <span class="close" onclick="closeModal('stopAnalyticsModal')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="grid grid-3 mb-4">
-                    <div class="stat-card">
-                        <div class="stat-value" id="stopPassengersToday">0</div>
-                        <div class="stat-label">Passagers aujourd'hui</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="stopAverageWait">0 min</div>
-                        <div class="stat-label">Temps d'attente moyen</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="stopBusFrequency">0</div>
-                        <div class="stat-label">Bus par heure</div>
-                    </div>
-                </div>
-                
-                <div class="analytics-chart">
-                    <h4>Affluence par heure</h4>
-                    <div id="stopChart" style="height: 250px; background: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                        <div style="text-align: center; color: #666;">
-                            <i class="fas fa-chart-bar" style="font-size: 48px; margin-bottom: 16px;"></i>
-                            <p>Graphique d'affluence</p>
-                            <small>Données en temps réel</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-2 mt-4">
-                    <div>
-                        <h4>Dernières activités</h4>
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <strong>15:30</strong> - Ligne A - 23 montées, 15 descentes
-                            </div>
-                            <div class="activity-item">
-                                <strong>15:15</strong> - Ligne B - 18 montées, 22 descentes
-                            </div>
-                            <div class="activity-item">
-                                <strong>15:00</strong> - Ligne A - 31 montées, 19 descentes
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <h4>Problèmes signalés</h4>
-                        <div class="issues-list">
-                            <div class="issue-item">
-                                <span class="badge badge-warning">Équipement</span>
-                                Écran d'information en panne
-                            </div>
-                            <div class="issue-item">
-                                <span class="badge badge-info">Entretien</span>
-                                Nettoyage programmé demain 6h
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('stopAnalyticsModal')">Fermer</button>
-                <button type="button" class="btn btn-primary" onclick="exportStopReport()">Exporter le rapport</button>
-            </div>
+    <!-- Modal Vue Cartographique -->
+    <div id="mapViewModal" class="modal modal-large">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-map"></i> Vue cartographique des trajets</h2>
+          <span class="close" onclick="closeModal('mapViewModal')">&times;</span>
         </div>
+        <div class="modal-body">
+          <div class="map-container">
+            <div
+              id="trajetsMap"
+              style="
+                height: 400px;
+                background: #f0f0f0;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div style="text-align: center; color: #666">
+                <i
+                  class="fas fa-map-marked-alt"
+                  style="font-size: 48px; margin-bottom: 16px"
+                ></i>
+                <p>Carte interactive des trajets</p>
+                <small>Intégration Google Maps / OpenStreetMap</small>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 16px;">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Afficher les trajets :</label>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" checked /> Ouagadougou → Bobo-Dioulasso</label>
+                  <label><input type="checkbox" checked /> Ouagadougou → Koudougou</label>
+                  <label><input type="checkbox" /> Tous les trajets</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Informations :</label>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" checked /> Gares</label>
+                  <label><input type="checkbox" /> Trafic en temps réel</label>
+                  <label><input type="checkbox" /> Fréquentation</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeModal('mapViewModal')"
+          >
+            Fermer
+          </button>
+          <button type="button" class="btn btn-primary" onclick="exportMap()">
+            Exporter la carte
+          </button>
+        </div>
+      </div>
     </div>
 
-    <script src="../assets/js/app.js"></script>
+    <!-- Modal Confirmation Suppression Trajet -->
+    <div id="deleteTrajetModal" class="modal confirm-modal">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="confirm-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3 class="confirm-title">Confirmer la suppression</h3>
+          <p class="confirm-text">
+            Êtes-vous sûr de vouloir supprimer le trajet "<span id="deleteTrajetName"></span>" ?
+            <br>Cette action supprimera également tous les plannings associés.
+          </p>
+          <div class="confirm-actions">
+            <button class="btn btn-secondary" onclick="closeModal('deleteTrajetModal')">Annuler</button>
+            <button class="btn btn-danger" id="confirmDeleteTrajetBtn">
+              <i class="fas fa-trash"></i>
+              Supprimer définitivement
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Confirmation Suppression Planning -->
+    <div id="deletePlanningModal" class="modal confirm-modal">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="confirm-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3 class="confirm-title">Confirmer la suppression</h3>
+          <p class="confirm-text">
+            Êtes-vous sûr de vouloir supprimer le planning "<span id="deletePlanningName"></span>" ?
+            <br>Cette action est irréversible.
+          </p>
+          <div class="confirm-actions">
+            <button class="btn btn-secondary" onclick="closeModal('deletePlanningModal')">Annuler</button>
+            <button class="btn btn-danger" id="confirmDeletePlanningBtn">
+              <i class="fas fa-trash"></i>
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
-        // Fonctions spécifiques à la page lignes
-        function openNewLineModal() {
-            document.getElementById('newLineModal').style.display = 'block';
-            showNotification('Création d\'une nouvelle ligne', 'info');
+      // Données des trajets
+      const trajetsData = {
+        'TJ001': {
+          id: 'TJ001',
+          nom: 'Ouagadougou → Bobo-Dioulasso',
+          point_depart: 'Gare Centrale',
+          point_arrivee: 'Gare de Bobo',
+          duree_estime: 270, // en minutes
+          prix: 4500
+        },
+        'TJ002': {
+          id: 'TJ002',
+          nom: 'Ouagadougou → Koudougou',
+          point_depart: 'Gare Centrale',
+          point_arrivee: 'Gare de Koudougou',
+          duree_estime: 135,
+          prix: 2500
+        },
+        'TJ003': {
+          id: 'TJ003',
+          nom: 'Bobo-Dioulasso → Banfora',
+          point_depart: 'Gare de Bobo',
+          point_arrivee: 'Gare de Banfora',
+          duree_estime: 105,
+          prix: 1800
+        },
+        'TJ004': {
+          id: 'TJ004',
+          nom: 'Ouagadougou → Fada N\'Gourma',
+          point_depart: 'Gare Centrale',
+          point_arrivee: 'Gare de Fada',
+          duree_estime: 180,
+          prix: 3200
         }
+      };
 
-        function editLine(lineId) {
-            document.getElementById('editLineModal').style.display = 'block';
-            document.getElementById('editLineName').textContent = lineId;
-            
-            // Simulation du chargement des données de la ligne
-            const lineData = {
-                'A': {
-                    name: 'Ligne A - Gare ↔ Université',
-                    color: '#ff7900',
-                    description: 'Ligne principale desservant le centre-ville',
-                    passengers: '2,340',
-                    punctuality: '92%',
-                    revenue: '4680 FCFA',
-                    occupancy: '78%'
-                },
-                'B': {
-                    name: 'Ligne B - Centre ↔ Aéroport',
-                    color: '#1a1a1a',
-                    description: 'Liaison directe vers l\'aéroport',
-                    passengers: '1,890',
-                    punctuality: '88%',
-                    revenue: '3780 FCFA',
-                    occupancy: '63%'
-                }
-            };
-            
-            const data = lineData[lineId];
-            if (data) {
-                document.getElementById('editLineNameInput').value = data.name;
-                document.getElementById('editLineColor').value = data.color;
-                document.getElementById('editLineDescription').value = data.description;
-                document.getElementById('linePassengers').textContent = data.passengers;
-                document.getElementById('linePunctuality').textContent = data.punctuality;
-                document.getElementById('lineRevenue').textContent = data.revenue;
-                document.getElementById('lineOccupancy').textContent = data.occupancy;
+      // Données des plannings
+      const planningsData = {
+        'PL001': {
+          id: 'PL001',
+          date: '2025-07-03',
+          heure: '06:00',
+          valide: true,
+          chauffeur_id: 'CHA001',
+          bus_id: 'BUS001',
+          trajet_id: 'TJ001'
+        },
+        'PL002': {
+          id: 'PL002',
+          date: '2025-07-03',
+          heure: '07:30',
+          valide: true,
+          chauffeur_id: 'CHA002',
+          bus_id: 'BUS002',
+          trajet_id: 'TJ002'
+        },
+        'PL003': {
+          id: 'PL003',
+          date: '2025-07-03',
+          heure: '09:00',
+          valide: true,
+          chauffeur_id: 'CHA003',
+          bus_id: 'BUS003',
+          trajet_id: 'TJ003'
+        }
+      };
+
+      let currentTrajetToDelete = null;
+      let currentPlanningToDelete = null;
+
+      // Gestion des Modaux
+      function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.add('show');
+          document.body.style.overflow = 'hidden';
+        }
+      }
+
+      function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.remove('show');
+          document.body.style.overflow = 'auto';
+        }
+      }
+
+      // Fonctions pour les trajets
+      function viewTrajetDetails(trajetId) {
+        const trajet = trajetsData[trajetId];
+        if (!trajet) return;
+
+        document.getElementById('detailsTrajetName').textContent = trajet.nom;
+        
+        const heures = Math.floor(trajet.duree_estime / 60);
+        const minutes = trajet.duree_estime % 60;
+        const dureeFormatee = `${heures}h ${minutes}min`;
+
+        document.getElementById('trajetDetailsContent').innerHTML = `
+          <div class="grid grid-2" style="gap: 16px;">
+            <div><strong>ID Trajet :</strong> ${trajet.id}</div>
+            <div><strong>Prix :</strong> ${trajet.prix.toLocaleString()} FCFA</div>
+            <div><strong>Point de départ :</strong> ${trajet.point_depart}</div>
+            <div><strong>Point d'arrivée :</strong> ${trajet.point_arrivee}</div>
+            <div><strong>Durée estimée :</strong> ${dureeFormatee}</div>
+            <div><strong>Distance :</strong> ${Math.round(trajet.duree_estime * 0.8)} km (estimée)</div>
+          </div>
+          <div style="margin-top: 20px;">
+            <h4>Statistiques</h4>
+            <div class="grid grid-3" style="gap: 16px; margin-top: 12px;">
+              <div style="text-align: center; padding: 16px; background: var(--light-gray); border-radius: 8px;">
+                <div style="font-size: 24px; font-weight: 700; color: var(--primary-orange);">12</div>
+                <div style="font-size: 12px; color: var(--dark-gray);">Voyages ce mois</div>
+              </div>
+              <div style="text-align: center; padding: 16px; background: var(--light-gray); border-radius: 8px;">
+                <div style="font-size: 24px; font-weight: 700; color: var(--primary-orange);">89%</div>
+                <div style="font-size: 12px; color: var(--dark-gray);">Taux d'occupation</div>
+              </div>
+              <div style="text-align: center; padding: 16px; background: var(--light-gray); border-radius: 8px;">
+                <div style="font-size: 24px; font-weight: 700; color: var(--primary-orange);">${(trajet.prix * 12 * 0.89).toLocaleString()}</div>
+                <div style="font-size: 12px; color: var(--dark-gray);">Revenus FCFA</div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        openModal('trajetDetailsModal');
+      }
+
+      function viewTrajetPlanning(trajetId) {
+        const trajet = trajetsData[trajetId];
+        if (!trajet) return;
+
+        document.getElementById('planningTrajetName').textContent = trajet.nom;
+        
+        // Filtrer les plannings pour ce trajet
+        const planningsTrajet = Object.values(planningsData).filter(p => p.trajet_id === trajetId);
+        
+        let planningHtml = `
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Heure</th>
+                  <th>Chauffeur</th>
+                  <th>Bus</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        
+        if (planningsTrajet.length === 0) {
+          planningHtml += `
+                <tr>
+                  <td colspan="6" style="text-align: center; color: var(--dark-gray);">
+                    Aucun planning programmé pour ce trajet
+                  </td>
+                </tr>
+          `;
+        } else {
+          planningsTrajet.forEach(planning => {
+            const chauffeur = planning.chauffeur_id === 'CHA001' ? 'Ky Laodou' : 
+                           planning.chauffeur_id === 'CHA002' ? 'Ouédraogo Razack' : 'Kaboré Cédric';
+            planningHtml += `
+                <tr>
+                  <td>${new Date(planning.date).toLocaleDateString('fr-FR')}</td>
+                  <td><strong>${planning.heure}</strong></td>
+                  <td>${chauffeur}</td>
+                  <td>${planning.bus_id}</td>
+                  <td><span class="badge badge-${planning.valide ? 'success' : 'warning'}">${planning.valide ? 'Validé' : 'En attente'}</span></td>
+                  <td>
+                    <div class="flex gap-8px">
+                      <button class="btn btn-secondary" style="padding: 8px;" onclick="editPlanning('${planning.id}')" title="Modifier">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger" style="padding: 8px;" onclick="deletePlanning('${planning.id}', '${planning.heure} - ${trajet.nom}')" title="Supprimer">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+            `;
+          });
+        }
+        
+        planningHtml += `
+              </tbody>
+            </table>
+          </div>
+        `;
+        
+        document.getElementById('trajetPlanningContent').innerHTML = planningHtml;
+        openModal('trajetPlanningModal');
+      }
+
+      function editTrajet(trajetId) {
+        const trajet = trajetsData[trajetId];
+        if (!trajet) return;
+
+        document.getElementById('editTrajetName').textContent = trajet.nom;
+        document.getElementById('editTrajetId').value = trajet.id;
+        document.getElementById('editTrajetNameInput').value = trajet.nom;
+        document.getElementById('editPointDepart').value = trajet.point_depart;
+        document.getElementById('editPointArrivee').value = trajet.point_arrivee;
+        document.getElementById('editDureeEstime').value = trajet.duree_estime;
+        document.getElementById('editPrix').value = trajet.prix;
+
+        openModal('editTrajetModal');
+      }
+
+      function deleteTrajet(trajetId, trajetName) {
+        currentTrajetToDelete = trajetId;
+        document.getElementById('deleteTrajetName').textContent = trajetName;
+        openModal('deleteTrajetModal');
+      }
+
+      // Fonctions pour les plannings
+      function viewPlanningDetails(planningId) {
+        const planning = planningsData[planningId];
+        if (!planning) return;
+
+        const trajet = trajetsData[planning.trajet_id];
+        const chauffeur = planning.chauffeur_id === 'CHA001' ? 'Ky Laodou' : 
+                         planning.chauffeur_id === 'CHA002' ? 'Ouédraogo Razack' : 'Kaboré Cédric';
+
+        document.getElementById('detailsPlanningName').textContent = `${planning.heure} - ${trajet?.nom || 'Trajet inconnu'}`;
+        
+        document.getElementById('planningDetailsContent').innerHTML = `
+          <div class="grid grid-2" style="gap: 16px;">
+            <div><strong>ID Planning :</strong> ${planning.id}</div>
+            <div><strong>Date :</strong> ${new Date(planning.date).toLocaleDateString('fr-FR')}</div>
+            <div><strong>Heure de départ :</strong> ${planning.heure}</div>
+            <div><strong>Statut :</strong> <span class="badge badge-${planning.valide ? 'success' : 'warning'}">${planning.valide ? 'Validé' : 'En attente'}</span></div>
+            <div><strong>Trajet :</strong> ${trajet?.nom || 'Trajet inconnu'}</div>
+            <div><strong>Chauffeur :</strong> ${chauffeur}</div>
+            <div><strong>Bus assigné :</strong> ${planning.bus_id}</div>
+            <div><strong>Durée estimée :</strong> ${trajet ? Math.floor(trajet.duree_estime / 60) + 'h ' + (trajet.duree_estime % 60) + 'min' : 'N/A'}</div>
+          </div>
+          ${trajet ? `
+          <div style="margin-top: 20px;">
+            <h4>Informations du trajet</h4>
+            <div style="padding: 16px; background: var(--light-gray); border-radius: 8px; margin-top: 12px;">
+              <div><strong>Départ :</strong> ${trajet.point_depart}</div>
+              <div><strong>Arrivée :</strong> ${trajet.point_arrivee}</div>
+              <div><strong>Prix :</strong> ${trajet.prix.toLocaleString()} FCFA</div>
+            </div>
+          </div>
+          ` : ''}
+        `;
+        
+        openModal('planningDetailsModal');
+      }
+
+      function editPlanning(planningId) {
+        const planning = planningsData[planningId];
+        if (!planning) return;
+
+        const trajet = trajetsData[planning.trajet_id];
+        document.getElementById('editPlanningName').textContent = `${planning.heure} - ${trajet?.nom || 'Trajet inconnu'}`;
+        document.getElementById('editPlanningId').value = planning.id;
+        
+        document.getElementById('editPlanningContent').innerHTML = `
+          <div class="form-group">
+            <label for="editScheduleDate">Date</label>
+            <input
+              type="date"
+              id="editScheduleDate"
+              name="scheduleDate"
+              value="${planning.date}"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editScheduleHeure">Heure de départ</label>
+            <input
+              type="time"
+              id="editScheduleHeure"
+              name="scheduleHeure"
+              value="${planning.heure}"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editScheduleTrajet">Trajet</label>
+            <select id="editScheduleTrajet" name="scheduleTrajet" required>
+              <option value="TJ001" ${planning.trajet_id === 'TJ001' ? 'selected' : ''}>Ouagadougou → Bobo-Dioulasso</option>
+              <option value="TJ002" ${planning.trajet_id === 'TJ002' ? 'selected' : ''}>Ouagadougou → Koudougou</option>
+              <option value="TJ003" ${planning.trajet_id === 'TJ003' ? 'selected' : ''}>Bobo-Dioulasso → Banfora</option>
+              <option value="TJ004" ${planning.trajet_id === 'TJ004' ? 'selected' : ''}>Ouagadougou → Fada N'Gourma</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editScheduleChauffeur">Chauffeur</label>
+              <select id="editScheduleChauffeur" name="scheduleChauffeur" required>
+                <option value="CHA001" ${planning.chauffeur_id === 'CHA001' ? 'selected' : ''}>Ky Laodou</option>
+                <option value="CHA002" ${planning.chauffeur_id === 'CHA002' ? 'selected' : ''}>Ouédraogo Razack</option>
+                <option value="CHA003" ${planning.chauffeur_id === 'CHA003' ? 'selected' : ''}>Kaboré Cédric</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editScheduleBus">Bus</label>
+              <select id="editScheduleBus" name="scheduleBus" required>
+                <option value="BUS001" ${planning.bus_id === 'BUS001' ? 'selected' : ''}>BUS001</option>
+                <option value="BUS002" ${planning.bus_id === 'BUS002' ? 'selected' : ''}>BUS002</option>
+                <option value="BUS003" ${planning.bus_id === 'BUS003' ? 'selected' : ''}>BUS003</option>
+                <option value="BUS004" ${planning.bus_id === 'BUS004' ? 'selected' : ''}>BUS004</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" name="valide" id="editScheduleValide" ${planning.valide ? 'checked' : ''}>
+              Planning validé
+            </label>
+          </div>
+        `;
+
+        openModal('editPlanningModal');
+      }
+
+      function deletePlanning(planningId, planningName) {
+        currentPlanningToDelete = planningId;
+        document.getElementById('deletePlanningName').textContent = planningName;
+        openModal('deletePlanningModal');
+      }
+
+      // Fonctions utilitaires
+      function createPlanningForTrajet() {
+        closeModal('trajetPlanningModal');
+        openModal('newScheduleModal');
+      }
+
+      function exportTrajetPlanning() {
+        showNotification('Planning du trajet exporté avec succès !', 'success');
+      }
+
+      function printTrajetInfo() {
+        showNotification('Informations du trajet envoyées à l\'imprimante', 'success');
+      }
+
+      function exportMap() {
+        showNotification('Export de la carte en cours...', 'info');
+        setTimeout(() => {
+          showNotification('Carte exportée avec succès !', 'success');
+        }, 2000);
+      }
+
+      // Fonction de notification
+      function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+          <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+          <span>${message}</span>
+        `;
+        
+        document.body.appendChild(notification);
+        setTimeout(() => notification.classList.add('show'), 100);
+        
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
             }
-            
-            showNotification(`Édition de la ligne ${lineId}`, 'info');
-        }
+          }, 300);
+        }, 4000);
+      }
 
-        function viewLineOnMap(lineId) {
-            document.getElementById('mapViewModal').style.display = 'block';
-            showNotification(`Affichage de la ligne ${lineId} sur la carte`, 'success');
-        }
+      // Gestion des événements
+      document.addEventListener('DOMContentLoaded', function() {
+        // Définir la date d'aujourd'hui par défaut
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('scheduleDate').value = today;
 
-        function openMapView() {
-            document.getElementById('mapViewModal').style.display = 'block';
-            showNotification('Vue cartographique ouverte', 'info');
-        }
-
-        function openNewScheduleModal() {
-            document.getElementById('newScheduleModal').style.display = 'block';
-            showNotification('Création d\'un nouveau planning', 'info');
-        }
-
-        function openNewStopModal() {
-            document.getElementById('newStopModal').style.display = 'block';
-            showNotification('Création d\'un nouvel arrêt', 'info');
-        }
-
-        function editStop(stopName) {
-            document.getElementById('editStopModal').style.display = 'block';
-            document.getElementById('editStopName').textContent = stopName;
-            document.getElementById('editStopNameInput').value = stopName;
-            
-            // Simulation du chargement des données de l'arrêt
-            const stopData = {
-                'Gare Centrale': { lat: 45.764043, lng: 4.835659 },
-                'Centre Ville': { lat: 45.758570, lng: 4.841225 },
-                'Université': { lat: 45.779340, lng: 4.874444 }
-            };
-            
-            const data = stopData[stopName];
-            if (data) {
-                document.getElementById('editStopLatitude').value = data.lat;
-                document.getElementById('editStopLongitude').value = data.lng;
+        // Gestion des modales avec gestion des clics extérieurs
+        document.querySelectorAll('.modal').forEach(modal => {
+          modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+              closeModal(modal.id);
             }
-            
-            showNotification(`Édition de l'arrêt ${stopName}`, 'info');
-        }
-
-        function viewStopAnalytics(stopName) {
-            document.getElementById('stopAnalyticsModal').style.display = 'block';
-            document.getElementById('analyticsStopName').textContent = stopName;
-            
-            // Simulation des données analytiques
-            const analyticsData = {
-                'Gare Centrale': { passengers: 1245, wait: 3, frequency: 8 },
-                'Centre Ville': { passengers: 987, wait: 4, frequency: 6 },
-                'Université': { passengers: 856, wait: 5, frequency: 4 }
-            };
-            
-            const data = analyticsData[stopName];
-            if (data) {
-                document.getElementById('stopPassengersToday').textContent = data.passengers;
-                document.getElementById('stopAverageWait').textContent = data.wait + ' min';
-                document.getElementById('stopBusFrequency').textContent = data.frequency;
-            }
-            
-            showNotification(`Statistiques de l'arrêt ${stopName}`, 'success');
-        }
-
-        function openRouteEditor() {
-            showNotification('Ouverture de l\'éditeur d\'itinéraire', 'info');
-            // Ici on pourrait ouvrir un éditeur de carte plus sophistiqué
-        }
-
-        function editScheduleDetails() {
-            showNotification('Édition des horaires détaillés', 'info');
-            // Ici on pourrait ouvrir un éditeur d'horaires plus sophistiqué
-        }
-
-        function exportMap() {
-            showNotification('Export de la carte en cours...', 'success');
-            setTimeout(() => {
-                showNotification('Carte exportée avec succès !', 'success');
-            }, 2000);
-        }
-
-        function exportStopReport() {
-            showNotification('Export du rapport en cours...', 'success');
-            setTimeout(() => {
-                showNotification('Rapport exporté avec succès !', 'success');
-            }, 2000);
-        }
-
-        // Gestion des formulaires
-        document.getElementById('newLineForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showNotification('Nouvelle ligne créée avec succès !', 'success');
-            closeModal('newLineModal');
-            setTimeout(() => {
-                location.reload(); // Simulation du rechargement avec les nouvelles données
-            }, 1500);
+          });
         });
 
-        document.getElementById('editLineForm').addEventListener('submit', function(e) {
+        // Gestion du formulaire de nouveau trajet
+        const newTrajetForm = document.getElementById('newTrajetForm');
+        if (newTrajetForm) {
+          newTrajetForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            showNotification('Ligne modifiée avec succès !', 'success');
-            closeModal('editLineModal');
-        });
+            const formData = new FormData(e.target);
+            const trajetName = formData.get('trajetName');
+            showNotification(`Trajet "${trajetName}" créé avec succès !`, 'success');
+            closeModal('newTrajetModal');
+            this.reset();
+          });
+        }
 
-        document.getElementById('newScheduleForm').addEventListener('submit', function(e) {
+        // Gestion du formulaire d'édition de trajet
+        const editTrajetForm = document.getElementById('editTrajetForm');
+        if (editTrajetForm) {
+          editTrajetForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            showNotification('Planning créé avec succès !', 'success');
+            const formData = new FormData(e.target);
+            const trajetName = formData.get('trajetName');
+            showNotification(`Trajet "${trajetName}" modifié avec succès !`, 'success');
+            closeModal('editTrajetModal');
+          });
+        }
+
+        // Gestion du formulaire de nouveau planning
+        const newScheduleForm = document.getElementById('newScheduleForm');
+        if (newScheduleForm) {
+          newScheduleForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const heure = formData.get('scheduleHeure');
+            const date = formData.get('scheduleDate');
+            showNotification(`Planning créé pour le ${new Date(date).toLocaleDateString('fr-FR')} à ${heure}`, 'success');
             closeModal('newScheduleModal');
-        });
+            this.reset();
+            // Remettre la date d'aujourd'hui
+            document.getElementById('scheduleDate').value = today;
+          });
+        }
 
-        document.getElementById('newStopForm').addEventListener('submit', function(e) {
+        // Gestion du formulaire d'édition de planning
+        const editPlanningForm = document.getElementById('editPlanningForm');
+        if (editPlanningForm) {
+          editPlanningForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            showNotification('Arrêt créé avec succès !', 'success');
-            closeModal('newStopModal');
-        });
+            showNotification('Planning modifié avec succès !', 'success');
+            closeModal('editPlanningModal');
+          });
+        }
 
-        document.getElementById('editStopForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showNotification('Arrêt modifié avec succès !', 'success');
-            closeModal('editStopModal');
-        });
+        // Gestion de la confirmation de suppression de trajet
+        const confirmDeleteTrajetBtn = document.getElementById('confirmDeleteTrajetBtn');
+        if (confirmDeleteTrajetBtn) {
+          confirmDeleteTrajetBtn.addEventListener('click', function() {
+            if (currentTrajetToDelete) {
+              const trajetName = document.getElementById('deleteTrajetName').textContent;
+              showNotification(`Trajet "${trajetName}" supprimé avec succès !`, 'success');
+              closeModal('deleteTrajetModal');
+              currentTrajetToDelete = null;
+            }
+          });
+        }
+
+        // Gestion de la confirmation de suppression de planning
+        const confirmDeletePlanningBtn = document.getElementById('confirmDeletePlanningBtn');
+        if (confirmDeletePlanningBtn) {
+          confirmDeletePlanningBtn.addEventListener('click', function() {
+            if (currentPlanningToDelete) {
+              const planningName = document.getElementById('deletePlanningName').textContent;
+              showNotification(`Planning "${planningName}" supprimé avec succès !`, 'success');
+              closeModal('deletePlanningModal');
+              currentPlanningToDelete = null;
+            }
+          });
+        }
+      });
+
+      // Exposer les fonctions nécessaires globalement
+      window.openModal = openModal;
+      window.closeModal = closeModal;
+      window.viewTrajetDetails = viewTrajetDetails;
+      window.viewTrajetPlanning = viewTrajetPlanning;
+      window.editTrajet = editTrajet;
+      window.deleteTrajet = deleteTrajet;
+      window.viewPlanningDetails = viewPlanningDetails;
+      window.editPlanning = editPlanning;
+      window.deletePlanning = deletePlanning;
+      window.createPlanningForTrajet = createPlanningForTrajet;
+      window.exportTrajetPlanning = exportTrajetPlanning;
+      window.printTrajetInfo = printTrajetInfo;
+      window.exportMap = exportMap;
+
+      console.log('Scripts de la page lignes & itinéraires initialisés avec succès');
     </script>
-</body>
+  </body>
 </html>

@@ -6,7 +6,890 @@
     <title>TransportAdmin - Gestion de Flotte</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="../assets/css/style.css" rel="stylesheet">
+    <style>
+        /* Reset et Variables CSS */
+:root {
+    --primary-orange: #ff7900;
+    --primary-black: #1a1a1a;
+    --primary-white: #ffffff;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+textarea{
+    padding-left: 18px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--primary-black);
+    background-color: var(--light-gray);
+}
+
+/* Container et Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+/* Composants de formulaire personnalisés */
+.form-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 16px 16px 16px 48px;
+    border: 2px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: var(--transition);
+    background-color: var(--primary-white);
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(255, 121, 0, 0.1);
+}
+
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) + .form-label {
+    transform: translateY(-26px) scale(0.85);
+    color: var(--primary-orange);
+    font-weight: 600;
+}
+input {
+    padding-left: 60px !important;
+}
+
+.form-label {
+    position: absolute;
+    left: 48px;
+    top: 8px;
+    font-size: 16px;
+    color: var(--dark-gray);
+    transition: var(--transition);
+    pointer-events: none;
+    background-color: var(--primary-white);
+    padding: 0 8px;
+}
+
+.form-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dark-gray);
+    font-size: 20px;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus ~ .form-icon {
+    color: var(--primary-orange);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Boutons */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-orange);
+    color: var(--primary-white);
+}
+
+.btn-primary:hover {
+    background-color: #e56a00;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background-color: var(--primary-white);
+    color: var(--primary-black);
+    border: 2px solid var(--medium-gray);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary-orange);
+    color: var(--primary-orange);
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: var(--primary-black);
+}
+
+.btn-warning:hover {
+    background-color: #ffab00;
+    transform: translateY(-2px);
+}
+
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 18px;
+}
+
+/* Cards */
+.card {
+    background-color: var(--primary-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.card-body {
+    padding: 24px;
+}
+
+/* Navigation */
+.navbar {
+    background-color: var(--primary-white);
+    box-shadow: var(--shadow);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-orange);
+    text-decoration: none;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+}
+
+.nav-link {
+    color: var(--primary-black);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-orange);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--primary-orange);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background-color: var(--primary-orange);
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    transition: var(--transition);
+}
+
+.sidebar-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.sidebar-header a {
+    color:var(--primary-white);
+}
+
+.sidebar-nav {
+    padding: 16px 0;
+}
+
+.sidebar-nav-item {
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--primary-white);
+    text-decoration: none;
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+}
+
+.sidebar-nav-item:hover,
+.sidebar-nav-item.active {
+    background-color: rgba(255, 255, 255, 0.495);
+    border-left-color: var(--primary-white);
+    color: var(--primary-white);
+}
+
+.sidebar-nav-icon {
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 280px;
+    padding: 24px;
+    background-color: var(--light-gray);
+    min-height: 100vh;
+}
+
+/* Grid System */
+.grid {
+    display: grid;
+    gap: 24px;
+}
+
+.grid-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Stats Cards */
+.stat-card {
+    background: linear-gradient(135deg, var(--primary-orange), #ff9500);
+    color: var(--primary-white);
+    padding: 24px;
+    border-radius: var(--border-radius);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(30px, -30px);
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* Tables */
+.table-container {
+    background-color: var(--primary-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.table th {
+    background-color: var(--light-gray);
+    font-weight: 600;
+    color: var(--primary-black);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255, 121, 0, 0.05);
+}
+
+/* Status badges */
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-success {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.badge-warning {
+    background-color: rgba(251, 191, 36, 0.1);
+    color: #f59e0b;
+}
+
+.badge-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Utilities */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-4 {
+    margin-bottom: 24px;
+}
+
+.mt-4 {
+    margin-top: 24px;
+}
+
+.p-4 {
+    padding: 24px;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.gap-8px {
+    gap: 8px;
+}
+
+.gap-16px {
+    gap: 16px;
+}
+
+.text-success {
+    color: #22c55e;
+}
+
+.text-warning {
+    color: #f59e0b;
+}
+
+/* Styles pour les modaux */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-large {
+    max-width: 95%;
+    width: 1200px;
+}
+
+.modal-header {
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--primary-black);
+}
+
+.modal-close, .close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--dark-gray);
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover, .close:hover {
+    background: #f5f5f5;
+    color: var(--primary-black);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--medium-gray);
+}
+
+/* Tab styles */
+.tabs {
+    width: 100%;
+}
+
+.tab-nav {
+    display: flex;
+    border-bottom: 2px solid var(--medium-gray);
+    margin-bottom: 24px;
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    border: none;
+    background: none;
+    color: var(--dark-gray);
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: var(--transition);
+}
+
+.tab-btn.active {
+    color: var(--primary-orange);
+    border-bottom-color: var(--primary-orange);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Bus visualization styles */
+.bus-view-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    padding: 20px;
+}
+
+.bus-visualization {
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: 20px;
+}
+
+.bus-top-view {
+    background: var(--primary-white);
+    border: 2px solid var(--medium-gray);
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.bus-driver-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: var(--primary-orange);
+    color: var(--primary-white);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.bus-seats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.seat-row {
+    display: grid;
+    grid-template-columns: 1fr 20px 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+}
+
+.seat {
+    width: 40px;
+    height: 35px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.seat.occupied {
+    background-color: #dc3545;
+    color: var(--primary-white);
+}
+
+.seat.available {
+    background-color: #28a745;
+    color: var(--primary-white);
+}
+
+.seat.reserved {
+    background-color: #ffc107;
+    color: var(--primary-black);
+}
+
+.seat:hover {
+    transform: scale(1.1);
+    border-color: var(--primary-orange);
+}
+
+.aisle {
+    height: 2px;
+    background-color: var(--medium-gray);
+    border-radius: 1px;
+}
+
+.bus-rear-area {
+    margin-top: 16px;
+    padding: 12px;
+    background: var(--light-gray);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.standing-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--dark-gray);
+}
+
+.seat-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    justify-content: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+}
+
+.legend-item .seat {
+    width: 20px;
+    height: 18px;
+    font-size: 8px;
+}
+
+.bus-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stat-box {
+    background: var(--primary-white);
+    padding: 16px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.stat-box h4 {
+    font-size: 12px;
+    color: var(--dark-gray);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.big-stat {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-orange);
+    margin-bottom: 4px;
+}
+
+.stat-box small {
+    font-size: 11px;
+    color: var(--dark-gray);
+}
+
+/* Vehicle location styles */
+.vehicle-location-info {
+    margin-bottom: 16px;
+}
+
+.map-placeholder {
+    height: 300px;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dark-gray);
+    position: relative;
+}
+
+.vehicle-marker {
+    cursor: pointer;
+    position: relative;
+}
+
+.vehicle-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-black);
+    color: var(--primary-white);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 1000;
+}
+
+.vehicle-marker:hover .vehicle-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-white);
+    border-left: 4px solid var(--primary-orange);
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.success {
+    border-left-color: #22c55e;
+}
+
+.notification.error {
+    border-left-color: #ef4444;
+}
+
+.notification.info {
+    border-left-color: #3b82f6;
+}
+
+/* Confirmation modal styles */
+.confirm-modal .modal-content {
+    max-width: 400px;
+    text-align: center;
+}
+
+.confirm-icon {
+    font-size: 48px;
+    color: #ff4757;
+    margin-bottom: 16px;
+}
+
+.confirm-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-black);
+    margin-bottom: 8px;
+}
+
+.confirm-text {
+    color: var(--dark-gray);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translate3d(0,0,0);
+    }
+    40%, 43% {
+        transform: translate3d(0, -15px, 0);
+    }
+    70% {
+        transform: translate3d(0, -7px, 0);
+    }
+    90% {
+        transform: translate3d(0, -3px, 0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bus-view-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .seat-row {
+        grid-template-columns: 1fr 10px 1fr 1fr;
+        gap: 4px;
+    }
+    
+    .seat {
+        width: 30px;
+        height: 25px;
+        font-size: 8px;
+    }
+}
+    </style>
 </head>
 <body>
     <!-- Sidebar -->
@@ -35,26 +918,10 @@
             <a href="lignes.html" class="sidebar-nav-item">
                 <i class="fas fa-route sidebar-nav-icon"></i>
                 <span>Lignes & Itinéraires</span>
-            </a>
+            </a> 
             <a href="chauffeurs.html" class="sidebar-nav-item">
                 <i class="fas fa-user-tie sidebar-nav-icon"></i>
                 <span>Chauffeurs</span>
-            </a>
-            <a href="signaletique.html" class="sidebar-nav-item">
-                <i class="fas fa-tv sidebar-nav-icon"></i>
-                <span>Signalétique</span>
-            </a>
-            <a href="analytics.html" class="sidebar-nav-item">
-                <i class="fas fa-chart-line sidebar-nav-icon"></i>
-                <span>Analyses & Rapports</span>
-            </a>
-            <a href="maintenance.html" class="sidebar-nav-item">
-                <i class="fas fa-tools sidebar-nav-icon"></i>
-                <span>Maintenance</span>
-            </a>
-            <a href="settings.html" class="sidebar-nav-item">
-                <i class="fas fa-cog sidebar-nav-icon"></i>
-                <span>Paramètres</span>
             </a>
         </div>
     </nav>
@@ -70,11 +937,11 @@
                 <p style="color: var(--dark-gray);">Suivi en temps réel et gestion de vos véhicules</p>
             </div>
             <div class="flex items-center gap-16px">
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary" onclick="openRealtimeMap()">
                     <i class="fas fa-map-marked-alt"></i>
                     Carte en temps réel
                 </button>
-                <button class="btn btn-primary" id="addVehicleBtn" data-modal="addVehicleModal">
+                <button class="btn btn-primary" onclick="openModal('addVehicleModal')">
                     <i class="fas fa-plus"></i>
                     Ajouter un véhicule
                 </button>
@@ -178,7 +1045,7 @@
                                 <td><strong>BUS001</strong></td>
                                 <td><span class="badge" style="background-color: var(--primary-orange); color: white;">Ligne A</span></td>
                                 <td><span class="badge badge-success">En service</span></td>
-                                <td>Jean Dupont</td>
+                                <td>Ky Laodou</td>
                                 <td>
                                     <div class="flex items-center gap-8px">
                                         <div style="width: 60px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
@@ -210,7 +1077,7 @@
                                 <td><strong>BUS002</strong></td>
                                 <td><span class="badge" style="background-color: #1a1a1a; color: white;">Ligne B</span></td>
                                 <td><span class="badge badge-success">En service</span></td>
-                                <td>Marie Martin</td>
+                                <td>Ouédraogo Razack</td>
                                 <td>
                                     <div class="flex items-center gap-8px">
                                         <div style="width: 60px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
@@ -223,11 +1090,17 @@
                                 <td>89,234 km</td>
                                 <td>
                                     <div class="flex gap-8px">
-                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="vehicleLocationModal" data-vehicle="BUS002" title="Voir la position">
+                                        <button class="btn btn-primary" style="padding: 8px;" onclick="viewBusDetails('BUS002')" title="Voir le bus">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="viewVehicleLocation('BUS002')" title="Voir la position">
                                             <i class="fas fa-map-marker-alt"></i>
                                         </button>
-                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="editVehicleModal" data-vehicle="BUS002" title="Modifier">
+                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="editVehicle('BUS002')" title="Modifier">
                                             <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-warning" style="padding: 8px;" onclick="scheduleVehicleMaintenance('BUS002')" title="Maintenance">
+                                            <i class="fas fa-tools"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -249,11 +1122,17 @@
                                 <td>156,789 km</td>
                                 <td>
                                     <div class="flex gap-8px">
-                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="maintenanceModal" data-vehicle="BUS003" title="Voir maintenance">
-                                            <i class="fas fa-tools"></i>
+                                        <button class="btn btn-primary" style="padding: 8px;" onclick="viewBusDetails('BUS003')" title="Voir le bus">
+                                            <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="editVehicleModal" data-vehicle="BUS003" title="Modifier">
+                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="viewVehicleLocation('BUS003')" title="Voir la position">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="editVehicle('BUS003')" title="Modifier">
                                             <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-warning" style="padding: 8px;" onclick="viewMaintenanceDetails('BUS003')" title="Voir maintenance">
+                                            <i class="fas fa-tools"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -262,7 +1141,7 @@
                                 <td><strong>BUS004</strong></td>
                                 <td><span class="badge" style="background-color: var(--primary-orange); color: white;">Ligne A</span></td>
                                 <td><span class="badge badge-success">En service</span></td>
-                                <td>Pierre Durand</td>
+                                <td>Kaboré Cédric</td>
                                 <td>
                                     <div class="flex items-center gap-8px">
                                         <div style="width: 60px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
@@ -275,11 +1154,17 @@
                                 <td>98,456 km</td>
                                 <td>
                                     <div class="flex gap-8px">
-                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="vehicleLocationModal" data-vehicle="BUS004" title="Voir la position">
+                                        <button class="btn btn-primary" style="padding: 8px;" onclick="viewBusDetails('BUS004')" title="Voir le bus">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="viewVehicleLocation('BUS004')" title="Voir la position">
                                             <i class="fas fa-map-marker-alt"></i>
                                         </button>
-                                        <button class="btn btn-secondary" style="padding: 8px;" data-modal="editVehicleModal" data-vehicle="BUS004" title="Modifier">
+                                        <button class="btn btn-secondary" style="padding: 8px;" onclick="editVehicle('BUS004')" title="Modifier">
                                             <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-warning" style="padding: 8px;" onclick="scheduleVehicleMaintenance('BUS004')" title="Maintenance">
+                                            <i class="fas fa-tools"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -290,85 +1175,8 @@
             </div>
         </div>
 
-        <!-- Alertes et maintenance -->
-        <div class="grid grid-2">
-            <div class="card">
-                <div class="card-body">
-                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-exclamation-triangle" style="color: var(--primary-orange);"></i>
-                        Alertes véhicules
-                    </h3>
-                    <div class="alert alert-warning" style="padding: 16px; background-color: #fff3cd; border-left: 4px solid #ffc107; border-radius: var(--border-radius); margin-bottom: 12px;">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <strong>BUS005 - Maintenance requise</strong>
-                                <br>
-                                <small>Révision des 150,000 km atteinte</small>
-                            </div>
-                            <span class="badge badge-warning">Urgent</span>
-                        </div>
-                    </div>
-                    <div class="alert alert-info" style="padding: 16px; background-color: #d1ecf1; border-left: 4px solid #17a2b8; border-radius: var(--border-radius); margin-bottom: 12px;">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <strong>BUS007 - Contrôle technique</strong>
-                                <br>
-                                <small>Échéance dans 15 jours</small>
-                            </div>
-                            <span class="badge" style="background-color: #17a2b8; color: white;">Info</span>
-                        </div>
-                    </div>
-                    <div class="alert alert-danger" style="padding: 16px; background-color: #f8d7da; border-left: 4px solid #dc3545; border-radius: var(--border-radius);">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <strong>BUS009 - Panne signalée</strong>
-                                <br>
-                                <small>Problème moteur - Immobilisé</small>
-                            </div>
-                            <span class="badge badge-danger">Critique</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-chart-bar" style="color: var(--primary-orange);"></i>
-                        Performance de flotte
-                    </h3>
-                    <div class="flex justify-between items-center mb-3">
-                        <span>Taux d'utilisation:</span>
-                        <div class="flex items-center gap-8px">
-                            <div style="width: 100px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
-                                <div style="width: 85%; height: 100%; background-color: var(--primary-orange);"></div>
-                            </div>
-                            <strong>85%</strong>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center mb-3">
-                        <span>Ponctualité moyenne:</span>
-                        <div class="flex items-center gap-8px">
-                            <div style="width: 100px; height: 8px; background-color: var(--medium-gray); border-radius: 4px; overflow: hidden;">
-                                <div style="width: 92%; height: 100%; background-color: #28a745;"></div>
-                            </div>
-                            <strong>92%</strong>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center mb-3">
-                        <span>Consommation carburant:</span>
-                        <strong style="color: var(--primary-orange);">28.5L/100km</strong>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span>Kilométrage moyen:</span>
-                        <strong>245 km/jour</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
     </main>
 
-    <!-- Modals -->
     <!-- Modal Ajouter Véhicule -->
     <div id="addVehicleModal" class="modal">
         <div class="modal-content">
@@ -377,7 +1185,7 @@
                     <i class="fas fa-plus" style="color: var(--primary-orange);"></i>
                     Ajouter un nouveau véhicule
                 </h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" onclick="closeModal('addVehicleModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="addVehicleForm">
@@ -417,7 +1225,7 @@
                         <label class="form-label" for="vehicleModel">Modèle du véhicule</label>
                     </div>
                     <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary modal-close">Annuler</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('addVehicleModal')">Annuler</button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-plus"></i>
                             Ajouter le véhicule
@@ -436,7 +1244,7 @@
                     <i class="fas fa-edit" style="color: var(--primary-orange);"></i>
                     Modifier le véhicule
                 </h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" onclick="closeModal('editVehicleModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="editVehicleForm">
@@ -471,15 +1279,15 @@
                             <i class="fas fa-user-tie form-icon"></i>
                             <select name="driver" id="editVehicleDriver" class="form-input">
                                 <option value="">Aucun chauffeur assigné</option>
-                                <option value="Jean Dupont">Jean Dupont</option>
-                                <option value="Marie Martin">Marie Martin</option>
-                                <option value="Pierre Durand">Pierre Durand</option>
+                                <option value="Ky Laodou">Ky Laodou</option>
+                                <option value="Ouédraogo Razack">Ouédraogo Razack</option>
+                                <option value="Kaboré Cédric">Kaboré Cédric</option>
                             </select>
                             <label class="form-label" for="editVehicleDriver">Chauffeur assigné</label>
                         </div>
                     </div>
                     <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary modal-close">Annuler</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('editVehicleModal')">Annuler</button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i>
                             Sauvegarder
@@ -498,7 +1306,7 @@
                     <i class="fas fa-map-marker-alt" style="color: var(--primary-orange);"></i>
                     Position du véhicule
                 </h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" onclick="closeModal('vehicleLocationModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="vehicle-location-info mb-4">
@@ -525,7 +1333,7 @@
                     </div>
                 </div>
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary modal-close">Fermer</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('vehicleLocationModal')">Fermer</button>
                     <button type="button" class="btn btn-primary">
                         <i class="fas fa-external-link-alt"></i>
                         Ouvrir dans Google Maps
@@ -535,12 +1343,35 @@
         </div>
     </div>
 
-    <!-- Modal Vue Détaillée du Bus (Vue dynamique) -->
+    <!-- Modal Confirmation Maintenance -->
+    <div id="maintenanceConfirmModal" class="modal confirm-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="confirm-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3 class="confirm-title">Programmer la maintenance</h3>
+                <p class="confirm-text">
+                    Voulez-vous programmer une maintenance pour le véhicule "<span id="maintenanceVehicleId"></span>" ?
+                    <br>Le véhicule sera mis hors service temporairement.
+                </p>
+                <div class="confirm-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('maintenanceConfirmModal')">Annuler</button>
+                    <button class="btn btn-warning" id="confirmMaintenanceBtn">
+                        <i class="fas fa-tools"></i>
+                        Programmer la maintenance
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Vue Détaillée du Bus -->
     <div id="busDetailsModal" class="modal">
         <div class="modal-content modal-large">
             <div class="modal-header">
                 <h2><i class="fas fa-bus"></i> Vue détaillée - <span id="busDetailsId">BUS001</span></h2>
-                <span class="close" onclick="closeBusDetailsModal()">&times;</span>
+                <span class="close" onclick="closeModal('busDetailsModal')">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="tabs">
@@ -658,73 +1489,68 @@
                     <div id="bus-passengers" class="tab-content">
                         <div class="passengers-info">
                             <h4>Informations passagers</h4>
-                            <div class="passenger-stats-grid">
-                                <div class="passenger-stat">
-                                    <i class="fas fa-users"></i>
-                                    <span class="stat-value">45</span>
-                                    <span class="stat-label">Passagers à bord</span>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+                                <div style="display: flex; flex-direction: column; align-items: center; padding: 16px; background: var(--light-gray); border-radius: var(--border-radius); text-align: center;">
+                                    <i class="fas fa-users" style="font-size: 24px; color: var(--primary-orange); margin-bottom: 8px;"></i>
+                                    <span style="font-size: 20px; font-weight: 700; color: var(--primary-black); margin-bottom: 4px;">45</span>
+                                    <span style="font-size: 12px; color: var(--dark-gray);">Passagers à bord</span>
                                 </div>
-                                <div class="passenger-stat">
-                                    <i class="fas fa-ticket-alt"></i>
-                                    <span class="stat-value">12</span>
-                                    <span class="stat-label">Montées cet arrêt</span>
+                                <div style="display: flex; flex-direction: column; align-items: center; padding: 16px; background: var(--light-gray); border-radius: var(--border-radius); text-align: center;">
+                                    <i class="fas fa-ticket-alt" style="font-size: 24px; color: var(--primary-orange); margin-bottom: 8px;"></i>
+                                    <span style="font-size: 20px; font-weight: 700; color: var(--primary-black); margin-bottom: 4px;">12</span>
+                                    <span style="font-size: 12px; color: var(--dark-gray);">Montées cet arrêt</span>
                                 </div>
-                                <div class="passenger-stat">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span class="stat-value">8</span>
-                                    <span class="stat-label">Descentes prévues</span>
+                                <div style="display: flex; flex-direction: column; align-items: center; padding: 16px; background: var(--light-gray); border-radius: var(--border-radius); text-align: center;">
+                                    <i class="fas fa-sign-out-alt" style="font-size: 24px; color: var(--primary-orange); margin-bottom: 8px;"></i>
+                                    <span style="font-size: 20px; font-weight: 700; color: var(--primary-black); margin-bottom: 4px;">8</span>
+                                    <span style="font-size: 12px; color: var(--dark-gray);">Descentes prévues</span>
                                 </div>
-                                <div class="passenger-stat">
-                                    <i class="fa-solid fa-money-bill-wave"></i>
-                                    <span class="stat-value">6750 FCFA</span>
-                                    <span class="stat-label">Recettes trajet</span>
+                                <div style="display: flex; flex-direction: column; align-items: center; padding: 16px; background: var(--light-gray); border-radius: var(--border-radius); text-align: center;">
+                                    <i class="fa-solid fa-money-bill-wave" style="font-size: 24px; color: var(--primary-orange); margin-bottom: 8px;"></i>
+                                    <span style="font-size: 20px; font-weight: 700; color: var(--primary-black); margin-bottom: 4px;">6750 FCFA</span>
+                                    <span style="font-size: 12px; color: var(--dark-gray);">Recettes trajet</span>
                                 </div>
                             </div>
                             
-                            <div class="passenger-flow">
-                                <h5>Flux de passagers</h5>
-                                <canvas id="passengerFlowChart" width="400" height="200"></canvas>
+                            <div>
+                                <h5 style="margin-bottom: 16px; color: var(--primary-black);">Flux de passagers</h5>
+                                <div style="height: 200px; background-color: var(--light-gray); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--dark-gray);">
+                                    <div style="text-align: center;">
+                                        <i class="fas fa-chart-line fa-3x" style="color: var(--primary-orange); margin-bottom: 16px;"></i>
+                                        <p>Graphique des flux de passagers</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
                     <div id="bus-route" class="tab-content">
-                        <div class="route-progress">
-                            <h4>Progression sur l'itinéraire</h4>
-                            <div class="route-timeline">
-                                <div class="route-stop completed">
-                                    <div class="stop-marker"></div>
-                                    <div class="stop-info">
-                                        <strong>Gare Centrale</strong>
-                                        <small>08:15 - Départ effectué</small>
+                        <div style="padding: 20px;">
+                            <h4 style="margin-bottom: 16px; color: var(--primary-black);">Progression sur l'itinéraire</h4>
+                            <div style="position: relative; padding: 20px 0;">
+                                <div style="position: absolute; left: 20px; top: 0; bottom: 0; width: 3px; background: var(--medium-gray);"></div>
+                                
+                                <div style="position: relative; margin-bottom: 20px; padding-left: 50px;">
+                                    <div style="position: absolute; left: 10px; top: 5px; width: 20px; height: 20px; background: var(--primary-orange); border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); animation: pulse 2s infinite;"></div>
+                                    <div>
+                                        <strong style="color: var(--primary-black);">Centre Ville</strong>
+                                        <br><small style="color: var(--dark-gray);">08:28 - Position actuelle</small>
                                     </div>
                                 </div>
-                                <div class="route-stop completed">
-                                    <div class="stop-marker"></div>
-                                    <div class="stop-info">
-                                        <strong>République</strong>
-                                        <small>08:22 - Passé</small>
+                                
+                                <div style="position: relative; margin-bottom: 20px; padding-left: 50px;">
+                                    <div style="position: absolute; left: 10px; top: 5px; width: 20px; height: 20px; background: var(--medium-gray); border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
+                                    <div>
+                                        <strong style="color: var(--primary-black);">Université</strong>
+                                        <br><small style="color: var(--dark-gray);">08:35 - Prochain arrêt</small>
                                     </div>
                                 </div>
-                                <div class="route-stop current">
-                                    <div class="stop-marker pulsing"></div>
-                                    <div class="stop-info">
-                                        <strong>Centre Ville</strong>
-                                        <small>08:28 - Position actuelle</small>
-                                    </div>
-                                </div>
-                                <div class="route-stop upcoming">
-                                    <div class="stop-marker"></div>
-                                    <div class="stop-info">
-                                        <strong>Université</strong>
-                                        <small>08:35 - Prochain arrêt</small>
-                                    </div>
-                                </div>
-                                <div class="route-stop upcoming">
-                                    <div class="stop-marker"></div>
-                                    <div class="stop-info">
-                                        <strong>Hôpital</strong>
-                                        <small>08:42 - À venir</small>
+                                
+                                <div style="position: relative; margin-bottom: 20px; padding-left: 50px;">
+                                    <div style="position: absolute; left: 10px; top: 5px; width: 20px; height: 20px; background: var(--medium-gray); border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
+                                    <div>
+                                        <strong style="color: var(--primary-black);">Hôpital</strong>
+                                        <br><small style="color: var(--dark-gray);">08:42 - À venir</small>
                                     </div>
                                 </div>
                             </div>
@@ -732,50 +1558,68 @@
                     </div>
                     
                     <div id="bus-technical" class="tab-content">
-                        <div class="technical-data">
-                            <h4>Données techniques en temps réel</h4>
-                            <div class="tech-grid">
-                                <div class="tech-metric">
-                                    <i class="fas fa-thermometer-half"></i>
-                                    <span class="metric-label">Température moteur</span>
-                                    <span class="metric-value text-success">82°C</span>
+                        <div style="padding: 20px;">
+                            <h4 style="margin-bottom: 16px; color: var(--primary-black);">Données techniques en temps réel</h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--light-gray); border-radius: var(--border-radius);">
+                                    <i class="fas fa-thermometer-half" style="font-size: 20px; color: var(--primary-orange); width: 24px; text-align: center;"></i>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 12px; color: var(--dark-gray);">Température moteur</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #22c55e;">82°C</div>
+                                    </div>
                                 </div>
-                                <div class="tech-metric">
-                                    <i class="fas fa-oil-can"></i>
-                                    <span class="metric-label">Pression huile</span>
-                                    <span class="metric-value text-success">4.2 bar</span>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--light-gray); border-radius: var(--border-radius);">
+                                    <i class="fas fa-oil-can" style="font-size: 20px; color: var(--primary-orange); width: 24px; text-align: center;"></i>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 12px; color: var(--dark-gray);">Pression huile</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #22c55e;">4.2 bar</div>
+                                    </div>
                                 </div>
-                                <div class="tech-metric">
-                                    <i class="fas fa-car-battery"></i>
-                                    <span class="metric-label">Tension batterie</span>
-                                    <span class="metric-value text-success">12.8V</span>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--light-gray); border-radius: var(--border-radius);">
+                                    <i class="fas fa-car-battery" style="font-size: 20px; color: var(--primary-orange); width: 24px; text-align: center;"></i>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 12px; color: var(--dark-gray);">Tension batterie</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #22c55e;">12.8V</div>
+                                    </div>
                                 </div>
-                                <div class="tech-metric">
-                                    <i class="fas fa-gauge"></i>
-                                    <span class="metric-label">Pression pneus</span>
-                                    <span class="metric-value text-warning">7.8 bar</span>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--light-gray); border-radius: var(--border-radius);">
+                                    <i class="fas fa-gauge" style="font-size: 20px; color: var(--primary-orange); width: 24px; text-align: center;"></i>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 12px; color: var(--dark-gray);">Pression pneus</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #f59e0b;">7.8 bar</div>
+                                    </div>
                                 </div>
-                                <div class="tech-metric">
-                                    <i class="fas fa-gas-pump"></i>
-                                    <span class="metric-label">Niveau carburant</span>
-                                    <span class="metric-value text-warning">65%</span>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--light-gray); border-radius: var(--border-radius);">
+                                    <i class="fas fa-gas-pump" style="font-size: 20px; color: var(--primary-orange); width: 24px; text-align: center;"></i>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 12px; color: var(--dark-gray);">Niveau carburant</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #f59e0b;">65%</div>
+                                    </div>
                                 </div>
-                                <div class="tech-metric">
-                                    <i class="fas fa-broadcast-tower"></i>
-                                    <span class="metric-label">Signal GPS</span>
-                                    <span class="metric-value text-success">Excellent</span>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--light-gray); border-radius: var(--border-radius);">
+                                    <i class="fas fa-broadcast-tower" style="font-size: 20px; color: var(--primary-orange); width: 24px; text-align: center;"></i>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 12px; color: var(--dark-gray);">Signal GPS</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #22c55e;">Excellent</div>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="system-alerts">
-                                <h5>Alertes système</h5>
-                                <div class="alert alert-warning">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    <strong>Attention :</strong> Pression pneu avant gauche légèrement faible
+                            <div style="margin-top: 20px;">
+                                <h5 style="margin-bottom: 12px; color: var(--primary-black);">Alertes système</h5>
+                                <div style="padding: 12px; background: rgba(251, 191, 36, 0.1); border-left: 4px solid #f59e0b; border-radius: 4px; margin-bottom: 8px;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i>
+                                        <strong style="color: var(--primary-black);">Attention :</strong>
+                                        <span style="color: var(--dark-gray);">Pression pneu avant gauche légèrement faible</span>
+                                    </div>
                                 </div>
-                                <div class="alert alert-info">
-                                    <i class="fas fa-info-circle"></i>
-                                    <strong>Info :</strong> Maintenance préventive due dans 2 semaines
+                                <div style="padding: 12px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 4px;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-info-circle" style="color: #3b82f6;"></i>
+                                        <strong style="color: var(--primary-black);">Info :</strong>
+                                        <span style="color: var(--dark-gray);">Maintenance préventive due dans 2 semaines</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -790,13 +1634,13 @@
         <div class="modal-content modal-large">
             <div class="modal-header">
                 <h2><i class="fas fa-map-marked-alt"></i> Carte en temps réel de la flotte</h2>
-                <span class="close" onclick="closeRealtimeMapModal()">&times;</span>
+                <span class="close" onclick="closeModal('realtimeMapModal')">&times;</span>
             </div>
             <div class="modal-body">
-                <div class="map-controls mb-4">
+                <div style="padding: 16px; background: var(--light-gray); border-radius: 8px; margin-bottom: 16px;">
                     <div class="grid grid-4">
-                        <div class="form-group">
-                            <select id="mapLineFilter" class="form-control">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="mapLineFilter" style="width: 100%; padding: 8px; border: 1px solid var(--medium-gray); border-radius: 4px;">
                                 <option value="">Toutes les lignes</option>
                                 <option value="A">Ligne A</option>
                                 <option value="B">Ligne B</option>
@@ -804,8 +1648,8 @@
                                 <option value="D">Ligne D</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <select id="mapStatusFilter" class="form-control">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="mapStatusFilter" style="width: 100%; padding: 8px; border: 1px solid var(--medium-gray); border-radius: 4px;">
                                 <option value="">Tous les statuts</option>
                                 <option value="service">En service</option>
                                 <option value="maintenance">En maintenance</option>
@@ -823,8 +1667,8 @@
                     </div>
                 </div>
                 
-                <div class="realtime-map-container">
-                    <div class="map-placeholder" style="height: 500px; background-color: var(--light-gray); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--dark-gray); position: relative;">
+                <div style="margin-bottom: 20px;">
+                    <div style="height: 500px; background-color: var(--light-gray); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--dark-gray); position: relative;">
                         <!-- Simulation d'une carte avec véhicules -->
                         <div style="position: absolute; top: 20%; left: 30%;" class="vehicle-marker" data-vehicle="BUS001">
                             <i class="fas fa-bus" style="color: var(--primary-orange); font-size: 24px;"></i>
@@ -847,22 +1691,22 @@
                     </div>
                 </div>
                 
-                <div class="map-legend mt-4">
-                    <h5>Légende</h5>
-                    <div class="legend-grid">
-                        <div class="legend-item">
+                <div style="margin-top: 16px;">
+                    <h5 style="margin-bottom: 12px; color: var(--primary-black);">Légende</h5>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
                             <i class="fas fa-bus" style="color: var(--primary-orange);"></i>
                             <span>Véhicule en service</span>
                         </div>
-                        <div class="legend-item">
+                        <div style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
                             <i class="fas fa-bus" style="color: #ffc107;"></i>
                             <span>Véhicule en maintenance</span>
                         </div>
-                        <div class="legend-item">
+                        <div style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
                             <i class="fas fa-bus" style="color: #dc3545;"></i>
                             <span>Véhicule en panne</span>
                         </div>
-                        <div class="legend-item">
+                        <div style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
                             <i class="fas fa-map-marker-alt" style="color: #28a745;"></i>
                             <span>Arrêt de bus</span>
                         </div>
@@ -872,17 +1716,14 @@
         </div>
     </div>
 
-    <script src="../assets/js/app.js"></script>
     <script>
-        // Scripts spécifiques à la page flotte
-        
         // Données simulées des véhicules
         const vehiclesData = {
             'BUS001': {
                 id: 'BUS001',
                 line: 'Ligne A',
                 status: 'En service',
-                driver: 'Jean Dupont',
+                driver: 'Ky Laodou',
                 passengers: 45,
                 capacity: 60,
                 position: 'Gare Centrale',
@@ -895,7 +1736,7 @@
                 id: 'BUS002',
                 line: 'Ligne B',
                 status: 'En service',
-                driver: 'Marie Martin',
+                driver: 'Ouédraogo Razack',
                 passengers: 32,
                 capacity: 60,
                 position: 'Centre Ville',
@@ -921,7 +1762,7 @@
                 id: 'BUS004',
                 line: 'Ligne A',
                 status: 'En service',
-                driver: 'Pierre Durand',
+                driver: 'Kaboré Cédric',
                 passengers: 28,
                 capacity: 60,
                 position: 'Université',
@@ -931,6 +1772,25 @@
                 fuel: 52
             }
         };
+
+        let currentMaintenanceVehicle = null;
+
+        // Gestion des Modaux
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        }
 
         // Fonction pour afficher les détails du bus avec vue dynamique
         function viewBusDetails(vehicleId) {
@@ -965,8 +1825,7 @@
             generateSeatOccupancy(vehicle.passengers, vehicle.capacity);
             
             // Afficher la modale
-            document.getElementById('busDetailsModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            openModal('busDetailsModal');
         }
 
         // Générer l'occupation des sièges de manière réaliste
@@ -1029,8 +1888,7 @@
             document.getElementById('locationNext').textContent = 
                 nextStations[vehicle.position] || 'Terminus';
 
-            document.getElementById('vehicleLocationModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            openModal('vehicleLocationModal');
         }
 
         // Fonction pour éditer un véhicule
@@ -1043,30 +1901,30 @@
             document.getElementById('editVehicleStatus').value = vehicle.status;
             document.getElementById('editVehicleDriver').value = vehicle.driver === '-' ? '' : vehicle.driver;
 
-            document.getElementById('editVehicleModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            openModal('editVehicleModal');
         }
 
         // Fonction pour programmer la maintenance d'un véhicule
         function scheduleVehicleMaintenance(vehicleId) {
-            const vehicle = vehiclesData[vehicleId];
-            if (!vehicle) return;
+            currentMaintenanceVehicle = vehicleId;
+            document.getElementById('maintenanceVehicleId').textContent = vehicleId;
+            openModal('maintenanceConfirmModal');
+        }
 
-            showNotification(`Redirection vers la page maintenance pour ${vehicleId}`, 'info');
-            
-            // Simulation de redirection vers la page maintenance
-            setTimeout(() => {
-                window.location.href = 'maintenance.html';
-            }, 1500);
+        // Fonction pour voir les détails de maintenance
+        function viewMaintenanceDetails(vehicleId) {
+            showNotification(`Affichage des détails de maintenance pour ${vehicleId}`, 'info');
+            // Ici on pourrait ouvrir un modal spécifique pour la maintenance
         }
 
         // Fonction pour ouvrir la carte en temps réel
         function openRealtimeMap() {
-            document.getElementById('realtimeMapModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            openModal('realtimeMapModal');
             
             // Simuler l'animation des véhicules sur la carte
-            animateVehiclesOnMap();
+            setTimeout(() => {
+                animateVehiclesOnMap();
+            }, 500);
         }
 
         // Animer les véhicules sur la carte
@@ -1096,17 +1954,6 @@
             
             // Activer le bouton correspondant
             event.target.classList.add('active');
-        }
-
-        // Fonctions utilitaires pour les modales
-        function closeBusDetailsModal() {
-            document.getElementById('busDetailsModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function closeRealtimeMapModal() {
-            document.getElementById('realtimeMapModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
         }
 
         function centerMap() {
@@ -1140,33 +1987,13 @@
             }, 4000);
         }
 
-        // Gestion des événements pour les boutons principaux
+        // Gestion des événements
         document.addEventListener('DOMContentLoaded', function() {
-            // Bouton carte en temps réel
-            const realtimeMapBtn = document.querySelector('.btn.btn-secondary');
-            if (realtimeMapBtn && realtimeMapBtn.textContent.includes('Carte')) {
-                realtimeMapBtn.addEventListener('click', openRealtimeMap);
-            }
-
             // Gestion des modales avec gestion des clics extérieurs
-            window.onclick = function(event) {
-                const modals = ['busDetailsModal', 'realtimeMapModal', 'addVehicleModal', 'editVehicleModal', 'vehicleLocationModal'];
-                modals.forEach(modalId => {
-                    const modal = document.getElementById(modalId);
-                    if (event.target === modal) {
-                        modal.style.display = 'none';
-                        document.body.style.overflow = 'auto';
-                    }
-                });
-            };
-
-            // Gestion des boutons de fermeture
-            document.querySelectorAll('.modal-close').forEach(closeBtn => {
-                closeBtn.addEventListener('click', function() {
-                    const modal = this.closest('.modal');
-                    if (modal) {
-                        modal.style.display = 'none';
-                        document.body.style.overflow = 'auto';
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal(modal.id);
                     }
                 });
             });
@@ -1180,6 +2007,43 @@
                     showNotification(`Siège ${seatNumber}: ${passenger}`, 'info');
                 }
             });
+
+            // Initialisation du formulaire d'ajout
+            const addForm = document.getElementById('addVehicleForm');
+            if (addForm) {
+                addForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const vehicleId = formData.get('vehicleId') || 'Nouveau véhicule';
+                    showNotification(`Véhicule "${vehicleId}" ajouté avec succès !`, 'success');
+                    closeModal('addVehicleModal');
+                    e.target.reset();
+                });
+            }
+
+            // Initialisation du formulaire d'édition
+            const editForm = document.getElementById('editVehicleForm');
+            if (editForm) {
+                editForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const vehicleId = formData.get('vehicleId') || 'le véhicule';
+                    showNotification(`Véhicule "${vehicleId}" modifié avec succès !`, 'success');
+                    closeModal('editVehicleModal');
+                });
+            }
+
+            // Initialisation du bouton de confirmation de maintenance
+            const confirmMaintenanceBtn = document.getElementById('confirmMaintenanceBtn');
+            if (confirmMaintenanceBtn) {
+                confirmMaintenanceBtn.addEventListener('click', () => {
+                    if (currentMaintenanceVehicle) {
+                        showNotification(`Maintenance programmée pour ${currentMaintenanceVehicle}`, 'success');
+                        closeModal('maintenanceConfirmModal');
+                        currentMaintenanceVehicle = null;
+                    }
+                });
+            }
 
             // Simulation de mise à jour en temps réel des données
             setInterval(updateRealtimeData, 30000); // Mise à jour toutes les 30 secondes
@@ -1228,7 +2092,21 @@
             });
         }
 
-        console.log('Scripts de la page flotte initialisés');
+        // Exposer les fonctions nécessaires globalement
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.viewBusDetails = viewBusDetails;
+        window.viewVehicleLocation = viewVehicleLocation;
+        window.editVehicle = editVehicle;
+        window.scheduleVehicleMaintenance = scheduleVehicleMaintenance;
+        window.viewMaintenanceDetails = viewMaintenanceDetails;
+        window.openRealtimeMap = openRealtimeMap;
+        window.showBusTab = showBusTab;
+        window.centerMap = centerMap;
+        window.refreshMapData = refreshMapData;
+
+        console.log('Scripts de la page flotte initialisés avec succès');
     </script>
+
 </body>
-</html>
+</html> 

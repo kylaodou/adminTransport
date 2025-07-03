@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Billetterie</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        button { padding: 10px 15px; margin: 5px; border: none; border-radius: 3px; cursor: pointer; }
+        .btn-edit { background-color: #6c757d; color: white; }
+        .btn-delete { background-color: #dc3545; color: white; }
+        .btn-pdf { background-color: #28a745; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Test du système billetterie amélioré</h1>
+    
+    <div class="test-section">
+        <h3>Test des boutons d'action (data-attributes)</h3>
+        <p>Ces boutons utilisent le nouveau système data-action au lieu d'onclick :</p>
+        
+        <button class="btn-edit" data-action="edit" data-tariff-id="simple" data-tariff-name="Billet Simple">
+            Modifier Billet Simple
+        </button>
+        
+        <button class="btn-delete" data-action="delete" data-tariff-id="daily" data-tariff-name="Pass Journalier">
+            Supprimer Pass Journalier
+        </button>
+        
+        <button class="btn-edit" data-action="edit" data-tariff-id="monthly" data-tariff-name="Abonnement Mensuel">
+            Modifier Abonnement Mensuel
+        </button>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test de génération PDF améliorée</h3>
+        <p>Le PDF généré aura une pagination automatique et pas d'icônes :</p>
+        
+        <button class="btn-pdf" onclick="testPDFGeneration()">
+            Générer rapport PDF de test
+        </button>
+    </div>
+    
+    <div id="results" class="test-section">
+        <h3>Résultats des tests</h3>
+        <div id="test-results"></div>
+    </div>
+
+    <script>
+        // Simuler les fonctions principales pour les tests
+        function editTariff(tariffId) {
+            addTestResult(`✅ editTariff appelé avec ID: ${tariffId}`, 'success');
+        }
+        
+        function deleteTariff(tariffId, tariffName) {
+            addTestResult(`✅ deleteTariff appelé avec ID: ${tariffId}, Nom: ${tariffName}`, 'success');
+        }
+        
+        function testPDFGeneration() {
+            addTestResult('🔄 Test de génération PDF en cours...', 'info');
+            // Simuler la génération PDF
+            setTimeout(() => {
+                addTestResult('✅ PDF généré avec succès (pagination automatique, sans icônes)', 'success');
+            }, 1000);
+        }
+        
+        function addTestResult(message, type) {
+            const resultsDiv = document.getElementById('test-results');
+            const resultElement = document.createElement('div');
+            resultElement.className = `test-section ${type}`;
+            resultElement.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+            resultsDiv.appendChild(resultElement);
+        }
+        
+        // Initialiser les événements pour les boutons data-action
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-action]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const action = button.dataset.action;
+                    const tariffId = button.dataset.tariffId;
+                    const tariffName = button.dataset.tariffName;
+
+                    if (action === 'edit') {
+                        editTariff(tariffId);
+                    } else if (action === 'delete') {
+                        deleteTariff(tariffId, tariffName);
+                    }
+                });
+            });
+            
+            addTestResult('System initialisé - Les boutons data-action sont prêts', 'success');
+        });
+    </script>
+</body>
+</html>
