@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransportAdmin - Gestion des Alertes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset et Variables CSS */
+        :root {
+            --primary-orange: #ff7900;
+            --primary-black: #1a1a1a;
+            --primary-white: #ffffff;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --success: #28a745;
+            --info: #17a2b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            background-color: var(--light-gray);
+        }
+
+        /* Layout de base */
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .mb-4 {
+            margin-bottom: 24px;
+        }
+
+        .gap-16px {
+            gap: 16px;
+        }
+
+        .gap-8px {
+            gap: 8px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--primary-orange);
+            box-shadow: var(--shadow);
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .sidebar-header a {
+            color: var(--primary-white);
+        }
+
+        .sidebar-nav {
+            padding: 16px 0;
+        }
+
+        .sidebar-nav-item {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary-white);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav-item:hover,
+        .sidebar-nav-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary-white);
+            color: var(--primary-white);
+        }
+
+        .sidebar-nav-icon {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 24px;
+            background-color: var(--light-gray);
+            min-height: 100vh;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--primary-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-orange), #ff9500);
+            color: var(--primary-white);
+            padding: 24px;
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        /* Alert Cards */
+        .alert-card {
+            background: var(--primary-white);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+            transition: var(--transition);
+            border-left: 4px solid var(--medium-gray);
+        }
+
+        .alert-card.panne {
+            border-left-color: var(--danger);
+        }
+
+        .alert-card.entretien {
+            border-left-color: var(--warning);
+        }
+
+        .alert-card.info {
+            border-left-color: var(--info);
+        }
+
+        .alert-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .alert-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-black);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .alert-meta-item {
+            text-align: center;
+        }
+
+        .alert-meta-item strong {
+            display: block;
+            color: var(--primary-black);
+            margin-bottom: 4px;
+        }
+
+        .alert-meta-item span {
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+
+        .alert-description {
+            background: var(--light-gray);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            color: var(--dark-gray);
+            font-style: italic;
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        /* Tables */
+        .table-container {
+            background-color: var(--primary-white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .table th {
+            background-color: var(--light-gray);
+            font-weight: 600;
+            color: var(--primary-black);
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(255, 121, 0, 0.05);
+        }
+
+        /* Floating Label Inputs */
+        .floating-input {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .floating-input input,
+        .floating-input select,
+        .floating-input textarea {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 2px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            background-color: var(--primary-white);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .floating-input input:focus,
+        .floating-input select:focus,
+        .floating-input textarea:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 121, 0, 0.1);
+        }
+
+        .floating-input input:focus + label,
+        .floating-input input:not(:placeholder-shown) + label,
+        .floating-input select:focus + label,
+        .floating-input select:not([value=""]) + label,
+        .floating-input textarea:focus + label,
+        .floating-input textarea:not(:placeholder-shown) + label {
+            top: -8px;
+            left: 45px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-orange);
+            background: var(--primary-white);
+            padding: 0 8px;
+            z-index: 10;
+        }
+
+        .floating-input label {
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: var(--dark-gray);
+            transition: var(--transition);
+            pointer-events: none;
+            background: transparent;
+        }
+
+        .floating-input .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            color: var(--dark-gray);
+            font-size: 18px;
+            z-index: 5;
+        }
+
+        .floating-input input:focus ~ .input-icon,
+        .floating-input select:focus ~ .input-icon,
+        .floating-input textarea:focus ~ .input-icon {
+            color: var(--primary-orange);
+        }
+
+        .floating-input textarea {
+            resize: vertical;
+            min-height: 120px;
+            padding-top: 20px;
+        }
+
+        .floating-input textarea + label {
+            top: 30px;
+            transform: none;
+        }
+
+        .floating-input textarea:focus + label,
+        .floating-input textarea:not(:placeholder-shown) + label {
+            top: -8px;
+            transform: none;
+        }
+
+        /* Form layouts */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        /* Boutons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-orange);
+            color: var(--primary-white);
+        }
+
+        .btn-primary:hover {
+            background-color: #e56a00;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background-color: var(--primary-white);
+            color: var(--primary-black);
+            border: 2px solid var(--medium-gray);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-orange);
+            color: var(--primary-orange);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff4757, #ff3838);
+            color: white;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+            color: var(--primary-black);
+            border: none;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
+        }
+
+        /* Status badges */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge-success {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .badge-warning {
+            background-color: rgba(251, 191, 36, 0.1);
+            color: #f59e0b;
+        }
+
+        .badge-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .badge-info {
+            background-color: rgba(23, 162, 184, 0.1);
+            color: #17a2b8;
+        }
+
+        /* Filters */
+        .filters-bar {
+            background: var(--primary-white);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 20px;
+            align-items: end;
+            flex-wrap: wrap;
+            border: 1px solid var(--medium-gray);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 180px;
+        }
+
+        .filter-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-black);
+            margin-bottom: 0;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 12px 16px;
+            border: 2px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            background-color: var(--primary-white);
+            outline: none;
+            transition: var(--transition);
+            min-width: 150px;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 121, 0, 0.1);
+        }
+
+        .filter-group select:hover,
+        .filter-group input:hover {
+            border-color: var(--primary-orange);
+        }
+
+        /* Modales */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s ease;
+        }
+
+        .modal-large {
+            max-width: 95%;
+            width: 1000px;
+        }
+
+        .modal-header {
+            padding: 32px 32px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        }
+
+        .modal-title, .modal-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--primary-black);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-title i {
+            color: var(--primary-orange);
+            font-size: 28px;
+        }
+
+        .modal-close, .close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--dark-gray);
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover, .close:hover {
+            background: #f5f5f5;
+            color: var(--primary-black);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 32px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+            padding: 24px 32px 32px;
+            border-top: 1px solid var(--medium-gray);
+            background: #fafbfc;
+        }
+
+        /* Details Modal Styling */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .details-card {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .details-card h4 {
+            color: var(--primary-orange);
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .details-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .details-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .details-item:last-child {
+            border-bottom: none;
+        }
+
+        .details-label {
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .details-value {
+            font-weight: 600;
+            color: var(--primary-black);
+        }
+
+        .description-box {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 24px;
+            line-height: 1.8;
+            color: var(--primary-black);
+        }
+
+        /* Loading state */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--medium-gray);
+            border-top: 4px solid var(--primary-orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--dark-gray);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: var(--medium-gray);
+            margin-bottom: 16px;
+        }
+
+        /* Priority indicators */
+        .priority-urgent {
+            border-left-color: var(--danger) !important;
+        }
+
+        .priority-moyen {
+            border-left-color: var(--warning) !important;
+        }
+
+        .priority-faible {
+            border-left-color: var(--info) !important;
+        }
+
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .alert-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .modal-body {
+                padding: 24px;
+            }
+
+            .modal-header {
+                padding: 24px;
+            }
+
+            .modal-footer {
+                padding: 16px 24px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <a href="../dashboard.html" style="text-decoration: none;">
+                <h2 style="font-weight: 700;">
+                    <i class="fas fa-route"></i>
+                    TransportAdmin
+                </h2>
+            </a>
+        </div>
+        <div class="sidebar-nav">
+            <a href="../dashboard.html" class="sidebar-nav-item">
+                <i class="fas fa-home sidebar-nav-icon"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="billetterie.html" class="sidebar-nav-item">
+                <i class="fas fa-ticket-alt sidebar-nav-icon"></i>
+                <span>Billetterie</span>
+            </a>
+            <a href="lignes.html" class="sidebar-nav-item">
+                <i class="fas fa-route sidebar-nav-icon"></i>
+                <span>Lignes & Itinéraires</span>
+            </a>
+            <a href="flotte.html" class="sidebar-nav-item">
+                <i class="fas fa-bus sidebar-nav-icon"></i>
+                <span>Gestion de flotte</span>
+            </a>
+            <a href="bus.html" class="sidebar-nav-item">
+                <i class="fas fa-bus sidebar-nav-icon"></i>
+                <span>Gestion des Bus</span>
+            </a>
+            <a href="agents.html" class="sidebar-nav-item">
+                <i class="fas fa-user-tie sidebar-nav-icon"></i>
+                <span>Agents</span>
+            </a>
+            <a href="chauffeurs.html" class="sidebar-nav-item">
+                <i class="fas fa-user-tie sidebar-nav-icon"></i>
+                <span>Chauffeurs</span>
+            </a>
+            <a href="alertes.html" class="sidebar-nav-item active">
+                <i class="fas fa-exclamation-triangle sidebar-nav-icon"></i>
+                <span>Alertes</span>
+            </a>
+            
+            <div style="margin-top: auto; padding: 24px;">
+                <button id="logoutBtn" class="sidebar-nav-item" style="background: none; border: none; color: var(--primary-white); width: 100%; text-align: left; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt sidebar-nav-icon"></i>
+                    <span>Déconnexion</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--primary-black); margin-bottom: 8px;">
+                    Gestion des Alertes
+                </h1>
+                <p style="color: var(--dark-gray);">
+                    Suivi et gestion des alertes de la flotte de bus
+                </p>
+            </div>
+            <div class="flex items-center gap-16px">
+                <button class="btn btn-secondary" onclick="exportAlertes()">
+                    <i class="fas fa-download"></i>
+                    Exporter
+                </button>
+                <button class="btn btn-primary" onclick="openModal('newAlerteModal')">
+                    <i class="fas fa-plus"></i>
+                    Nouvelle alerte
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistiques -->
+        <div class="grid grid-4 mb-4">
+            <div class="stat-card">
+                <div class="stat-value" id="totalAlertes">0</div>
+                <div class="stat-label">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Total alertes
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #000000, #1c1314);">
+                <div class="stat-value" id="alertesOuvertes">0</div>
+                <div class="stat-label">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Ouvertes
+                </div>
+            </div>
+            <div class="stat-card" >
+                <div class="stat-value" id="alertesEnCours">0</div>
+                <div class="stat-label">
+                    <i class="fas fa-spinner"></i>
+                    En cours
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #000000, #1c1314);">
+                <div class="stat-value" id="alertesResolues">0</div>
+                <div class="stat-label">
+                    <i class="fas fa-check-circle"></i>
+                    Résolues
+                </div>
+            </div>
+        </div>
+
+        <!-- Barre de filtres -->
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label>Type</label>
+                <select id="filterType" onchange="applyFilters()">
+                    <option value="">Tous les types</option>
+                    <option value="panne">Panne</option>
+                    <option value="entretien">Entretien</option>
+                    <option value="info">Information</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Statut</label>
+                <select id="filterStatut" onchange="applyFilters()">
+                    <option value="">Tous les statuts</option>
+                    <option value="ouverte">Ouverte</option>
+                    <option value="en_cours">En cours</option>
+                    <option value="resolue">Résolue</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Bus</label>
+                <select id="filterBus" onchange="applyFilters()">
+                    <option value="">Tous les bus</option>
+                    <!-- Options chargées dynamiquement -->
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Date</label>
+                <input type="date" id="filterDate" onchange="applyFilters()">
+            </div>
+            <button class="btn btn-secondary" onclick="clearFilters()">
+                <i class="fas fa-times"></i>
+                Effacer filtres
+            </button>
+        </div>
+
+        <!-- Liste des alertes -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 style="display: flex; align-items: center; gap: 8px">
+                        <i class="fas fa-exclamation-triangle" style="color: var(--primary-orange)"></i>
+                        Alertes actives
+                    </h3>
+                    <button class="btn btn-primary" onclick="loadAlertes()">
+                        <i class="fas fa-sync-alt"></i>
+                        Actualiser
+                    </button>
+                </div>
+
+                <!-- Loading state pour alertes -->
+                <div id="alertesLoadingSpinner" class="loading-spinner" style="display: none;">
+                    <div class="spinner"></div>
+                </div>
+
+                <!-- Container des alertes -->
+                <div id="alertesContainer">
+                    <div class="grid grid-2" id="alertesGrid">
+                        <!-- Les alertes seront chargées dynamiquement -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau détaillé des alertes -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 style="display: flex; align-items: center; gap: 8px">
+                        <i class="fas fa-list" style="color: var(--primary-orange)"></i>
+                        Historique complet
+                    </h3>
+                </div>
+
+                <!-- Loading state pour tableau -->
+                <div id="tableLoadingSpinner" class="loading-spinner" style="display: none;">
+                    <div class="spinner"></div>
+                </div>
+
+                <!-- Container du tableau -->
+                <div id="tableContainer">
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Bus</th>
+                                    <th>Type</th>
+                                    <th>Statut</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="alertesTableBody">
+                                <!-- Les alertes seront chargées dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Nouvelle Alerte -->
+    <div id="newAlerteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus"></i> Créer une nouvelle alerte</h2>
+                <span class="close" onclick="closeModal('newAlerteModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="newAlerteForm">
+                    <div class="floating-input">
+                        <select id="alerteBus" name="bus_id" required>
+                            <option value="">Sélectionner un bus</option>
+                            <!-- Options chargées dynamiquement -->
+                        </select>
+                        <label for="alerteBus">Bus concerné</label>
+                        <i class="fas fa-bus input-icon"></i>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="floating-input">
+                            <select id="alerteType" name="type" required>
+                                <option value="">Sélectionner un type</option>
+                                <option value="panne">Panne</option>
+                                <option value="entretien">Entretien</option>
+                                <option value="info">Information</option>
+                            </select>
+                            <label for="alerteType">Type d'alerte</label>
+                            <i class="fas fa-exclamation-triangle input-icon"></i>
+                        </div>
+                        <div class="floating-input">
+                            <select id="alerteStatut" name="statut" required>
+                                <option value="">Sélectionner un statut</option>
+                                <option value="ouverte">Ouverte</option>
+                                <option value="en_cours">En cours</option>
+                                <option value="resolue">Résolue</option>
+                            </select>
+                            <label for="alerteStatut">Statut</label>
+                            <i class="fas fa-flag input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="floating-input">
+                        <input type="date" id="alerteDate" name="date_signalement" required />
+                        <label for="alerteDate">Date de signalement</label>
+                        <i class="fas fa-calendar input-icon"></i>
+                    </div>
+
+                    <div class="floating-input">
+                        <textarea id="alerteDescription" name="description" placeholder=" " required></textarea>
+                        <label for="alerteDescription">Description détaillée</label>
+                        <i class="fas fa-edit input-icon"></i>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('newAlerteModal')">
+                    <i class="fas fa-times"></i>
+                    Annuler
+                </button>
+                <button type="submit" form="newAlerteForm" class="btn btn-primary" id="newAlerteSubmitBtn">
+                    <i class="fas fa-plus"></i>
+                    Créer l'alerte
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Édition Alerte -->
+    <div id="editAlerteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Modifier l'alerte</h2>
+                <span class="close" onclick="closeModal('editAlerteModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editAlerteForm">
+                    <input type="hidden" id="editAlerteId" name="alerteId">
+                    
+                    <div class="floating-input">
+                        <select id="editAlerteBus" name="bus_id" required>
+                            <option value="">Sélectionner un bus</option>
+                            <!-- Options chargées dynamiquement -->
+                        </select>
+                        <label for="editAlerteBus">Bus concerné</label>
+                        <i class="fas fa-bus input-icon"></i>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="floating-input">
+                            <select id="editAlerteType" name="type" required>
+                                <option value="">Sélectionner un type</option>
+                                <option value="panne">Panne</option>
+                                <option value="entretien">Entretien</option>
+                                <option value="info">Information</option>
+                            </select>
+                            <label for="editAlerteType">Type d'alerte</label>
+                            <i class="fas fa-exclamation-triangle input-icon"></i>
+                        </div>
+                        <div class="floating-input">
+                            <select id="editAlerteStatut" name="statut" required>
+                                <option value="">Sélectionner un statut</option>
+                                <option value="ouverte">Ouverte</option>
+                                <option value="en_cours">En cours</option>
+                                <option value="resolue">Résolue</option>
+                            </select>
+                            <label for="editAlerteStatut">Statut</label>
+                            <i class="fas fa-flag input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="floating-input">
+                        <input type="date" id="editAlerteDate" name="date_signalement" required />
+                        <label for="editAlerteDate">Date de signalement</label>
+                        <i class="fas fa-calendar input-icon"></i>
+                    </div>
+
+                    <div class="floating-input">
+                        <textarea id="editAlerteDescription" name="description" placeholder=" " required></textarea>
+                        <label for="editAlerteDescription">Description détaillée</label>
+                        <i class="fas fa-edit input-icon"></i>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editAlerteModal')">
+                    <i class="fas fa-times"></i>
+                    Fermer
+                </button>
+                <button type="submit" form="editAlerteForm" class="btn btn-primary" id="editAlerteSubmitBtn">
+                    <i class="fas fa-save"></i>
+                    Sauvegarder
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Détails Alerte -->
+    <div id="detailsAlerteModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-info-circle"></i> Détails de l'alerte</h2>
+                <span class="close" onclick="closeModal('detailsAlerteModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="alerteDetailsContent">
+                    <!-- Contenu chargé dynamiquement -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('detailsAlerteModal')">
+                    <i class="fas fa-times"></i>
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Confirmation Suppression -->
+    <div id="deleteAlerteModal" class="modal">
+        <div class="modal-content" style="max-width: 500px; text-align: center;">
+            <div class="modal-body">
+                <div style="font-size: 64px; color: #ff4757; margin-bottom: 24px;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 style="font-size: 28px; font-weight: 700; color: var(--primary-black); margin-bottom: 16px;">
+                    Confirmer la suppression
+                </h3>
+                <p style="color: var(--dark-gray); margin-bottom: 32px; line-height: 1.6; font-size: 16px;">
+                    Êtes-vous sûr de vouloir supprimer cette alerte ?
+                    <br>Cette action est irréversible et ne peut pas être annulée.
+                </p>
+                <div style="display: flex; gap: 16px; justify-content: center;">
+                    <button class="btn btn-secondary" onclick="closeModal('deleteAlerteModal')">
+                        <i class="fas fa-times"></i>
+                        Annuler
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmDeleteAlerte()">
+                        <i class="fas fa-trash"></i>
+                        Supprimer définitivement
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../services/ui.js"></script>
+    <script src="../services/auth.js"></script>
+    <script src="../services/alertes.js"></script>
+    <script src="../services/bus.js"></script>
+    <script src="../assets/js/alertes.js"></script>
+</body>
+</html>

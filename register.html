@@ -34,25 +34,10 @@
                 </div>
 
                 <form id="registerForm">
-                    <div class="grid grid-2">
-                        
-
-                        <div class="form-group">
-                            <i class="fas fa-user form-icon"></i>
-                            <input type="text" name="nom" id="register-nom" class="form-input" placeholder=" " required>
-                            <label class="form-label" for="register-nom">Nom</label>
-                        </div>
-                        <div class="form-group">
-                            <i class="fas fa-user form-icon"></i>
-                            <input type="text" name="prenom" id="register-prenom" class="form-input" placeholder=" " required>
-                            <label class="form-label" for="register-prenom">Prénom</label>
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <i class="fas fa-building form-icon"></i>
                         <input type="text" name="compagnie" id="register-compagnie" class="form-input" placeholder=" " required>
-                        <label class="form-label" for="register-compagnie">Société de transport</label>
+                        <label class="form-label" for="register-compagnie">Nom de votre société de transport</label>
                     </div>
 
                     <div class="form-group">
@@ -62,9 +47,15 @@
                     </div>
 
                     <div class="form-group">
+                        <i class="fas fa-map-marker-alt form-icon"></i>
+                        <input type="text" name="localisation" id="register-localisation" class="form-input" placeholder=" ">
+                        <label class="form-label" for="register-localisation">Localisation (optionnel)</label>
+                    </div>
+
+                    <div class="form-group">
                         <i class="fas fa-phone form-icon"></i>
                         <input type="tel" name="telephone" id="register-telephone" class="form-input" placeholder=" " required>
-                        <label class="form-label" for="register-telephone">Téléphone</label>
+                        <label class="form-label" for="register-telephone">Téléphone (ex: 70234567 ou 0123456789)</label>
                     </div>
 
                     <div class="form-group">
@@ -91,7 +82,6 @@
                         </label>
                     </div>
 
-
                     <button type="submit" class="btn btn-primary btn-lg w-full mb-4">
                         <i class="fas fa-user-plus"></i>
                         Créer mon compte
@@ -108,19 +98,9 @@
         </div>
     </div>
 
-    <script src="assets/js/app.js"></script>
-    <script>
-        // Validation du formulaire d'inscription
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            const password = document.querySelector('input[name="password"]').value;
-            const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
-            
-            if (password !== confirmPassword) {
-                e.preventDefault();
-                alert('Les mots de passe ne correspondent pas');
-                return false;
-            }
-        });
-    </script>
+    <!-- Scripts -->
+    <script src="services/ui.js"></script>
+    <script src="services/auth.js"></script>
+    <script src="assets/js/register.js"></script>
 </body>
 </html>
