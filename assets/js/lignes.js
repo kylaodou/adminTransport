@@ -487,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <td><strong>${planning.heure}</strong></td>
             <td>${trajet ? trajet.nom : 'Trajet inconnu'}</td>
             <td>${chauffeur ? `${chauffeur.prenom} ${chauffeur.nom}` : 'Chauffeur inconnu'}</td>
-            <td>${bus ? bus.matricule : 'Bus inconnu'}</td>
+            <td>${bus ? bus.id : 'Bus inconnu'}</td>
             <td><span class="badge badge-${planning.valide ? 'success' : 'warning'}">${planning.valide ? 'Validé' : 'En attente'}</span></td>
             <td>
                 <div class="flex gap-8px">

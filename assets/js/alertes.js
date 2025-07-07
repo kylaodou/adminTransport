@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Trouver le bus associé
         const bus = allBus.find(b => b.id === alerte.bus_id);
-        const busMatricule = bus ? bus.matricule : 'Bus inconnu';
+        const busMatricule = bus ? bus.id : 'Bus inconnu';
         
         // Formater la date
         const dateFormatee = new Date(alerte.date_signalement).toLocaleDateString('fr-FR');
@@ -551,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Trouver le bus associé
         const bus = allBus.find(b => b.id === alerte.bus_id);
-        const busMatricule = bus ? bus.matricule : 'Bus inconnu';
+        const busMatricule = bus ? bus.id : 'Bus inconnu';
         
         // Formater la date
         const dateFormatee = new Date(alerte.date_signalement).toLocaleDateString('fr-FR');
@@ -811,7 +811,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const bus = allBus.find(b => b.id === alerte.bus_id);
-        const busMatricule = bus ? bus.matricule : 'Bus inconnu';
+        const busMatricule = bus ? bus.id : 'Bus inconnu';
         const dateFormatee = new Date(alerte.date_signalement).toLocaleDateString('fr-FR');
 
         const detailsContent = document.getElementById('alerteDetailsContent');
